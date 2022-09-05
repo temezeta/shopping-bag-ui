@@ -21,7 +21,12 @@
     },
     "plugins": ["react", "prettier"],
     "rules": {
-        "prettier/prettier": "error",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            }
+        ],
         "react/react-in-jsx-scope": "off",
         "@typescript-eslint/no-misused-promises": "off",
         "@typescript-eslint/no-non-null-assertion": "off"
