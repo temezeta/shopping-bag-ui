@@ -84,3 +84,9 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
         -   Client to interface with the backend and set appropriate headers to calls etc.
 -   Models
     -   TypeScript types used by the application (e.g. backend DTOs, other types used in application widely)
+
+## Troubleshooting
+
+-   CORS error between frontend and backend
+    -   The backend requires the frontend to use HTTPS because of passed credentials
+    -   You can achieve this by setting the environment [like this](https://create-react-app.dev/docs/using-https-in-development/) before `npm start`
