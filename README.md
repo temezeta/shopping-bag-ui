@@ -67,3 +67,20 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Structure
+
+-   Components
+    -   Contains components used in the application, different forms & buttons etc.
+-   Features
+    -   Contains a single feature (a page) which is comprised of components
+-   Store
+    -   Contains Redux store related functionality
+    -   Each separate slice/reducer in its own folder
+        -   Action: The functionality (e.g. a call to backend)
+        -   Slice: What to do before and after the action has been dispatched/completed (e.g. add the action response to store)
+        -   Types: Types used by the slice if not found elsewhere (e.g. state)
+    -   Client
+        -   Client to interface with the backend and set appropriate headers to calls etc.
+-   Models
+    -   TypeScript types used by the application (e.g. backend DTOs, other types used in application widely)
