@@ -2,8 +2,10 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
 import AppRouter from './AppRouter';
+import { useTranslation } from 'react-i18next';
 
 function App(): JSX.Element {
+    const { t } = useTranslation();
     return (
         <div className="App">
             <header className="App-header">
@@ -12,44 +14,7 @@ function App(): JSX.Element {
                 <p>
                     Edit <code>src/App.tsx</code> and save to reload.
                 </p>
-                <span>
-                    <span>Learn </span>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        React
-                    </a>
-                    <span>, </span>
-                    <a
-                        className="App-link"
-                        href="https://redux.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Redux
-                    </a>
-                    <span>, </span>
-                    <a
-                        className="App-link"
-                        href="https://redux-toolkit.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Redux Toolkit
-                    </a>
-                    ,<span> and </span>
-                    <a
-                        className="App-link"
-                        href="https://react-redux.js.org/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        React Redux
-                    </a>
-                </span>
+                <span>{t('translation')}</span>
             </header>
             <AppRouter></AppRouter>
         </div>
