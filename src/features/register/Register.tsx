@@ -101,7 +101,7 @@ const Register = (): JSX.Element => {
                 />
 
                 <Button type="submit" variant="contained" disabled={!isValid}>
-                    Sign up
+                    {t('sign_up')}
                 </Button>
             </form>
         </div>
