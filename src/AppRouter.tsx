@@ -1,7 +1,12 @@
-import { Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
+import Register from './features/register/Register';
 
 const AppRouter = (): JSX.Element => {
-    return <Routes></Routes>;
+    return (
+        <Routes>
+            <Route path="register" element={<Register />}></Route>
+        </Routes>
+    );
 };
 
 export default AppRouter;
