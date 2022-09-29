@@ -23,7 +23,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
             firstName: '',
             lastName: '',
             email: '',
-            officeId: -1, // Use -1 to indicate no officeId selected
+            officeId: 1,
             password: '',
             repeatPassword: '',
         },
@@ -31,10 +31,6 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
     });
 
     const onSubmit: SubmitHandler<RegisterDto> = (data) => {
-        if (data.officeId === -1) {
-            data.officeId = undefined;
-        }
-
         props.onSubmit?.(data);
     };
 
@@ -90,6 +86,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                     <Controller
                         name="officeId"
                         control={control}
+                        rules={{ required: true }}
                         render={({ field }) => (
                             <OfficeSelect
                                 {...field}

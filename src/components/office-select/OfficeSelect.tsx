@@ -17,9 +17,6 @@ const OfficeSelect = (
 
     return (
         <Select {...props} ref={ref}>
-            <MenuItem value={-1} key={-1}>
-                -
-            </MenuItem>
             {DUMMY_OFFICES.map((it) => (
                 <MenuItem value={it.id} key={it.id}>
                     {it.name}
