@@ -3,6 +3,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { RegisterDto } from '../../models/user/RegisterDto';
+import { isValidEmail, isValidPassword } from '../../utility/validation-helper';
 import OfficeSelect from '../office-select/OfficeSelect';
 import styles from './RegistrationForm.module.css';
 
@@ -43,17 +44,23 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
             >
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="first-name">
-                        {t('name')}
+                        {t('user.name')}
                     </FormLabel>
                     <Controller
                         name="firstName"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                        }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 error={!!errors.firstName}
                                 aria-labelledby="first-name"
+                                helperText={errors.firstName?.message}
                                 fullWidth
                             />
                         )}
@@ -62,17 +69,23 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="last-name">
-                        {t('surname')}
+                        {t('user.surname')}
                     </FormLabel>
                     <Controller
                         name="lastName"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                        }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 error={!!errors.lastName}
                                 aria-labelledby="last-name"
+                                helperText={errors.lastName?.message}
                                 fullWidth
                             />
                         )}
@@ -81,7 +94,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="officeId">
-                        {t('select_office')}
+                        {t('actions.select_office')}
                     </FormLabel>
                     <Controller
                         name="officeId"
@@ -100,20 +113,28 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="email-address">
-                        {t('email_address')}
+                        {t('user.email_address')}
                     </FormLabel>
                     <Controller
                         name="email"
                         control={control}
                         rules={{
-                            required: true,
-                            pattern: /\S+@\S+\.\S+/,
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                            validate: {
+                                validEmail: (value: string) =>
+                                    isValidEmail(value) ||
+                                    t('errors.invalid_email'),
+                            },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 error={!!errors.email}
                                 aria-labelledby="email-address"
+                                helperText={errors.email?.message}
                                 fullWidth
                             />
                         )}
@@ -122,18 +143,29 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="password">
-                        {t('password')}
+                        {t('user.password')}
                     </FormLabel>
                     <Controller
                         name="password"
                         control={control}
-                        rules={{ required: true }}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                            validate: {
+                                validPassword: (value: string) =>
+                                    isValidPassword(value) ||
+                                    t('errors.invalid_password'),
+                            },
+                        }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
                                 type="password"
                                 error={!!errors.password}
                                 aria-labelledby="password"
+                                helperText={errors.password?.message}
                                 fullWidth
                             />
                         )}
@@ -142,15 +174,21 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="repeat-password">
-                        {t('repeat_password')}
+                        {t('user.repeat_password')}
                     </FormLabel>
                     <Controller
                         name="repeatPassword"
                         control={control}
                         rules={{
-                            required: true,
-                            validate: (value: string) =>
-                                watch('password') === value,
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                            validate: {
+                                matches: (value: string) =>
+                                    watch('password') === value ||
+                                    t('errors.password_match'),
+                            },
                         }}
                         render={({ field }) => (
                             <TextField
@@ -158,6 +196,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 type="password"
                                 error={!!errors.repeatPassword}
                                 aria-labelledby="repeat-password"
+                                helperText={errors.repeatPassword?.message}
                                 fullWidth
                             />
                         )}
@@ -171,7 +210,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                         disabled={!isValid}
                         fullWidth
                     >
-                        {t('sign_up')}
+                        {t('actions.sign_up')}
                     </Button>
                 </Grid2>
             </form>

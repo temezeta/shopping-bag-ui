@@ -26,7 +26,9 @@ const Register = (): JSX.Element => {
                     </IconButton>
                 </Grid2>
                 <Grid2 xs={11}>
-                    <Typography variant="h1">{t('registration')}</Typography>
+                    <Typography variant="h1">
+                        {t('actions.registration')}
+                    </Typography>
                     <RegistrationForm onSubmit={onSubmit} />
                 </Grid2>
             </Grid2>
