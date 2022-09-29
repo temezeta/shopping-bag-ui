@@ -2,7 +2,7 @@ export interface RegisterDto {
     firstName: string;
     lastName: string;
     email: string;
-    officeId?: number; // TODO This should be office ID in backend
+    officeId: number;
     password: string;
     repeatPassword: string;
 }
