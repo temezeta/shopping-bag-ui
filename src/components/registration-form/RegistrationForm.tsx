@@ -61,6 +61,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 error={!!errors.firstName}
                                 aria-labelledby="first-name"
                                 helperText={errors.firstName?.message}
+                                size="small"
                                 fullWidth
                             />
                         )}
@@ -86,6 +87,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 error={!!errors.lastName}
                                 aria-labelledby="last-name"
                                 helperText={errors.lastName?.message}
+                                size="small"
                                 fullWidth
                             />
                         )}
@@ -135,6 +137,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 error={!!errors.email}
                                 aria-labelledby="email-address"
                                 helperText={errors.email?.message}
+                                size="small"
                                 fullWidth
                             />
                         )}
@@ -166,6 +169,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 error={!!errors.password}
                                 aria-labelledby="password"
                                 helperText={errors.password?.message}
+                                size="small"
                                 fullWidth
                             />
                         )}
@@ -197,6 +201,7 @@ const RegistrationForm = (props: RegistrationFormProps): JSX.Element => {
                                 error={!!errors.repeatPassword}
                                 aria-labelledby="repeat-password"
                                 helperText={errors.repeatPassword?.message}
+                                size="small"
                                 fullWidth
                             />
                         )}
