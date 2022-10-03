@@ -1,4 +1,5 @@
-import { createTheme } from '@mui/material';
+import { createTheme, LinkProps } from '@mui/material';
+import LinkBehaviour from './components/link-behaviour/LinkBehaviour';
 
 const defaultTheme = createTheme(); // Create a default theme so we can use breakpoints easily etc.
 
@@ -56,6 +57,13 @@ const HuldTheme = createTheme({
                     }),
                 }),
             },
+        },
+        MuiLink: {
+            // https://github.com/mui/material-ui/issues/29942
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            defaultProps: {
+                component: LinkBehaviour,
+            } as LinkProps,
         },
     },
 });

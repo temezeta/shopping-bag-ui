@@ -15,6 +15,7 @@
     "actions": {
         "registration": "Registration",
         "select_office": "Select home office",
-        "sign_up": "Sign up"
+        "sign_up": "Sign up",
+        "already_have_account": "Already have an account? Log in here."
     }
 }
