@@ -1,16 +1,31 @@
 import { Link, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import { unwrapResult } from '@reduxjs/toolkit';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import LoginLayout from '../../components/login-layout/LoginLayout';
 import RegistrationForm from '../../components/registration-form/RegistrationForm';
 import { RegisterDto } from '../../models/user/RegisterDto';
+import { registerAsync } from '../../store/auth/auth-slice';
+import { useAppDispatch } from '../../store/hooks';
 
 const Register = (): JSX.Element => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<RegisterDto> = (data) => {
-        console.log(data);
+        dispatch(registerAsync(data))
+            .then(unwrapResult)
+            .then((result) => {
+                if (result) {
+                    navigate('/login');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
