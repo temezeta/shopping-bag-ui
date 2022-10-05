@@ -2,7 +2,7 @@ import { Button, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { RegisterDto } from '../../models/user/RegisterDto';
+import { RegisterDto } from '../../models/auth/RegisterDto';
 import { isValidEmail, isValidPassword } from '../../utility/validation-helper';
 import OfficeSelect from '../office-select/OfficeSelect';
 import styles from './RegistrationForm.module.css';

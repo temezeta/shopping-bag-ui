@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import LoginLayout from '../../components/login-layout/LoginLayout';
 import RegistrationForm from '../../components/registration-form/RegistrationForm';
-import { RegisterDto } from '../../models/user/RegisterDto';
+import { RegisterDto } from '../../models/auth/RegisterDto';
 import { registerAsync } from '../../store/auth/auth-slice';
 import { useAppDispatch } from '../../store/hooks';
 
