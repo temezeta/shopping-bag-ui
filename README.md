@@ -16,6 +16,13 @@
 3. Run `npm install` in repository root
 4. Run `npm start`
 
+## Getting started with Docker
+
+1. Install [Docker Desktop](https://docs.docker.com/desktop/windows/wsl/)
+2. Ensure WSL 2 support is enabled and virtualization (SVM etc.) is enabled in BIOS
+3. If you can start Docker Desktop and `wsl -l -v` command returns version 2 distro you should be fine
+4. Run `docker-compose up`
+
 ## Libraries
 
 -   State management
