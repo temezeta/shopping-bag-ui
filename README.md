@@ -22,6 +22,8 @@
 2. Ensure WSL 2 support is enabled and virtualization (SVM etc.) is enabled in BIOS
 3. If you can start Docker Desktop and `wsl -l -v` command returns version 2 distro you should be fine
 4. Run `docker-compose up`
+5. Change `AllowedOrigins` and `Jwt:Audience` in backend configuration to allow `http://localhost:3000`
+6. Note: Refresh cookies do not work, since there is no valid SSL certificate to run the server in HTTPS mode
 
 ## Libraries
 
