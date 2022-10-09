@@ -74,6 +74,15 @@ const HuldTheme = createTheme({
             defaultProps: {
                 component: LinkBehaviour,
             } as LinkProps,
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.palette.info.main,
+                    textDecoration: 'none',
+                    '&:hover': {
+                        textDecoration: 'underline',
+                    },
+                }),
+            },
         },
         MuiOutlinedInput: {
             styleOverrides: {
@@ -84,7 +93,7 @@ const HuldTheme = createTheme({
         },
         MuiCheckbox: {
             styleOverrides: {
-                colorSecondary: ({ theme }) => ({
+                root: ({ theme }) => ({
                     color: theme.palette.primary.light,
                     '&$checked': {
                         color: theme.palette.primary.main,
