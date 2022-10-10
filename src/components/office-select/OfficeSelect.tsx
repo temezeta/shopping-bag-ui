@@ -1,8 +1,10 @@
 import { Select, MenuItem, SelectProps } from '@mui/material';
-import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
-import { getAllOfficesAsync } from '../../store/office/office-slice';
-import { useAppDispatch } from '../../store/hooks';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { ForwardedRef, forwardRef, useEffect } from 'react';
+import {
+    getAllOfficesAsync,
+    selectOffices,
+} from '../../store/office/office-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { OfficeDto } from '../../models/office/OfficeDto';
 
 type OfficeSelectProps = SelectProps;
@@ -12,16 +14,9 @@ const OfficeSelect = (
     ref: ForwardedRef<unknown>
 ): JSX.Element => {
     const dispatch = useAppDispatch();
-    const [offices, setOffices] = useState<OfficeDto[]>([]);
+    const offices: OfficeDto[] = useAppSelector(selectOffices);
     useEffect(() => {
-        dispatch(getAllOfficesAsync(null))
-            .then(unwrapResult)
-            .then((result) => {
-                setOffices(result);
-            })
-            .catch(() => {
-                // Ignore?
-            });
+        void dispatch(getAllOfficesAsync(null));
     }, []);
 
     return (
