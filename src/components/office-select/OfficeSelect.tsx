@@ -16,7 +16,7 @@ const OfficeSelect = (
     const dispatch = useAppDispatch();
     const offices: OfficeDto[] = useAppSelector(selectOffices);
     useEffect(() => {
-        void dispatch(getAllOfficesAsync(null));
+        void dispatch(getAllOfficesAsync());
     }, []);
 
     return (

@@ -10,7 +10,7 @@ const initialState: OfficeState = {
 
 export const getAllOfficesAsync = createAsyncThunk(
     'office/get/all',
-    async (data: null, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         const response = await getAllOffices();
         if (!response) {
             return rejectWithValue('Cannot find offices');
