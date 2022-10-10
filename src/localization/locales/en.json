@@ -16,6 +16,12 @@
         "registration": "Registration",
         "select_office": "Select home office",
         "sign_up": "Sign up",
-        "already_have_account": "Already have an account? Log in here."
+        "already_have_account": "Already have an account? Log in here.",
+        "ok": "Ok",
+        "cancel": "Cancel"
+    },
+    "dialogs": {
+        "verify_account": "Verify your account",
+        "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email."
     }
 }
