@@ -1,0 +1,31 @@
+.header {
+    padding: 1rem;
+    height: 10rem;
+    width: 100%;
+}
+
+.headerLogo path {
+    fill: #ffffff;
+}
+
+.headerControls {
+    text-align: right;
+    padding: 0.5rem 1rem;
+}
+
+@media screen and (max-width: 600px) {
+    .header {
+        height: fit-content;
+        padding-top: 0px;
+    }
+    .headerLogo {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .headerControls {
+        display: flex;
+        justify-content: space-around;
+    }
+}

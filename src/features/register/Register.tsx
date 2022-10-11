@@ -55,7 +55,7 @@ const Register = (): JSX.Element => {
                     <Grid2 xs={12}>
                         <RegistrationForm onSubmit={onSubmit} />
                     </Grid2>
-                    <Grid2 xs={12}>
+                    <Grid2 xs={12} className="flex-center">
                         <Link href="/login">
                             {t('actions.already_have_account')}
                         </Link>

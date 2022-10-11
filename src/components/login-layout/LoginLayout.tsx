@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import AppLogo from '../logo/AppLogo';
 import styles from './LoginLayout.module.css';
 
 interface LoginLayoutProps {
@@ -9,9 +9,7 @@ const LoginLayout = (props: LoginLayoutProps): JSX.Element => {
     return (
         <div className={styles.pageContainer}>
             <header className={styles.header}>
-                <Typography variant="h3" fontWeight="bold">
-                    Huld - Shopping bag
-                </Typography>
+                <AppLogo />
             </header>
             <div className={`${styles.contentContainer} flex-center`}>
                 <div className={styles.formContainer}>{props.children}</div>
