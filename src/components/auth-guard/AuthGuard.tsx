@@ -21,7 +21,7 @@ const AuthGuard = (props: AuthGuardProps): JSX.Element => {
         const requiredRoles = props.roles;
         if (!currentUser) {
             return (
-                <Navigate to={'/login'} state={{ from: location }} replace />
+                <Navigate to={'/session'} state={{ from: location }} replace />
             );
         } else if (
             requiredRoles &&

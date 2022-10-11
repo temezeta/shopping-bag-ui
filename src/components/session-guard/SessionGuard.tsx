@@ -5,10 +5,6 @@ import { refreshTokenAsync } from '../../store/auth/auth-slice';
 import { useAppDispatch } from '../../store/hooks';
 import { getCurrentUserAsync } from '../../store/user/user-slice';
 
-interface LocationState {
-    from?: Location;
-}
-
 const SessionGuard = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -17,6 +13,7 @@ const SessionGuard = (): JSX.Element => {
     useEffect(() => {
         const restoreUserSession = async (): Promise<void> => {
             const expiredToken = localStorage.getItem('authToken');
+            const previousLocation = location.state?.from?.pathname;
             let isSuccess = false;
             if (expiredToken) {
                 try {
@@ -25,10 +22,7 @@ const SessionGuard = (): JSX.Element => {
                     );
                     unwrapResult(await dispatch(getCurrentUserAsync()));
                     isSuccess = true;
-                    const prevLoc = (
-                        location.state as LocationState | undefined
-                    )?.from;
-                    navigate(prevLoc ? prevLoc.pathname : '/home');
+                    navigate(previousLocation ?? '/home');
                 } catch {}
             }
 

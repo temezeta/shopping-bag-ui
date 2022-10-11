@@ -8,22 +8,20 @@ import { Link, Typography } from '@mui/material';
 import { useAppDispatch } from '../../store/hooks';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { loginAsync } from '../../store/auth/auth-slice';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { getCurrentUserAsync } from '../../store/user/user-slice';
 
 const Login = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const onSubmit: SubmitHandler<LoginDto> = async (data) => {
         try {
             unwrapResult(await dispatch(loginAsync(data)));
             unwrapResult(await dispatch(getCurrentUserAsync()));
             // Login success && user found => navigate to home
-            const previousLocation = location.state?.from;
-            navigate(previousLocation ? previousLocation.pathname : '/home');
+            navigate('/home');
         } catch {
             // setErrOpen(true);
         }
