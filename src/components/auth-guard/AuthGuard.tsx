@@ -13,7 +13,7 @@ const AuthGuard = (props: AuthGuardProps): JSX.Element => {
     const { t } = useTranslation();
 
     /**
-     * 1. If user is not logged in -> redirect to login
+     * 1. If user is not logged in -> try to restore session
      * 2. If user is logged in but doesn't have appropriate role -> show error
      * 3. If user has appropriate role -> show page
      */
