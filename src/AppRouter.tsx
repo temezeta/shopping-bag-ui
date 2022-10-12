@@ -15,7 +15,7 @@ const AppRouter = (): JSX.Element => {
             <Route path="login" element={<Login />}></Route>
             {/** Protected routes */}
             <Route element={<AuthGuard />}>
-                <Route path="item" element={<ItemDetails />}></Route>
+                <Route path="home" element={<ItemDetails />}></Route>
             </Route>
         </Routes>
     );
