@@ -22,10 +22,18 @@
         "recover_password": "Forgot your password?",
         "remember_user": "Remember me",
         "ok": "Ok",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "add_item": "Add item",
+        "add_new_item": "Add new item"
     },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email."
+    },
+    "item": {
+       "name": "Item name",
+       "store": "Store",
+       "link": "Link to item",
+       "comment": "Add comment" 
     }
 }

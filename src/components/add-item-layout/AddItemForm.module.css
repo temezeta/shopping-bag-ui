@@ -1,0 +1,8 @@
+.addItem {
+    width: 100%;
+}
+
+.label {
+    display: flex;
+    justify-content: flex-start;
+}
