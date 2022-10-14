@@ -33,7 +33,7 @@
     "item": {
        "name": "Item name",
        "store": "Store",
-       "link": "Link to item",
+       "url": "Link to item",
        "comment": "Add comment" 
     }
 }

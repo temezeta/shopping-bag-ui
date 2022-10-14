@@ -4,6 +4,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { AddItemDto } from '../../models/auth/AddItemDto';
 import styles from './AddItemForm.module.css';
+import LikeIcon from '../icons/LikeIcon';
 
 interface AddItemFormProps {
     onSubmit?: SubmitHandler<AddItemDto>;
@@ -19,7 +20,7 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
         defaultValues: {
             name: '',
             store: '',
-            link: undefined,
+            url: undefined,
             comment: '',
         },
         mode: 'onChange',
@@ -32,25 +33,35 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
     return (
         <Grid2 container spacing={2}>
             <form
-                id="Login-form"
+                id="Add-Item-Form"
                 className={styles.addItem}
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <Grid2 xs={12}>
-                    <FormLabel className={styles.label} id="item_name">
-                        {t('item.name')}
-                    </FormLabel>
-                    <Controller
-                        name="name"
-                        control={control}
-                        rules={{
-                            required: {
-                                value: true,
-                                message: t('errors.required'),
-                            },
-                        }}
-                        render={() => <TextField />}
-                    />
+                    <div>
+                        <FormLabel className={styles.label} id="item_name">
+                            {t('item.name')}
+                        </FormLabel>
+                        <Controller
+                            name="name"
+                            control={control}
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: t('errors.required'),
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    aria-labelledby="item_name"
+                                    size="small"
+                                    fullWidth
+                                />
+                            )}
+                        />
+                        <LikeIcon></LikeIcon>
+                    </div>
                 </Grid2>
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="store">
@@ -65,15 +76,22 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                                 message: t('errors.required'),
                             },
                         }}
-                        render={() => <TextField />}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                aria-labelledby="store"
+                                size="small"
+                                fullWidth
+                            />
+                        )}
                     />
                 </Grid2>
                 <Grid2 xs={12}>
-                    <FormLabel className={styles.label} id="link">
-                        {t('item.link')}
+                    <FormLabel className={styles.label} id="url">
+                        {t('item.url')}
                     </FormLabel>
                     <Controller
-                        name="link"
+                        name="url"
                         control={control}
                         rules={{
                             required: {
@@ -81,7 +99,14 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                                 message: t('errors.required'),
                             },
                         }}
-                        render={() => <TextField />} // TODO validation of link
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                aria-labelledby="url"
+                                size="small"
+                                fullWidth
+                            />
+                        )}
                     />
                 </Grid2>
                 <Grid2 xs={12}>
@@ -91,7 +116,14 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                     <Controller
                         name="comment"
                         control={control}
-                        render={() => <TextField />}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                aria-labelledby="comment"
+                                size="small"
+                                fullWidth
+                            />
+                        )}
                     />
                 </Grid2>
                 <Grid2 xs={12}>
