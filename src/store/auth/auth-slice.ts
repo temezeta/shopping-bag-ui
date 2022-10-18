@@ -3,7 +3,7 @@ import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
 import { RootState } from '../store';
-import { login, refreshToken, register } from './auth-actions';
+import { login, logout, refreshToken, register } from './auth-actions';
 import { AuthState } from './auth-types';
 
 const initialState: AuthState = {
@@ -43,6 +43,18 @@ export const refreshTokenAsync = createAsyncThunk(
             return rejectWithValue('Refresh token failed');
         }
         localStorage.setItem('authToken', response.token);
+        return response;
+    }
+);
+
+export const logoutAsync = createAsyncThunk(
+    'auth/logout',
+    async (_, { rejectWithValue }) => {
+        const response = await logout();
+        localStorage.removeItem('authToken');
+        if (!response) {
+            return rejectWithValue('Logout failed');
+        }
         return response;
     }
 );

@@ -28,3 +28,8 @@ export const refreshToken = async (
     }
     return (await response.json()) as TokenResponseDto;
 };
+
+export const logout = async (): Promise<boolean> => {
+    const response = await ApiClient.put('auth/logout', null);
+    return response.ok;
+};
