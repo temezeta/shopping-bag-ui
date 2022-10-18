@@ -8,7 +8,7 @@ import styles from './DropdownMenu.module.css';
 
 export interface DropdownMenuItem {
     title: string;
-    onClick?: () => void;
+    onClick?: () => void | Promise<void>;
 }
 
 interface DropdownMenuProps {
@@ -60,8 +60,8 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
         setAnchorEl(null);
     };
 
-    const handleItemClick = (item: DropdownMenuItem): void => {
-        item.onClick?.();
+    const handleItemClick = async (item: DropdownMenuItem): Promise<void> => {
+        await item.onClick?.();
         handleClose();
     };
 
@@ -78,7 +78,10 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
             <StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuList className={styles.menuItems}>
                     {props.items.map((item, i) => (
-                        <MenuItem key={i} onClick={() => handleItemClick(item)}>
+                        <MenuItem
+                            key={i}
+                            onClick={async () => await handleItemClick(item)}
+                        >
                             {item.title}
                         </MenuItem>
                     ))}
