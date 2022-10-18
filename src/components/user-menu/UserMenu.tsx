@@ -29,7 +29,7 @@ const UserMenu = (): JSX.Element | null => {
 
     return user ? (
         <DropdownMenu
-            title={`${user?.firstName} ${user?.lastName}`}
+            title={`${user.firstName} ${user.lastName}`}
             items={items}
         />
     ) : null;

@@ -51,10 +51,10 @@ export const logoutAsync = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue }) => {
         const response = await logout();
+        localStorage.removeItem('authToken');
         if (!response) {
             return rejectWithValue('Logout failed');
         }
-        localStorage.removeItem('authToken');
         return response;
     }
 );
