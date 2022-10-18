@@ -7,7 +7,7 @@ import { useState, MouseEvent } from 'react';
 import styles from './DropdownMenu.module.css';
 
 export interface DropdownMenuItem {
-    title: string;
+    title: React.ReactNode;
     onClick?: () => void | Promise<void>;
 }
 
