@@ -8,8 +8,8 @@ import { Button, Checkbox, IconButton, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
-import moment from 'moment';
 import styles from './ShoppingListTab.module.css';
+import { formatDate } from '../../utility/date-helper';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -56,9 +56,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     <Grid2 md={2} xs={3} className="flex-center">
                         <div>
                             <div>{t('list.due_date')}</div>
-                            <div>
-                                {moment(list.dueDate, true).format('D.M.YYYY')}
-                            </div>
+                            <div>{formatDate(list.dueDate)}</div>
                         </div>
                     </Grid2>
                     <Grid2 md={1} xs={2} className="flex-center">
@@ -74,9 +72,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 {t('list.expected_delivery_date')}
                             </div>
                             <div className={styles.expectedDate}>
-                                {moment(list.expectedDeliveryDate, true).format(
-                                    'D.M.YYYY'
-                                )}
+                                {formatDate(list.expectedDeliveryDate)}
                             </div>
                         </div>
                     </Grid2>
