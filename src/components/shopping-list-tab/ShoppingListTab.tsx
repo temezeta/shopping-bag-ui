@@ -30,6 +30,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
             {value === list.id && (
                 <Grid2 container spacing={2} className="flex-center">
                     <Grid2 xs={12} className="flex-center">
+                        {/** TODO: Copy functionality */}
                         <IconButton className={styles.copyButton}>
                             <ContentCopy />
                         </IconButton>
