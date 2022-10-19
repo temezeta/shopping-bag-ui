@@ -111,6 +111,12 @@ const HuldTheme = createTheme({
                             height: '4px',
                         },
                     }),
+                    ...(ownerState.color === 'secondary' && {
+                        color: theme.palette.text.secondary,
+                        '& .MuiTabs-indicator': {
+                            display: 'none',
+                        },
+                    }),
                 }),
             },
         },
@@ -119,6 +125,7 @@ const HuldTheme = createTheme({
                 root: ({ theme }) => ({
                     textTransform: 'none',
                     color: 'inherit',
+                    opacity: 1,
                     '&.Mui-selected': {
                         color: theme.palette.info.main,
                         fontWeight: 'bold',

@@ -8,17 +8,21 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     getShoppingListsByOfficeAsync,
     selectActiveLists,
+    selectInactiveLists,
 } from '../../store/shopping-list/shopping-list-slice';
 import {
     selectCurrentOffice,
     selectCurrentUser,
 } from '../../store/user/user-slice';
+import { useQuery } from '../../utility/navigation-hooks';
 
 const Home = (): JSX.Element => {
     const dispatch = useAppDispatch();
+    const query = useQuery();
     const user = useAppSelector(selectCurrentUser);
     const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
+    const inactiveShoppingLists = useAppSelector(selectInactiveLists);
     const [selectedListId, setSelectedListId] = useState<number | false>(false);
 
     // TODO: If user is Admin -> Redirect to full list view page instead
@@ -34,8 +38,9 @@ const Home = (): JSX.Element => {
     }, [currentOffice]);
 
     const getCurrentShoppingLists = (): ShoppingListDto[] => {
-        // TODO: Add support for toggling between active and inactive lists
-        return activeShoppingLists;
+        return query.get('showPast')
+            ? inactiveShoppingLists
+            : activeShoppingLists;
     };
 
     const handleTabChange = (_: SyntheticEvent, value: number): void => {

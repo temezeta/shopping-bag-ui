@@ -34,6 +34,8 @@
     },
     "list": {
         "due_date": "Due date",
-        "expected_delivery_date": "Expected delivery date"
+        "expected_delivery_date": "Expected delivery date",
+        "active_orders": "Active orders",
+        "past_orders": "Past orders"
     }
 }
