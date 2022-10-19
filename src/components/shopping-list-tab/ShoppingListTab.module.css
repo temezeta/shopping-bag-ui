@@ -1,0 +1,12 @@
+.tabRoot {
+    margin-top: 1.5rem;
+    width: 100%;
+}
+
+.copyButton {
+    margin-right: 1.25rem !important;
+}
+
+.expectedDate {
+    text-align: end;
+}
