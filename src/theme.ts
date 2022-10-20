@@ -101,6 +101,38 @@ const HuldTheme = createTheme({
                 }),
             },
         },
+        MuiTabs: {
+            styleOverrides: {
+                root: ({ ownerState, theme }) => ({
+                    ...(ownerState.color === 'primary' && {
+                        color: theme.palette.text.primary,
+                        '& .MuiTabs-indicator': {
+                            backgroundColor: theme.palette.info.main,
+                            height: '4px',
+                        },
+                    }),
+                    ...(ownerState.color === 'secondary' && {
+                        color: theme.palette.text.secondary,
+                        '& .MuiTabs-indicator': {
+                            display: 'none',
+                        },
+                    }),
+                }),
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    textTransform: 'none',
+                    color: 'inherit',
+                    opacity: 1,
+                    '&.Mui-selected': {
+                        color: theme.palette.info.main,
+                        fontWeight: 'bold',
+                    },
+                }),
+            },
+        },
     },
 });
 

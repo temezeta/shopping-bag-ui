@@ -25,10 +25,17 @@
         "remember_user": "Remember me",
         "ok": "Ok",
         "cancel": "Cancel",
-        "logout": "Log out"
+        "logout": "Log out",
+        "add_new_item": "Add new item"
     },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email."
+    },
+    "list": {
+        "due_date": "Due date",
+        "expected_delivery_date": "Expected delivery date",
+        "active_orders": "Active orders",
+        "past_orders": "Past orders"
     }
 }

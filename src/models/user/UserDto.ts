@@ -9,3 +9,11 @@ export interface UserDto {
     userRoles: UserRoleDto[];
     homeOffice: OfficeDto;
 }
+
+export interface ItemAdderUserDto {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    homeOffice: OfficeDto;
+}
