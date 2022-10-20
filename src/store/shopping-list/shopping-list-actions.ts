@@ -1,4 +1,5 @@
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import ApiClient from '../client';
 
 export const getShoppingListsByOfficeId = async (
@@ -10,4 +11,15 @@ export const getShoppingListsByOfficeId = async (
     }
 
     return (await response.json()) as ShoppingListDto[];
+};
+
+export const addShoppingList = async (
+    data: AddShoppingListDto
+): Promise<ShoppingListDto | null> => {
+    const response = await ApiClient.post(`shoppinglist`, data);
+    if (!response.ok) {
+        return null;
+    }
+
+    return (await response.json()) as ShoppingListDto;
 };
