@@ -6,11 +6,28 @@ import AddItemForm from '../../components/add-item-layout/AddItemForm';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { AddItemDto } from '../../models/auth/AddItemDto';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router-dom';
+import { addItemAsync } from '../../store/auth/auth-slice';
+import { useAppDispatch } from '../../store/hooks';
 
 const AddItem = (): JSX.Element => {
     const { t } = useTranslation();
-
-    const onSubmit: SubmitHandler<AddItemDto> = (data) => {};
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const onSubmit: SubmitHandler<AddItemDto> = (data) => {
+        dispatch(addItemAsync(data))
+            .then(unwrapResult)
+            .then((result) => {
+                if (result) {
+                    // setErrOpen(false);
+                    navigate('/list');
+                }
+            })
+            .catch(() => {
+                // setErrOpen(true);
+            });
+    };
 
     return (
         <>

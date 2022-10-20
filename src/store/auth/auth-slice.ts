@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AddItemDto } from '../../models/auth/AddItemDto';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
 import { RootState } from '../store';
-import { login, refreshToken, register } from './auth-actions';
+import { addItem, login, refreshToken, register } from './auth-actions';
 import { AuthState } from './auth-types';
 
 const initialState: AuthState = {
@@ -43,6 +44,17 @@ export const refreshTokenAsync = createAsyncThunk(
             return rejectWithValue('Refresh token failed');
         }
         localStorage.setItem('authToken', response.token);
+        return response;
+    }
+);
+
+export const addItemAsync = createAsyncThunk(
+    'auth/addItem',
+    async (data: AddItemDto, { rejectWithValue }) => {
+        const response = await addItem(data);
+        if (!response) {
+            return rejectWithValue('An error ocurred adding the item');
+        }
         return response;
     }
 );

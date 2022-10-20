@@ -37,31 +37,31 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                 className={styles.addItem}
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Grid2 xs={12}>
-                    <div>
-                        <FormLabel className={styles.label} id="item_name">
-                            {t('item.name')}
-                        </FormLabel>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: t('errors.required'),
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    aria-labelledby="item_name"
-                                    size="small"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                        <LikeIcon></LikeIcon>
-                    </div>
+                <Grid2 md={1} xs={10}>
+                    <FormLabel className={styles.label} id="item_name">
+                        {t('item.name')}
+                    </FormLabel>
+                    <Controller
+                        name="name"
+                        control={control}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                aria-labelledby="item_name"
+                                size="small"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
+                <Grid2 md={2} xs={2} className="flex-center">
+                    <LikeIcon></LikeIcon>
                 </Grid2>
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="store">
