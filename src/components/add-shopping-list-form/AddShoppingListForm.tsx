@@ -4,11 +4,10 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import styles from './AddShoppingListForm.module.css';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers';
+import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
-import OfficeSelect from '../office-select/OfficeSelect';
+import { useAppSelector } from '../../store/hooks';
+import { selectCurrentOffice } from '../../store/user/user-slice';
 
 interface AddShoppingListFormProps {
     onSubmit?: SubmitHandler<AddShoppingListDto>;
@@ -16,7 +15,7 @@ interface AddShoppingListFormProps {
 
 const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
-
+    const currentOffice = useAppSelector(selectCurrentOffice);
     const {
         control,
         handleSubmit,
@@ -25,6 +24,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
         defaultValues: {
             name: '',
             comment: '',
+            officeId: currentOffice?.id,
             dueDate: null,
             expectedDeliveryDate: null,
         },
@@ -45,7 +45,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                 >
                     <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="list-name">
-                            List name
+                            {t('list.list_name')}
                         </FormLabel>
                         <Controller
                             name="name"
@@ -70,27 +70,8 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                     </Grid2>
 
                     <Grid2 xs={12}>
-                        <FormLabel className={styles.label} id="officeId">
-                            {t('actions.select_office')}
-                        </FormLabel>
-                        <Controller
-                            name="officeId"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => (
-                                <OfficeSelect
-                                    {...field}
-                                    error={!!errors.officeId}
-                                    aria-labelledby="officeId"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </Grid2>
-
-                    <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="comment">
-                            Comment
+                            {t('list.comment')}
                         </FormLabel>
                         <Controller
                             name="comment"
@@ -111,28 +92,24 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                     </Grid2>
                     <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="due-date">
-                            Due Date
+                            {t('list.due_date')}
                         </FormLabel>
                         <Controller
                             name="dueDate"
                             control={control}
                             render={({ field }) => (
-                                <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                >
-                                    <DateTimePicker
-                                        onChange={(date) =>
-                                            field.onChange(
-                                                moment(date).toISOString()
-                                            )
-                                        }
-                                        value={field.value}
-                                        renderInput={(props) => (
-                                            <TextField {...props} />
-                                        )}
-                                        disablePast={true}
-                                    />
-                                </LocalizationProvider>
+                                <DateTimePicker
+                                    onChange={(date) =>
+                                        field.onChange(
+                                            moment(date).toISOString()
+                                        )
+                                    }
+                                    value={field.value}
+                                    renderInput={(props) => (
+                                        <TextField {...props} fullWidth />
+                                    )}
+                                    disablePast={true}
+                                />
                             )}
                         />
                     </Grid2>
@@ -141,28 +118,24 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             className={styles.label}
                             id="expected-delivery-date"
                         >
-                            Expected Delivery Date
+                            {t('list.expected_delivery_date')}
                         </FormLabel>
                         <Controller
                             name="expectedDeliveryDate"
                             control={control}
                             render={({ field }) => (
-                                <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                >
-                                    <DateTimePicker
-                                        onChange={(date) =>
-                                            field.onChange(
-                                                moment(date).toISOString()
-                                            )
-                                        }
-                                        value={field.value}
-                                        renderInput={(props) => (
-                                            <TextField {...props} />
-                                        )}
-                                        disablePast={true}
-                                    />
-                                </LocalizationProvider>
+                                <DatePicker
+                                    onChange={(date) =>
+                                        field.onChange(
+                                            moment(date).toISOString()
+                                        )
+                                    }
+                                    value={field.value}
+                                    renderInput={(props) => (
+                                        <TextField {...props} fullWidth />
+                                    )}
+                                    disablePast={true}
+                                />
                             )}
                         />
                     </Grid2>
@@ -174,7 +147,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             disabled={!isValid}
                             fullWidth
                         >
-                            Add List
+                            {t('actions.add_new_list')}
                         </Button>
                     </Grid2>
                 </form>

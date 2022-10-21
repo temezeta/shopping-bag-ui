@@ -4,7 +4,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import AddShoppingListForm from '../../components/add-shopping-list-form/AddShoppingListForm';
-import LoginLayout from '../../components/login-layout/LoginLayout';
+import MainLayout from '../../components/main-layout/MainLayout';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { useAppDispatch } from '../../store/hooks';
 import { addShoppingListAsync } from '../../store/shopping-list/shopping-list-slice';
@@ -20,7 +20,7 @@ const AddShoppingList = (): JSX.Element => {
 
     return (
         <>
-            <LoginLayout>
+            <MainLayout>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
                         <Typography
@@ -35,7 +35,7 @@ const AddShoppingList = (): JSX.Element => {
                         <AddShoppingListForm onSubmit={onSubmit} />
                     </Grid2>
                 </Grid2>
-            </LoginLayout>
+            </MainLayout>
         </>
     );
 };
