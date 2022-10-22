@@ -28,6 +28,9 @@ const HuldTheme = createTheme({
             fontSize: '1.5rem',
             fontWeight: 'bold',
         },
+        body2: {
+            fontSize: '0.9rem',
+        },
     },
     palette: {
         primary: {

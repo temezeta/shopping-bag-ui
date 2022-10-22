@@ -2,3 +2,8 @@
     width: 100%;
     height: 100%;
 }
+
+a {
+    color: #ff5e89;
+    text-decoration: none;
+}

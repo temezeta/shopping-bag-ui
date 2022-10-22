@@ -10,3 +10,21 @@
 .expectedDate {
     text-align: end;
 }
+
+.listHeader {
+    padding-left: 4.5rem;
+    width: 95%;
+}
+
+@media only screen and (max-width: 900px) {
+    .listHeader {
+        padding-left: 1rem;
+        width: 92%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .listHeader {
+        width: 95%;
+    }
+}
