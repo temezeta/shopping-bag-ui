@@ -134,12 +134,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <Grid2 container xs={12}>
                                 <Grid2 xs={8} sm={7}>
                                     <Typography variant="body1">
-                                        Item details
+                                        {t('list.item_details')}
                                     </Typography>
                                 </Grid2>
                                 <Grid2 xs={2} sm={1}>
                                     <Typography variant="body1">
-                                        Likes
+                                        {t('list.likes')}
                                     </Typography>
                                 </Grid2>
                                 <Box
@@ -149,12 +149,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     justifyContent="center"
                                 >
                                     <Typography variant="body1">
-                                        Store
+                                        {t('list.store')}
                                     </Typography>
                                 </Box>
                                 <Grid2 xs={2} sm={1} justifyContent="center">
                                     <Typography variant="body1">
-                                        Actions
+                                        {t('list.actions')}
                                     </Typography>
                                 </Grid2>
                             </Grid2>
