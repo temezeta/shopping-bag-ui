@@ -28,6 +28,11 @@ const HuldTheme = createTheme({
             fontSize: '1.5rem',
             fontWeight: 'bold',
         },
+        body1: {
+            [defaultTheme.breakpoints.down('sm')]: {
+                fontSize: '1rem',
+            },
+        },
         body2: {
             fontSize: '0.9rem',
         },

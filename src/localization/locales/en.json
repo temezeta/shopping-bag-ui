@@ -43,6 +43,8 @@
         "item_details": "Item details",
         "likes": "Likes",
         "store": "Store",
-        "actions": "Actions"
+        "actions": "Actions",
+        "delete-item": "Delete item",
+        "edit-item": "Edit item"
     }
 }
