@@ -109,6 +109,9 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                         <TextField {...props} fullWidth />
                                     )}
                                     disablePast={true}
+                                    ampm={false}
+                                    inputFormat="DD.MM.yyyy HH:mm"
+                                    disableMaskedInput={true}
                                 />
                             )}
                         />
@@ -135,6 +138,8 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                         <TextField {...props} fullWidth />
                                     )}
                                     disablePast={true}
+                                    inputFormat="DD.MM.yyyy"
+                                    disableMaskedInput={true}
                                 />
                             )}
                         />

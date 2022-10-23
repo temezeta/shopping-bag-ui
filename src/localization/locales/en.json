@@ -39,7 +39,6 @@
         "active_orders": "Active orders",
         "past_orders": "Past orders",
         "comment": "Comment",
-        "list_name": "List name",
-        "select_list_office": "Select office"
+        "list_name": "List name"
     }
 }
