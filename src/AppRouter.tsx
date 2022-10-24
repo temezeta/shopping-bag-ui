@@ -4,6 +4,8 @@ import SessionGuard from './components/session-guard/SessionGuard';
 import Home from './features/home/Home';
 import Login from './features/login/Login';
 import Register from './features/register/Register';
+import AddShoppingList from './features/shopping-lists/AddShoppingList';
+import { Role } from './models/user/RoleEnum';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -16,6 +18,13 @@ const AppRouter = (): JSX.Element => {
             {/** Protected routes */}
             <Route element={<AuthGuard />}>
                 <Route path="home" element={<Home />}></Route>
+            </Route>
+            {/** Admin routes */}
+            <Route element={<AuthGuard roles={[Role.Admin]} />}>
+                <Route
+                    path="addshoppinglist"
+                    element={<AddShoppingList />}
+                ></Route>
             </Route>
         </Routes>
     );

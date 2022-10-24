@@ -1,8 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { getShoppingListsByOfficeId } from './shopping-list-actions';
+import {
+    addShoppingList,
+    getShoppingListsByOfficeId,
+} from './shopping-list-actions';
 import { ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],
@@ -15,6 +19,17 @@ export const getShoppingListsByOfficeAsync = createAsyncThunk(
         const response = await getShoppingListsByOfficeId(officeId);
         if (!response) {
             return rejectWithValue('Error fetching shopping lists');
+        }
+        return response;
+    }
+);
+
+export const addShoppingListAsync = createAsyncThunk(
+    'shoppinglist/add',
+    async (shoppingList: AddShoppingListDto, { rejectWithValue }) => {
+        const response = await addShoppingList(shoppingList);
+        if (!response) {
+            return rejectWithValue('Error adding shopping list');
         }
         return response;
     }
@@ -46,7 +61,10 @@ export const shoppingListSlice = createSlice({
                         (it) => it.ordered
                     );
                 }
-            );
+            )
+            .addCase(addShoppingListAsync.fulfilled, (state, action) => {
+                state.activeShoppingLists.push(action.payload);
+            });
     },
 });
 
