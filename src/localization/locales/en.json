@@ -5,7 +5,8 @@
         "email_address": "Email address",
         "password": "Password",
         "repeat_password": "Repeat password",
-        "account_settings": "Account settings"
+        "account_settings": "Account settings",
+        "office": "Office"
     },
     "errors": {
         "required": "This value is required!",

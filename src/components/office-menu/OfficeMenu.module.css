@@ -1,0 +1,8 @@
+.menuItem {
+    margin-left: 0.5em;
+}
+
+.menuItemActive {
+    font-weight: bold;
+    margin-left: 0.5em;
+}
