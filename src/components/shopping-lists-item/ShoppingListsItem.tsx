@@ -1,9 +1,8 @@
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { Box, Checkbox, Divider, IconButton, Typography } from '@mui/material';
+import { Checkbox, Divider, IconButton, Typography } from '@mui/material';
 import {
     Delete,
     Edit,
-    ArrowForwardIos,
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
@@ -22,20 +21,25 @@ const ShoppingListsItem = (props: ShoppingListsItemProps): JSX.Element => {
 
     return (
         <div style={{ width: '100%' }}>
-            <Grid2 container className="flex-center" xs={12} rowSpacing={-4}>
-                <Grid2 xs={1} md={1} className={styles.notifyButton}>
+            <Grid2 container rowSpacing={-4}>
+                <Grid2
+                    xs={2}
+                    sm={1}
+                    order={{ xs: 1, sm: 0 }}
+                    className={styles.notifyButton}
+                >
                     <Checkbox
+                        // style={{ minWidth: 0, paddingLeft: 0 }}
                         icon={<NotificationsNone />}
                         checkedIcon={<NotificationsActive />}
-                        size="small"
                     ></Checkbox>
                 </Grid2>
                 <Grid2
                     container
-                    xs={10}
-                    md={8}
-                    className="flex-left"
+                    xs={12}
+                    sm={9}
                     rowSpacing={-2}
+                    className={styles.textRows}
                 >
                     <div>
                         <Typography color="info.main" variant="body1">
@@ -51,17 +55,24 @@ const ShoppingListsItem = (props: ShoppingListsItemProps): JSX.Element => {
                         </div>
                     </div>
                 </Grid2>
-                <Grid2 xs={1} md={3}>
-                    <Box display={{ xs: 'none', md: 'inline' }}>
-                        <IconButton>
-                            <Delete />
-                        </IconButton>
-                        <IconButton>
-                            <Edit />
-                        </IconButton>
-                    </Box>
+                <Grid2
+                    xs={2}
+                    sm={1}
+                    order={{ xs: 2, sm: 2 }}
+                    className={styles.utilityButtons}
+                >
                     <IconButton>
-                        <ArrowForwardIos />
+                        <Delete />
+                    </IconButton>
+                </Grid2>
+                <Grid2
+                    xs={2}
+                    sm={1}
+                    order={{ xs: 2, sm: 2 }}
+                    className={styles.utilityButtons}
+                >
+                    <IconButton>
+                        <Edit />
                     </IconButton>
                 </Grid2>
             </Grid2>
