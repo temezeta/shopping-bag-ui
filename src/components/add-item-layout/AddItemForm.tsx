@@ -2,9 +2,10 @@ import { Button, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { AddItemDto } from '../../models/auth/AddItemDto';
+import { AddItemDto } from '../../models/lists/AddItemDto';
 import styles from './AddItemForm.module.css';
 import LikeIcon from '../icons/LikeIcon';
+import { useParams } from 'react-router-dom';
 
 interface AddItemFormProps {
     onSubmit?: SubmitHandler<AddItemDto>;
@@ -19,9 +20,10 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
     } = useForm<AddItemDto>({
         defaultValues: {
             name: '',
-            store: '',
+            shopName: '',
             url: undefined,
             comment: '',
+            shoppingListId: useParams(),
         },
         mode: 'onChange',
     });
@@ -64,11 +66,11 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                     <LikeIcon></LikeIcon>
                 </Grid2>
                 <Grid2 xs={12}>
-                    <FormLabel className={styles.label} id="store">
-                        {t('item.store')}
+                    <FormLabel className={styles.label} id="shopName ">
+                        {t('item.ShopName')}
                     </FormLabel>
                     <Controller
-                        name="store"
+                        name="shopName"
                         control={control}
                         rules={{
                             required: {
@@ -79,7 +81,7 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                aria-labelledby="store"
+                                aria-labelledby="ShopName "
                                 size="small"
                                 fullWidth
                             />
