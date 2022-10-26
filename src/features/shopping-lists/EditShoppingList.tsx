@@ -7,37 +7,43 @@ import { useNavigate, useParams } from 'react-router-dom';
 import AddShoppingListForm from '../../components/add-shopping-list-form/AddShoppingListForm';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
-import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+    modifyShoppingListAsync,
+    removeShoppingListAsync,
+    selectShoppingListById,
+} from '../../store/shopping-list/shopping-list-slice';
+import { RootState } from '../../store/store';
 
 const EditShoppingList = (): JSX.Element => {
     const { listId } = useParams();
-    // TODO Fetch actual shoppinglist when possible
-    const shoppingList: ShoppingListDto = {
-        name: 'Test',
-        comment: 'Test comment',
-        dueDate: '2022-10-30T22:00:00',
-        expectedDeliveryDate: '2022-10-30T00:00:00',
-        id: parseInt(listId as string),
-        ordered: false,
-        createdDate: '2022-10-01T00:00:00',
-        items: [],
-    };
-
+    const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
 
+    // TODO Fetch fresh version of shopping list on mount when endpoint available
+    const shoppingList = useAppSelector((state: RootState) =>
+        selectShoppingListById(state, parseInt(listId as string))
+    );
+
     const onSubmit: SubmitHandler<AddShoppingListDto> = async (data) => {
-        // TODO
-        console.log(data);
+        if (shoppingList) {
+            await dispatch(
+                modifyShoppingListAsync({ data, listId: shoppingList.id })
+            ).unwrap();
+            navigate('/home');
+        }
     };
 
-    const onRemove = (): void => {
-        // TODO
-        console.log(shoppingList);
+    const onRemove = async (): Promise<void> => {
+        if (shoppingList) {
+            await dispatch(removeShoppingListAsync(shoppingList)).unwrap();
+            navigate('/home');
+        }
     };
 
     return (
-        <MainLayout>
+        <MainLayout width="35em">
             <Grid2 container spacing={1}>
                 <Grid2 xs={12} className="flex-center">
                     <IconButton onClick={() => navigate('/home')}>

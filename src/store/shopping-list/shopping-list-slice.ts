@@ -76,6 +76,12 @@ export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
     state.shoppinglist.activeShoppingLists;
 export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
     state.shoppinglist.inactiveShoppingLists;
+export const selectShoppingListById = (
+    state: RootState,
+    listId: number
+): ShoppingListDto | undefined =>
+    selectActiveLists(state).find((it) => it.id === listId) ??
+    selectInactiveLists(state).find((it) => it.id === listId);
 
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
