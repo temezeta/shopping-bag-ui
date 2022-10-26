@@ -18,7 +18,6 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
-import { ItemDto } from '../../models/shopping-list/ItemDto';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -136,7 +135,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Box>
                     <List className="full-width">
                         {list.items.map((it, i) => (
-                            <ShoppingListItem item={it} />
+                            <ShoppingListItem item={it} key={i} />
                         ))}
                     </List>
                 </div>
