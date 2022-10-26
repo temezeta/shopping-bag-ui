@@ -25,41 +25,6 @@ interface ShoppingListTabProps {
     value: number;
 }
 
-/** TO BE REMOVED - temporary test item */
-const testitem1: ItemDto = {
-    id: 0,
-    name: 'Mangorahka',
-    url: 'https://www.s-kaupat.fi/tuote/rainbow-500g-mangorahka-3-5/7340011461722',
-    shopName: 'S-market',
-    comment: '',
-    isChecked: false,
-    amountOrdered: 0,
-    itemAdder: {
-        id: 0,
-        firstName: '',
-        lastName: '',
-        email: '',
-        homeOffice: { id: 0, name: '' },
-    },
-};
-const testitem2: ItemDto = {
-    id: 0,
-    name: 'ErgoWork BaseStand -kannettavan tietokoneen alusta, hopea, pyörivä jalusta',
-    url: 'https://www.verkkokauppa.com/fi/product/694250/ErgoWork-BaseStand-kannettavan-tietokoneen-alusta-hopea-pyor',
-    shopName: 'Toimistotarvikeveljekset',
-    comment:
-        'This is a comment about the product. A long comment. Much longer than the previous comment!',
-    isChecked: false,
-    amountOrdered: 0,
-    itemAdder: {
-        id: 0,
-        firstName: '',
-        lastName: '',
-        email: '',
-        homeOffice: { id: 0, name: '' },
-    },
-};
-
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const { value, list } = props;
@@ -169,15 +134,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             </Grid2>
                         </Grid2>
                     </Box>
-                    {/* TODO: Use this list and remove temp list below
                     <List className="full-width">
                         {list.items.map((it, i) => (
                             <ShoppingListItem item={it} />
                         ))}
-                    </List> */}
-                    <List className="full-width">
-                        <ShoppingListItem item={testitem1} />
-                        <ShoppingListItem item={testitem2} />
                     </List>
                 </div>
             )}
