@@ -1,13 +1,13 @@
-import { Button, FormLabel, TextField } from '@mui/material';
+import { Button, Checkbox, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { AddItemDto } from '../../models/lists/AddItemDto';
 import styles from './AddItemForm.module.css';
-import LikeIcon from '../icons/LikeIcon';
-import { useParams } from 'react-router-dom';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 
 interface AddItemFormProps {
+    id: number;
     onSubmit?: SubmitHandler<AddItemDto>;
 }
 
@@ -23,7 +23,7 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
             shopName: '',
             url: undefined,
             comment: '',
-            shoppingListId: useParams(),
+            shoppingListId: props.id,
         },
         mode: 'onChange',
     });
@@ -39,35 +39,41 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                 className={styles.addItem}
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Grid2 md={1} xs={10}>
-                    <FormLabel className={styles.label} id="item_name">
-                        {t('item.name')}
-                    </FormLabel>
-                    <Controller
-                        name="name"
-                        control={control}
-                        rules={{
-                            required: {
-                                value: true,
-                                message: t('errors.required'),
-                            },
-                        }}
-                        render={({ field }) => (
-                            <TextField
-                                {...field}
-                                aria-labelledby="item_name"
-                                size="small"
-                                fullWidth
-                            />
-                        )}
-                    />
+                <Grid2>
+                    <Grid2 xs={12}>
+                        <FormLabel className={styles.label} id="item_name">
+                            {t('item.name')}
+                        </FormLabel>
+                        <Controller
+                            name="name"
+                            control={control}
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: t('errors.required'),
+                                },
+                            }}
+                            render={({ field }) => (
+                                <TextField
+                                    {...field}
+                                    aria-labelledby="item_name"
+                                    size="small"
+                                    fullWidth
+                                />
+                            )}
+                        />
+                    </Grid2>
+                    <Grid2 xs={2}>
+                        <Checkbox
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite />}
+                        />
+                    </Grid2>
                 </Grid2>
-                <Grid2 md={2} xs={2} className="flex-center">
-                    <LikeIcon></LikeIcon>
-                </Grid2>
+
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="shopName ">
-                        {t('item.ShopName')}
+                        {t('item.shopName')}
                     </FormLabel>
                     <Controller
                         name="shopName"
@@ -81,7 +87,7 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                aria-labelledby="ShopName "
+                                aria-labelledby="shopName "
                                 size="small"
                                 fullWidth
                             />
