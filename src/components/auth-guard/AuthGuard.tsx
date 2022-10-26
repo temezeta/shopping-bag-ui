@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { selectCurrentUser } from '../../store/user/user-slice';
+import MainLayout from '../main-layout/MainLayout';
 
 interface AuthGuardProps {
     roles?: string[];
@@ -29,7 +30,7 @@ const AuthGuard = (props: AuthGuardProps): JSX.Element => {
                 requiredRoles.includes(it.roleName)
             )
         ) {
-            return <div>{t('errors.access_denied')}</div>;
+            return <MainLayout>{t('errors.access_denied')}</MainLayout>;
         }
         return <Outlet />;
     };

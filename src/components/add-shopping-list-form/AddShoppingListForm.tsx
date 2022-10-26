@@ -8,26 +8,32 @@ import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
 import { useAppSelector } from '../../store/hooks';
 import { selectCurrentOffice } from '../../store/user/user-slice';
+import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 
 interface AddShoppingListFormProps {
+    initialValues?: ShoppingListDto;
     onSubmit?: SubmitHandler<AddShoppingListDto>;
 }
 
 const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
+    const { initialValues } = props;
     const currentOffice = useAppSelector(selectCurrentOffice);
+
+    const defaultValues: Partial<AddShoppingListDto> = initialValues ?? {
+        name: '',
+        comment: '',
+        officeId: currentOffice?.id,
+        dueDate: null,
+        expectedDeliveryDate: null,
+    };
+
     const {
         control,
         handleSubmit,
         formState: { isValid, errors },
     } = useForm<AddShoppingListDto>({
-        defaultValues: {
-            name: '',
-            comment: '',
-            officeId: currentOffice?.id,
-            dueDate: null,
-            expectedDeliveryDate: null,
-        },
+        defaultValues,
         mode: 'onChange',
     });
 
@@ -144,7 +150,6 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             )}
                         />
                     </Grid2>
-
                     <Grid2 xs={12}>
                         <Button
                             type="submit"
@@ -152,7 +157,9 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             disabled={!isValid}
                             fullWidth
                         >
-                            {t('actions.add_new_list')}
+                            {initialValues
+                                ? t('actions.edit_list')
+                                : t('actions.add_new_list')}
                         </Button>
                     </Grid2>
                 </form>

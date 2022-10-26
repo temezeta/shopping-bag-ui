@@ -29,8 +29,9 @@
         "logout": "Log out",
         "add_new_item": "Add new item",
         "add_new_list": "Add new list",
-        "add_item": "Add item"
-    },
+        "add_item": "Add item",
+        "edit_list": "Edit list",
+        "remove_list": "Remove list"    },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email."
