@@ -25,3 +25,12 @@ body {
 .full-width {
     width: 100%;
 }
+
+a {
+    color: #ff5e89;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

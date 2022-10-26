@@ -10,3 +10,15 @@
 .expectedDate {
     text-align: end;
 }
+
+.shoppingListHeader {
+    padding-left: 12px;
+    padding-right: 32px;
+    width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+    .shoppingListHeader {
+        padding-right: 24px;
+    }
+}
