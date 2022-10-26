@@ -18,8 +18,10 @@ import {
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
+import { removeShoppingListItemAsync } from '../../store/shopping-list-item/shopping-list-item-slice';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '../../store/hooks';
 
 interface ShoppingListItemProps {
     item: ItemDto;
@@ -28,6 +30,11 @@ interface ShoppingListItemProps {
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+
+    const removeShoppingListItem = async (id: number): Promise<void> => {
+        await dispatch(removeShoppingListItemAsync(id));
+    };
 
     return (
         <ListItem divider={true}>
@@ -73,8 +80,12 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 <Grid2 xs={2} className={'flex-center'}>
                     <Box display={{ xs: 'none', sm: 'flex' }}>
                         <Tooltip title={t('list.delete-item')} enterDelay={800}>
-                            <IconButton aria-label="delete">
-                                {/** TODO: delete functionality */}
+                            <IconButton
+                                aria-label="delete"
+                                onClick={async () =>
+                                    await removeShoppingListItem(props.item.id)
+                                }
+                            >
                                 <Delete />
                             </IconButton>
                         </Tooltip>

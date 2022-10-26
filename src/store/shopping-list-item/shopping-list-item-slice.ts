@@ -1,11 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import {
-    removeShoppingListItem
-} from './shopping-list-item-actions';
+import { removeShoppingListItem } from './shopping-list-item-actions';
 import { ShoppingListItemState } from './shopping-list-item-types';
 
-const initialState: ShoppingListItemState = {
-};
+const initialState: ShoppingListItemState = {};
 
 export const removeShoppingListItemAsync = createAsyncThunk(
     'shoppinglistitem/remove',
@@ -22,7 +19,7 @@ export const shoppingListItemSlice = createSlice({
     name: 'shoppinglistitem',
     initialState,
     reducers: {},
-    extraReducers: (builder) => { },
+    extraReducers: (builder) => {},
 });
 
 export default shoppingListItemSlice.reducer;
