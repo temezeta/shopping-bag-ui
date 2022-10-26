@@ -1,12 +1,11 @@
 import { ArrowBackIos } from '@mui/icons-material';
-import { Button, IconButton, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import AddShoppingListForm from '../../components/add-shopping-list-form/AddShoppingListForm';
+import ShoppingListForm from '../../components/shopping-list-form/ShoppingListForm';
 import MainLayout from '../../components/main-layout/MainLayout';
-import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     modifyShoppingListAsync,
@@ -14,6 +13,8 @@ import {
     selectShoppingListById,
 } from '../../store/shopping-list/shopping-list-slice';
 import { RootState } from '../../store/store';
+import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
+import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 
 const EditShoppingList = (): JSX.Element => {
     const { listId } = useParams();
@@ -26,7 +27,7 @@ const EditShoppingList = (): JSX.Element => {
         selectShoppingListById(state, parseInt(listId as string))
     );
 
-    const onSubmit: SubmitHandler<AddShoppingListDto> = async (data) => {
+    const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {
         if (shoppingList) {
             await dispatch(
                 modifyShoppingListAsync({ data, listId: shoppingList.id })
@@ -35,11 +36,9 @@ const EditShoppingList = (): JSX.Element => {
         }
     };
 
-    const onRemove = async (): Promise<void> => {
-        if (shoppingList) {
-            await dispatch(removeShoppingListAsync(shoppingList)).unwrap();
-            navigate('/home');
-        }
+    const onDelete: SubmitHandler<ShoppingListDto> = async (data) => {
+        await dispatch(removeShoppingListAsync(data)).unwrap();
+        navigate('/home');
     };
 
     return (
@@ -58,20 +57,11 @@ const EditShoppingList = (): JSX.Element => {
                     </Typography>
                 </Grid2>
                 <Grid2 xs={12}>
-                    <AddShoppingListForm
+                    <ShoppingListForm
                         initialValues={shoppingList}
                         onSubmit={onSubmit}
+                        onDelete={onDelete}
                     />
-                </Grid2>
-                <Grid2 xs={12}>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        fullWidth
-                        onClick={onRemove}
-                    >
-                        {t('actions.remove_list')}
-                    </Button>
                 </Grid2>
             </Grid2>
         </MainLayout>

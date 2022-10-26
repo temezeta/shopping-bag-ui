@@ -2,28 +2,25 @@ import { Button, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
-import styles from './AddShoppingListForm.module.css';
+import styles from './ShoppingListForm.module.css';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
-import { useAppSelector } from '../../store/hooks';
-import { selectCurrentOffice } from '../../store/user/user-slice';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 
-interface AddShoppingListFormProps {
+interface ShoppingListFormProps {
     initialValues?: ShoppingListDto;
-    onSubmit?: SubmitHandler<AddShoppingListDto>;
+    onSubmit?: SubmitHandler<ModifyShoppingListDto>;
+    onDelete?: SubmitHandler<ShoppingListDto>;
 }
 
-const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
+const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
-    const currentOffice = useAppSelector(selectCurrentOffice);
 
-    const defaultValues: Partial<AddShoppingListDto> = initialValues ?? {
+    const defaultValues: Partial<ModifyShoppingListDto> = initialValues ?? {
         name: '',
         comment: '',
-        officeId: currentOffice?.id,
         dueDate: null,
         expectedDeliveryDate: null,
     };
@@ -32,13 +29,19 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
         control,
         handleSubmit,
         formState: { isValid, errors },
-    } = useForm<AddShoppingListDto>({
+    } = useForm<ModifyShoppingListDto>({
         defaultValues,
         mode: 'onChange',
     });
 
-    const onSubmit: SubmitHandler<AddShoppingListDto> = (data) => {
+    const onSubmit: SubmitHandler<ModifyShoppingListDto> = (data) => {
         props.onSubmit?.(data);
+    };
+
+    const onDelete = async (): Promise<void> => {
+        if (initialValues) {
+            await props.onDelete?.(initialValues);
+        }
     };
 
     return (
@@ -162,10 +165,22 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                 : t('actions.add_new_list')}
                         </Button>
                     </Grid2>
+                    {initialValues && (
+                        <Grid2 xs={12}>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                fullWidth
+                                onClick={onDelete}
+                            >
+                                {t('actions.remove_list')}
+                            </Button>
+                        </Grid2>
+                    )}
                 </form>
             }
         </Grid2>
     );
 };
 
-export default AddShoppingListForm;
+export default ShoppingListForm;
