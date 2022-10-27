@@ -23,12 +23,28 @@
         "remember_user": "Remember me",
         "ok": "Ok",
         "cancel": "Cancel",
-        "add_item": "Add item",
-        "add_new_item": "Add new item"
+        "logout": "Log out",
+        "add_new_item": "Add new item",
+        "add_new_list": "Add new list",
+        "add_item": "Add item"
     },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email."
+    },
+    "list": {
+        "due_date": "Due date",
+        "expected_delivery_date": "Expected delivery date",
+        "active_orders": "Active orders",
+        "past_orders": "Past orders",
+        "comment": "Comment",
+        "list_name": "List name",
+        "item_details": "Item details",
+        "likes": "Likes",
+        "store": "Store",
+        "actions": "Actions",
+        "delete-item": "Delete item",
+        "edit-item": "Edit item"
     },
     "item": {
        "name": "Item name",
