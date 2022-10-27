@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import MainLayout from '../../components/main-layout/MainLayout';
-import ShoppingListsTable from '../../components/shopping-lists-table/ShoppingListsTable';
+import ShoppingListsTable from '../../components/order-list-tab/OrderListTab';
 
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -12,7 +12,7 @@ import {
 import { selectCurrentOffice } from '../../store/user/user-slice';
 import { useQuery } from '../../utility/navigation-hooks';
 
-const AdminTest = (): JSX.Element => {
+const OrderTableTest = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const query = useQuery();
     const showPast = query.get('showPast');
@@ -52,4 +52,4 @@ const AdminTest = (): JSX.Element => {
     );
 };
 
-export default AdminTest;
+export default OrderTableTest;

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthGuard from './components/auth-guard/AuthGuard';
 import SessionGuard from './components/session-guard/SessionGuard';
 import Home from './features/home/Home';
-import ListTableTest from './features/listTableTest/listTableTest';
+import OrderTableTest from './features/order-table-test/OrderTableTest';
 import Login from './features/login/Login';
 import Register from './features/register/Register';
 import AddShoppingList from './features/shopping-lists/AddShoppingList';
