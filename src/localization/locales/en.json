@@ -46,5 +46,9 @@
         "actions": "Actions",
         "delete-item": "Delete item",
         "edit-item": "Edit item"
+    },
+    "order": {
+        "due_date": "Due date: ",
+        "expected_delivery_date": "Expected delivery date: "
     }
 }
