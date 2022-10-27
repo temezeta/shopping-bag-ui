@@ -39,8 +39,8 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                 className={styles.addItem}
                 onSubmit={handleSubmit(onSubmit)}
             >
-                <Grid2>
-                    <Grid2 xs={12}>
+                <Grid2 container spacing={2}>
+                    <Grid2 xs={10}>
                         <FormLabel className={styles.label} id="item_name">
                             {t('item.name')}
                         </FormLabel>
