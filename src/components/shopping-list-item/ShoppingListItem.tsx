@@ -18,7 +18,7 @@ import {
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
-import { removeShoppingListItemAsync } from '../../store/shopping-list-item/shopping-list-item-slice';
+import { removeShoppingListItemAsync } from '../../store/lists/item-slice';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../store/hooks';
@@ -32,8 +32,8 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const removeShoppingListItem = async (id: number): Promise<void> => {
-        await dispatch(removeShoppingListItemAsync(id));
+    const removeShoppingListItem = async (): Promise<void> => {
+        await dispatch(removeShoppingListItemAsync(props.item.id));
     };
 
     return (
@@ -83,7 +83,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             <IconButton
                                 aria-label="delete"
                                 onClick={async () =>
-                                    await removeShoppingListItem(props.item.id)
+                                    await removeShoppingListItem()
                                 }
                             >
                                 <Delete />
