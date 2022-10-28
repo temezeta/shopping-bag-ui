@@ -1,5 +1,11 @@
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { Checkbox, IconButton, ListItem, Typography } from '@mui/material';
+import {
+    Checkbox,
+    IconButton,
+    Link,
+    ListItem,
+    Typography,
+} from '@mui/material';
 import {
     Edit,
     NotificationsActive,
@@ -38,14 +44,16 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.textRows}
                 >
                     <div>
-                        <Typography
-                            color="info.main"
-                            variant="h3"
-                            fontWeight="medium"
-                            marginBottom="0.5rem"
-                        >
-                            {list.name}
-                        </Typography>
+                        <Link>
+                            <Typography
+                                color="info.main"
+                                variant="h3"
+                                fontWeight="medium"
+                                marginBottom="0.5rem"
+                            >
+                                {list.name}
+                            </Typography>
+                        </Link>
                         <Typography variant="body1">
                             {t('order.due_date')}
                             {formatDate(list.dueDate)}
