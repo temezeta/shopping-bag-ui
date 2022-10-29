@@ -9,26 +9,22 @@ import { useAppDispatch } from '../../store/hooks';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { loginAsync } from '../../store/auth/auth-slice';
 import { useNavigate } from 'react-router-dom';
-// import { useState } from 'react';
+import { getCurrentUserAsync } from '../../store/user/user-slice';
 
 const Login = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    // const [isErrOpen, setErrOpen] = useState<boolean>(false);
 
-    const onSubmit: SubmitHandler<LoginDto> = (data) => {
-        dispatch(loginAsync(data))
-            .then(unwrapResult)
-            .then((result) => {
-                if (result) {
-                    // setErrOpen(false);
-                    navigate('/list');
-                }
-            })
-            .catch(() => {
-                // setErrOpen(true);
-            });
+    const onSubmit: SubmitHandler<LoginDto> = async (data) => {
+        try {
+            unwrapResult(await dispatch(loginAsync(data)));
+            unwrapResult(await dispatch(getCurrentUserAsync()));
+            // Login success && user found => navigate to home
+            navigate('/home');
+        } catch {
+            // setErrOpen(true);
+        }
     };
 
     return (

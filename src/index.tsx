@@ -8,6 +8,8 @@ import './index.css';
 import './localization/i18n';
 import { ThemeProvider } from '@mui/material';
 import HuldTheme from './theme';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
@@ -17,7 +19,9 @@ root.render(
         <Provider store={store}>
             <BrowserRouter>
                 <ThemeProvider theme={HuldTheme}>
-                    <App />
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <App />
+                    </LocalizationProvider>
                 </ThemeProvider>
             </BrowserRouter>
         </Provider>

@@ -28,6 +28,14 @@ const HuldTheme = createTheme({
             fontSize: '1.5rem',
             fontWeight: 'bold',
         },
+        body1: {
+            [defaultTheme.breakpoints.down('sm')]: {
+                fontSize: '1rem',
+            },
+        },
+        body2: {
+            fontSize: '0.9rem',
+        },
     },
     palette: {
         primary: {
@@ -97,6 +105,38 @@ const HuldTheme = createTheme({
                     color: theme.palette.primary.light,
                     '&$checked': {
                         color: theme.palette.primary.main,
+                    },
+                }),
+            },
+        },
+        MuiTabs: {
+            styleOverrides: {
+                root: ({ ownerState, theme }) => ({
+                    ...(ownerState.color === 'primary' && {
+                        color: theme.palette.text.primary,
+                        '& .MuiTabs-indicator': {
+                            backgroundColor: theme.palette.info.main,
+                            height: '4px',
+                        },
+                    }),
+                    ...(ownerState.color === 'secondary' && {
+                        color: theme.palette.text.secondary,
+                        '& .MuiTabs-indicator': {
+                            display: 'none',
+                        },
+                    }),
+                }),
+            },
+        },
+        MuiTab: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    textTransform: 'none',
+                    color: 'inherit',
+                    opacity: 1,
+                    '&.Mui-selected': {
+                        color: theme.palette.info.main,
+                        fontWeight: 'bold',
                     },
                 }),
             },

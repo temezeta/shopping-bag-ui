@@ -1,0 +1,9 @@
+.menuText {
+    color: #ffffff !important;
+    text-transform: none !important;
+}
+
+.menuItems {
+    max-height: 25vh;
+    overflow-y: auto;
+}
