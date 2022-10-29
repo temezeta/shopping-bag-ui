@@ -18,10 +18,10 @@ import {
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
-import { removeShoppingListItemAsync } from '../../store/lists/item-slice';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../store/hooks';
+import { removeShoppingListItemAsync } from '../../store/shopping-list/shopping-list-slice';
 
 interface ShoppingListItemProps {
     item: ItemDto;

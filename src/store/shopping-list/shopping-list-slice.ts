@@ -3,6 +3,7 @@ import { RootState } from '../store';
 import {
     addShoppingList,
     getShoppingListsByOfficeId,
+    removeShoppingListItem,
 } from './shopping-list-actions';
 import { ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -32,6 +33,17 @@ export const addShoppingListAsync = createAsyncThunk(
             return rejectWithValue('Error adding shopping list');
         }
         return response;
+    }
+);
+
+export const removeShoppingListItemAsync = createAsyncThunk(
+    'shoppinglistitem/remove',
+    async (itemId: number, { rejectWithValue }) => {
+        const response = await removeShoppingListItem(itemId);
+        if (!response) {
+            return rejectWithValue('Removing item failed');
+        }
+        return itemId;
     }
 );
 
