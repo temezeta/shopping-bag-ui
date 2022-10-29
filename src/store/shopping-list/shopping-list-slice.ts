@@ -76,6 +76,21 @@ export const shoppingListSlice = createSlice({
             )
             .addCase(addShoppingListAsync.fulfilled, (state, action) => {
                 state.activeShoppingLists.push(action.payload);
+            })
+            .addCase(removeShoppingListItemAsync.fulfilled, (state, action) => {
+                const itemId = action.payload;
+                for (let i = 0; i < state.activeShoppingLists.length; i++) {
+                    if (
+                        state.activeShoppingLists[i].items.filter(
+                            (e) => e.id === itemId
+                        )
+                    ) {
+                        state.activeShoppingLists[i].items =
+                            state.activeShoppingLists[i].items.filter(
+                                (it) => it.id !== itemId
+                            );
+                    }
+                }
             });
     },
 });
