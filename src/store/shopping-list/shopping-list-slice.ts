@@ -3,7 +3,7 @@ import { RootState } from '../store';
 import {
     addShoppingList,
     getShoppingListsByOfficeId,
-    removeShoppingListItem,
+    removeItem,
 } from './shopping-list-actions';
 import { ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -36,10 +36,10 @@ export const addShoppingListAsync = createAsyncThunk(
     }
 );
 
-export const removeShoppingListItemAsync = createAsyncThunk(
+export const removeItemAsync = createAsyncThunk(
     'shoppinglistitem/remove',
     async (itemId: number, { rejectWithValue }) => {
-        const response = await removeShoppingListItem(itemId);
+        const response = await removeItem(itemId);
         if (!response) {
             return rejectWithValue('Removing item failed');
         }
@@ -77,7 +77,7 @@ export const shoppingListSlice = createSlice({
             .addCase(addShoppingListAsync.fulfilled, (state, action) => {
                 state.activeShoppingLists.push(action.payload);
             })
-            .addCase(removeShoppingListItemAsync.fulfilled, (state, action) => {
+            .addCase(removeItemAsync.fulfilled, (state, action) => {
                 const itemId = action.payload;
                 for (let i = 0; i < state.activeShoppingLists.length; i++) {
                     if (

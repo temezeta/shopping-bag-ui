@@ -21,7 +21,7 @@ import styles from './ShoppingListItem.module.css';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../store/hooks';
-import { removeShoppingListItemAsync } from '../../store/shopping-list/shopping-list-slice';
+import { removeItemAsync } from '../../store/shopping-list/shopping-list-slice';
 
 interface ShoppingListItemProps {
     item: ItemDto;
@@ -32,8 +32,8 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const removeShoppingListItem = async (): Promise<void> => {
-        await dispatch(removeShoppingListItemAsync(props.item.id));
+    const removeItem = async (): Promise<void> => {
+        await dispatch(removeItemAsync(props.item.id));
     };
 
     return (
@@ -82,9 +82,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         <Tooltip title={t('list.delete-item')} enterDelay={800}>
                             <IconButton
                                 aria-label="delete"
-                                onClick={async () =>
-                                    await removeShoppingListItem()
-                                }
+                                onClick={async () => await removeItem()}
                             >
                                 <Delete />
                             </IconButton>
