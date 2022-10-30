@@ -2,12 +2,12 @@
     display: flex;
     justify-content: left;
     align-items: flex-start;
-    margin-left: -9px;
+    margin-left: -2rem;
 }
 
 .utilityButtons {
     display: flex;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
 }
 
@@ -15,14 +15,13 @@
 
     .notifyButton {
         display: flex;
-        justify-content: left;
-        align-items: center;
-        margin-left: -9px;
+        justify-content: right;
+        align-items: flex-start;
     }
 
     .utilityButtons {
         display: flex;
-        justify-content: center;
+        justify-content: right;
         align-items: center;
     }
 }
