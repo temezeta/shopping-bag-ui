@@ -111,11 +111,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
-                            <Box
-                                component={Grid2}
-                                sm={1}
-                                display={{ xs: 'none', md: 'inline' }}
-                            />
                             <Grid2 xs={8} sm={7}>
                                 <Typography variant="body1">
                                     {t('list.item_details')}

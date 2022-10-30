@@ -3,12 +3,10 @@ import {
     Checkbox,
     IconButton,
     ListItem,
-    ListItemIcon,
     Tooltip,
     Typography,
 } from '@mui/material';
 import {
-    ContentCopy,
     Delete,
     Edit,
     Favorite,
@@ -37,18 +35,6 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Box
-                    component={Grid2}
-                    sm={1}
-                    display={{ xs: 'none', md: 'inline' }}
-                >
-                    {/** TODO: copy functionality */}
-                    <ListItemIcon>
-                        <IconButton edge="start" aria-label="copy item">
-                            <ContentCopy fontSize="small" />
-                        </IconButton>
-                    </ListItemIcon>
-                </Box>
                 <Grid2 xs={8} sm={7}>
                     <Box>
                         <a href={props.item.url}>{props.item.name}</a>
