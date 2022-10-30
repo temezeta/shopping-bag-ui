@@ -10,18 +10,3 @@
     justify-content: right;
     align-items: center;
 }
-
-@media screen and (max-width: 600px) {
-
-    .notifyButton {
-        display: flex;
-        justify-content: right;
-        align-items: flex-start;
-    }
-
-    .utilityButtons {
-        display: flex;
-        justify-content: right;
-        align-items: center;
-    }
-}

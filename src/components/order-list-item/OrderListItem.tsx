@@ -42,7 +42,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 xs={12}
                 justifyContent="space_between"
             >
-                <Grid2 xs={1} className={styles.notifyButton} minWidth={50}>
+                <Grid2 xs={1} className={styles.notifyButton} minWidth={40}>
                     <Box sx={{ display: displayValue }}>
                         <Checkbox
                             icon={<NotificationsNone />}
