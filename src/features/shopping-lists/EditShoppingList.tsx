@@ -4,10 +4,10 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import ShoppingListForm from '../../components/shopping-list-form/ShoppingListForm';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
+    getShoppingListByIdAsync,
     modifyShoppingListAsync,
     removeShoppingListAsync,
     selectShoppingListById,
@@ -15,15 +15,16 @@ import {
 import { RootState } from '../../store/store';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
+import ShoppingListForm from '../../components/shopping-list-form/ShoppingListForm';
 
 const EditShoppingList = (): JSX.Element => {
     const { listId } = useParams();
+    const id = Number(listId);
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
-
     const [modification, setModification] = useState<
         ModifyShoppingListDto | undefined
     >(undefined);
@@ -33,9 +34,12 @@ const EditShoppingList = (): JSX.Element => {
     );
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
-    // TODO Fetch fresh version of shopping list on mount when endpoint available
+    useEffect(() => {
+        void dispatch(getShoppingListByIdAsync(id));
+    }, []);
+
     const shoppingList = useAppSelector((state: RootState) =>
-        selectShoppingListById(state, parseInt(listId as string))
+        selectShoppingListById(state, id)
     );
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {

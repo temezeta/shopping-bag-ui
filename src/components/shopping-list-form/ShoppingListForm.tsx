@@ -7,6 +7,7 @@ import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
+import { useEffect } from 'react';
 
 interface ShoppingListFormProps {
     initialValues?: ShoppingListDto;
@@ -28,11 +29,16 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const {
         control,
         handleSubmit,
+        reset,
         formState: { isValid, errors },
     } = useForm<ModifyShoppingListDto>({
         defaultValues,
         mode: 'onChange',
     });
+
+    useEffect(() => {
+        reset(defaultValues);
+    }, [defaultValues]);
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = (data) => {
         props.onSubmit?.(data);

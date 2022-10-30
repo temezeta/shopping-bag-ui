@@ -59,3 +59,17 @@ export const removeShoppingList = async (
 
     return listId;
 };
+
+export const getShoppingListById = async (
+    listId: number
+): Promise<ShoppingListDto | null> => {
+    const response = await ApiClient.get(
+        `shoppinglist/byid?shoppingListId=${listId}`
+    );
+
+    if (!response.ok) {
+        return null;
+    }
+
+    return (await response.json()) as ShoppingListDto;
+};

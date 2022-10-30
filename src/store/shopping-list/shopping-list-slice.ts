@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import {
     addShoppingList,
+    getShoppingListById,
     getShoppingListsByOfficeId,
     removeItem,
     modifyShoppingList,
@@ -10,6 +11,7 @@ import {
 import { ModifyPayload, ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
+import { updateOrAdd } from '../../utility/array-helper';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],
@@ -68,6 +70,17 @@ export const removeShoppingListAsync = createAsyncThunk(
             return rejectWithValue('Error removing shopping list');
         }
         return data;
+    }
+);
+
+export const getShoppingListByIdAsync = createAsyncThunk(
+    'shoppinglist/by-id',
+    async (listId: number, { rejectWithValue }) => {
+        const response = await getShoppingListById(listId);
+        if (!response) {
+            return rejectWithValue('Error fetching shopping list by id');
+        }
+        return response;
     }
 );
 
@@ -147,6 +160,18 @@ export const shoppingListSlice = createSlice({
                         state.inactiveShoppingLists.filter(
                             (it) => it.id !== list.id
                         );
+                }
+            })
+            .addCase(getShoppingListByIdAsync.fulfilled, (state, action) => {
+                const list = action.payload;
+                if (!list.ordered) {
+                    updateOrAdd(state.activeShoppingLists, (it) => it.id, list);
+                } else {
+                    updateOrAdd(
+                        state.inactiveShoppingLists,
+                        (it) => it.id,
+                        list
+                    );
                 }
             });
     },
