@@ -33,11 +33,7 @@ const Home = (): JSX.Element => {
     // Handle admin page transition
     useEffect(() => {
         if (user?.userRoles.some((it) => it.roleName === Role.Admin)) {
-            if (showPast) {
-                navigate('/shopping-lists?showPast=1', { replace: true });
-            } else {
-                navigate('/shopping-lists', { replace: true });
-            }
+            navigate('/shopping-lists', { replace: true });
         }
     }, [user]);
 

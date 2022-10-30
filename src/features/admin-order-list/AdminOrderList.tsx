@@ -4,9 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     getShoppingListsByOfficeAsync,
     selectActiveLists,
-    selectInactiveLists,
 } from '../../store/shopping-list/shopping-list-slice';
-import { useQuery } from '../../utility/navigation-hooks';
 import OrderListTab from '../../components/order-list-tab/OrderListTab';
 import { Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
@@ -17,15 +15,9 @@ import { selectCurrentOffice } from '../../store/user/user-slice';
 const AdminOrderList = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
-    const query = useQuery();
-    const showPast = query.get('showPast');
     const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
-    const inactiveShoppingLists = useAppSelector(selectInactiveLists);
     const [shoppingLists, setShoppingLists] = useState<ShoppingListDto[]>([]);
-    const [pageTitle, setPageTitle] = useState<String>(
-        t('order.active_orders')
-    );
 
     // Handle office change
     useEffect(() => {
@@ -37,17 +29,9 @@ const AdminOrderList = (): JSX.Element => {
         void fetchLists();
     }, [currentOffice]);
 
-    // Handle past vs active changes
     useEffect(() => {
-        const currentLists = showPast
-            ? inactiveShoppingLists
-            : activeShoppingLists;
-
-        setShoppingLists(currentLists);
-        setPageTitle(
-            showPast ? t('order.past_orders') : t('order.active_orders')
-        );
-    }, [showPast, activeShoppingLists, inactiveShoppingLists]);
+        setShoppingLists(activeShoppingLists);
+    }, [activeShoppingLists]);
 
     return (
         <>
@@ -59,7 +43,7 @@ const AdminOrderList = (): JSX.Element => {
                             display="flex"
                             justifyContent="center"
                         >
-                            {pageTitle}
+                            {t('order.active_orders')}
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12} className="flex-center">

@@ -1,5 +1,6 @@
 import Grid2 from '@mui/material/Unstable_Grid2';
 import {
+    Box,
     Checkbox,
     IconButton,
     Link,
@@ -23,19 +24,31 @@ interface OrderListItemProps {
 const OrderListItem = (props: OrderListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const { list } = props;
+    let displayValue: string = 'inline';
+    const todaysDate = new Date();
+
+    if (typeof list.expectedDeliveryDate !== 'undefined') {
+        const _expectedDeliveryDate = new Date(list.expectedDeliveryDate);
+        if (_expectedDeliveryDate < todaysDate) {
+            displayValue = 'none';
+        }
+    }
 
     return (
         <ListItem divider={true}>
-            <Grid2 container rowSpacing={-4} xs={12}>
-                <Grid2
-                    xs={0}
-                    className={styles.notifyButton}
-                    sx={{ display: 'none' }}
-                >
-                    <Checkbox
-                        icon={<NotificationsNone />}
-                        checkedIcon={<NotificationsActive />}
-                    ></Checkbox>
+            <Grid2
+                container
+                rowSpacing={-4}
+                xs={12}
+                justifyContent="space_between"
+            >
+                <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
+                    <Box sx={{ display: displayValue }}>
+                        <Checkbox
+                            icon={<NotificationsNone />}
+                            checkedIcon={<NotificationsActive />}
+                        ></Checkbox>
+                    </Box>
                 </Grid2>
                 <Grid2
                     container
@@ -64,7 +77,12 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                         </Typography>
                     </div>
                 </Grid2>
-                <Grid2 xs={2} className={styles.utilityButtons}>
+                <Grid2
+                    container
+                    xs={1}
+                    className={styles.utilityButtons}
+                    columnSpacing={7}
+                >
                     <IconButton>
                         <Edit />
                     </IconButton>
