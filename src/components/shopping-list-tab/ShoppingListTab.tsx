@@ -18,11 +18,29 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
     value: number;
 }
+
+const testitem1: ItemDto = {
+    id: 55,
+    name: 'Mangorahka',
+    url: 'https://www.s-kaupat.fi/tuote/rainbow-500g-mangorahka-3-5/7340011461722',
+    shopName: 'S-market',
+    comment: '',
+    isChecked: false,
+    amountOrdered: 0,
+    itemAdder: {
+        id: 0,
+        firstName: '',
+        lastName: '',
+        email: '',
+        homeOffice: { id: 0, name: '' },
+    },
+};
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
@@ -134,9 +152,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                         </Grid2>
                     </Box>
                     <List className="full-width">
-                        {list.items.map((it, i) => (
-                            <ShoppingListItem item={it} key={i} />
-                        ))}
+                        <ShoppingListItem item={testitem1} />
                     </List>
                 </div>
             )}
