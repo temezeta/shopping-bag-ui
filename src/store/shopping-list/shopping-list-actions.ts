@@ -23,3 +23,8 @@ export const addShoppingList = async (
 
     return (await response.json()) as ShoppingListDto;
 };
+
+export const removeItem = async (itemId: number): Promise<boolean> => {
+    const response = await ApiClient.delete(`Item/${itemId}`, '');
+    return response.ok;
+};
