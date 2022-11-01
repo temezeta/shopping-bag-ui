@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto } from '../../models/user/UserDto';
 import { RootState } from '../store';
@@ -21,14 +21,22 @@ export const getCurrentUserAsync = createAsyncThunk(
 // Selectors
 export const selectCurrentUser = (state: RootState): UserDto | undefined =>
     state.user.currentUser;
-// TODO: When "session office" is implemented this should return that if defined, else home office
 export const selectCurrentOffice = (state: RootState): OfficeDto | undefined =>
+    state.user.sessionOffice ?? selectHomeOffice(state);
+export const selectHomeOffice = (state: RootState): OfficeDto | undefined =>
     state.user.currentUser?.homeOffice;
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        setSessionOffice: (
+            state,
+            action: PayloadAction<OfficeDto | undefined>
+        ) => {
+            state.sessionOffice = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(getCurrentUserAsync.pending, (state) => {
@@ -39,5 +47,7 @@ export const userSlice = createSlice({
             });
     },
 });
+
+export const { setSessionOffice } = userSlice.actions;
 
 export default userSlice.reducer;
