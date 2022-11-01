@@ -35,7 +35,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Grid2 xs={8} sm={7}>
+                <Grid2 xs={8}>
                     <Box>
                         <a href={props.item.url}>{props.item.name}</a>
                         <Typography variant="body2" fontWeight="medium">
