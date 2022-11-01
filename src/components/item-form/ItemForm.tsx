@@ -2,29 +2,35 @@ import { Button, Checkbox, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { AddItemDto } from '../../models/lists/AddItemDto';
-import styles from './AddItemForm.module.css';
+import { AddItemDto } from '../../models/shopping-list/AddItemDto';
+import styles from './ItemForm.module.css';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { oneFieldRequired } from '../../utility/validation-helper';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
 
-interface AddItemFormProps {
+interface ItemFormProps {
+    initialValues?: ItemDto;
     onSubmit?: SubmitHandler<AddItemDto>;
 }
 
-const AddItemForm = (props: AddItemFormProps): JSX.Element => {
+const ItemForm = (props: ItemFormProps): JSX.Element => {
     const { t } = useTranslation();
+    const { initialValues } = props;
+
+    const defaultValues: Partial<AddItemDto> = initialValues ?? {
+        name: '',
+        shopName: '',
+        url: '',
+        comment: '',
+    };
+
     const {
         control,
         handleSubmit,
         watch,
         formState: { isValid },
     } = useForm<AddItemDto>({
-        defaultValues: {
-            name: '',
-            shopName: '',
-            url: '',
-            comment: '',
-        },
+        defaultValues,
         mode: 'onChange',
     });
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
@@ -146,4 +152,4 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
         </form>
     );
 };
-export default AddItemForm;
+export default ItemForm;

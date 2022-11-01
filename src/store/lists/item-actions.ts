@@ -1,4 +1,4 @@
-import { AddItemDto } from '../../models/lists/AddItemDto';
+import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import ApiClient from '../client';
 
 export const addItem = async (

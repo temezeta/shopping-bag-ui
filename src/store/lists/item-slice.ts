@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AddItemDto } from '../../models/lists/AddItemDto';
+import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import { addItem } from './item-actions';
 
 // TODO Move elsewhere
