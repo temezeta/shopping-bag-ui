@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next';
 import { AddItemDto } from '../../models/lists/AddItemDto';
 import styles from './AddItemForm.module.css';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
+import { oneFieldRequired } from '../../utility/validation-helper';
 
 interface AddItemFormProps {
-    id: number;
     onSubmit?: SubmitHandler<AddItemDto>;
 }
 
@@ -16,59 +16,60 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
     const {
         control,
         handleSubmit,
+        watch,
         formState: { isValid },
     } = useForm<AddItemDto>({
         defaultValues: {
             name: '',
             shopName: '',
-            url: undefined,
+            url: '',
             comment: '',
-            shoppingListId: props.id,
         },
         mode: 'onChange',
     });
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
         props.onSubmit?.(data);
     };
+    const watchNameAndUrl = watch(['name', 'url']);
 
-    // The labels are of a size too small idk why
     return (
-        <Grid2 container spacing={2}>
-            <form
-                id="Add-Item-Form"
-                className={styles.addItem}
-                onSubmit={handleSubmit(onSubmit)}
-            >
-                <Grid2 container spacing={2}>
-                    <Grid2 xs={10}>
-                        <FormLabel className={styles.label} id="item_name">
-                            {t('item.name')}
-                        </FormLabel>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: t('errors.required'),
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    aria-labelledby="item_name"
-                                    size="small"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </Grid2>
-                    <Grid2 xs={2}>
-                        <Checkbox
-                            icon={<FavoriteBorder />}
-                            checkedIcon={<Favorite />}
-                        />
-                    </Grid2>
+        <form
+            id="Add-Item-Form"
+            className={styles.addItem}
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <Grid2 container spacing={2}>
+                <Grid2 xs={10}>
+                    <FormLabel className={styles.label} id="item_name">
+                        {t('item.name')}
+                    </FormLabel>
+                    <Controller
+                        name="name"
+                        control={control}
+                        rules={{
+                            validate: {
+                                validName: (value?: string) =>
+                                    oneFieldRequired(
+                                        value,
+                                        watchNameAndUrl[1]
+                                    ) || t('errors.required'),
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                aria-labelledby="item_name"
+                                size="small"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
+                <Grid2 xs={2} className="flex-center">
+                    <Checkbox
+                        icon={<FavoriteBorder />}
+                        checkedIcon={<Favorite />}
+                    />
                 </Grid2>
 
                 <Grid2 xs={12}>
@@ -78,12 +79,6 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                     <Controller
                         name="shopName"
                         control={control}
-                        rules={{
-                            required: {
-                                value: true,
-                                message: t('errors.required'),
-                            },
-                        }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
@@ -102,9 +97,12 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         name="url"
                         control={control}
                         rules={{
-                            required: {
-                                value: true,
-                                message: t('errors.required'),
+                            validate: {
+                                validUrl: (value?: string) =>
+                                    oneFieldRequired(
+                                        value,
+                                        watchNameAndUrl[0]
+                                    ) || t('errors.required'),
                             },
                         }}
                         render={({ field }) => (
@@ -144,8 +142,8 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         {t('actions.add_item')}
                     </Button>
                 </Grid2>
-            </form>
-        </Grid2>
+            </Grid2>
+        </form>
     );
 };
 export default AddItemForm;

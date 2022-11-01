@@ -1,10 +1,8 @@
-import { Url } from 'url';
-
 export interface AddItemDto {
-    name: string;
-    shopName: string;
-    url: Url;
-    comment: string;
-    shoppingListId: any;
+    name?: string;
+    shopName?: string;
+    url?: string;
+    comment?: string;
+    shoppingListId: number;
     userId: number;
 }

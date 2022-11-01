@@ -18,6 +18,7 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
+import { useNavigate } from 'react-router-dom';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -26,6 +27,7 @@ interface ShoppingListTabProps {
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { value, list } = props;
 
     return (
@@ -65,6 +67,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <Button
                                 startIcon={<Add />}
                                 variant="contained"
+                                onClick={() => navigate(`/addItem/${list.id}`)}
                                 fullWidth
                             >
                                 {t('actions.add_new_item')}

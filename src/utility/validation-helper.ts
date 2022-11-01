@@ -15,3 +15,10 @@ export const isValidEmail = (email: string): boolean => {
 export const isValidPassword = (password: string): boolean => {
     return PASSWORD_REGEX.test(password);
 };
+
+export const oneFieldRequired = (
+    firstField?: string,
+    secondField?: string
+): boolean => {
+    return Boolean(firstField) || Boolean(secondField);
+};
