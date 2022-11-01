@@ -6,12 +6,7 @@ import {
     ListItemIcon,
     Typography,
 } from '@mui/material';
-import {
-    ContentCopy,
-    Favorite,
-    FavoriteBorder,
-    MoreHoriz,
-} from '@mui/icons-material';
+import { ContentCopy, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
@@ -64,15 +59,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     <Typography variant="body1">1</Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    <Box display={{ xs: 'none', sm: 'flex' }}>
-                        <ShoppingListItemActions id={props.item.id} />
-                    </Box>
-                    <Box display={{ xs: 'inline', sm: 'none' }}>
-                        <IconButton aria-label="actions">
-                            {/** TODO: implement phoneview action buttons */}
-                            <MoreHoriz />
-                        </IconButton>
-                    </Box>
+                    <ShoppingListItemActions id={props.item.id} />
                 </Grid2>
                 <Box
                     component={Grid2}
