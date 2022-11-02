@@ -1,3 +1,4 @@
+import { Home } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { logoutAsync } from '../../store/auth/auth-slice';
@@ -10,6 +11,7 @@ const UserMenu = (): JSX.Element | null => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const homeIcon = <Home style={{ color: '#fff' }} />;
 
     const logout = async (): Promise<void> => {
         await dispatch(logoutAsync());
@@ -31,6 +33,7 @@ const UserMenu = (): JSX.Element | null => {
         <DropdownMenu
             title={`${user.firstName} ${user.lastName}`}
             items={items}
+            icon={homeIcon}
         />
     ) : null;
 };
