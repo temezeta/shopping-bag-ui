@@ -1,0 +1,5 @@
+.actionList {
+    display: flex;
+    gap: 20px;
+    padding-right: 10px;
+}

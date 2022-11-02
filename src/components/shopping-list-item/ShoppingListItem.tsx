@@ -4,38 +4,19 @@ import {
     IconButton,
     ListItem,
     ListItemIcon,
-    Tooltip,
     Typography,
 } from '@mui/material';
-import {
-    ContentCopy,
-    Delete,
-    Edit,
-    Favorite,
-    FavoriteBorder,
-    MoreHoriz,
-} from '@mui/icons-material';
+import { ContentCopy, Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../store/hooks';
-import { removeItemAsync } from '../../store/shopping-list/shopping-list-slice';
+import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
 
 interface ShoppingListItemProps {
     item: ItemDto;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const dispatch = useAppDispatch();
-
-    const removeItem = async (): Promise<void> => {
-        await dispatch(removeItemAsync(props.item.id));
-    };
-
     return (
         <ListItem divider={true}>
             <Grid2
@@ -78,35 +59,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     <Typography variant="body1">1</Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    <Box display={{ xs: 'none', sm: 'flex' }}>
-                        <Tooltip title={t('list.delete-item')} enterDelay={800}>
-                            <IconButton
-                                aria-label="delete"
-                                onClick={async () => await removeItem()}
-                            >
-                                <Delete />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title={t('list.edit-item')} enterDelay={800}>
-                            <IconButton
-                                edge="end"
-                                aria-label="edit"
-                                onClick={() =>
-                                    navigate('/edit-item', {
-                                        state: { id: props.item.id },
-                                    })
-                                }
-                            >
-                                <Edit />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                    <Box display={{ xs: 'inline', sm: 'none' }}>
-                        <IconButton aria-label="actions">
-                            {/** TODO: implement phoneview action buttons */}
-                            <MoreHoriz />
-                        </IconButton>
-                    </Box>
+                    <ShoppingListItemActions id={props.item.id} />
                 </Grid2>
                 <Box
                     component={Grid2}
