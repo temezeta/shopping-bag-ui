@@ -16,6 +16,8 @@ import styles from './OrderListItem.module.css';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { formatDate } from '../../utility/date-helper';
+import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 interface OrderListItemProps {
     list: ShoppingListDto;
@@ -24,15 +26,7 @@ interface OrderListItemProps {
 const OrderListItem = (props: OrderListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const { list } = props;
-    let displayValue: string = 'inline';
-    const todaysDate = new Date();
-
-    if (typeof list.expectedDeliveryDate !== 'undefined') {
-        const _expectedDeliveryDate = new Date(list.expectedDeliveryDate);
-        if (_expectedDeliveryDate < todaysDate) {
-            displayValue = 'none';
-        }
-    }
+    const navigate = useNavigate();
 
     return (
         <ListItem divider={true}>
@@ -43,12 +37,16 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 justifyContent="space_between"
             >
                 <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
-                    <Box sx={{ display: displayValue }}>
-                        <Checkbox
-                            icon={<NotificationsNone />}
-                            checkedIcon={<NotificationsActive />}
-                        ></Checkbox>
-                    </Box>
+                    {moment(list.expectedDeliveryDate, true).isAfter(
+                        new Date()
+                    ) && (
+                        <Box>
+                            <Checkbox
+                                icon={<NotificationsNone />}
+                                checkedIcon={<NotificationsActive />}
+                            ></Checkbox>
+                        </Box>
+                    )}
                 </Grid2>
                 <Grid2
                     container
@@ -68,11 +66,11 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                             </Typography>
                         </Link>
                         <Typography variant="body1">
-                            {t('order.due_date')}
+                            {t('list.due_date') + ': '}
                             {formatDate(list.dueDate)}
                         </Typography>
                         <Typography variant="body1">
-                            {t('order.expected_delivery_date')}
+                            {t('list.expected_delivery_date') + ': '}
                             {formatDate(list.expectedDeliveryDate)}
                         </Typography>
                     </div>
@@ -83,7 +81,9 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.utilityButtons}
                     columnSpacing={7}
                 >
-                    <IconButton>
+                    <IconButton
+                        onClick={() => navigate(`/editshoppinglist/${list.id}`)}
+                    >
                         <Edit />
                     </IconButton>
                 </Grid2>
