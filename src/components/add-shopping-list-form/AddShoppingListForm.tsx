@@ -101,7 +101,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                 <DateTimePicker
                                     onChange={(date) =>
                                         field.onChange(
-                                            moment(date).toISOString()
+                                            moment(date).toISOString(true)
                                         )
                                     }
                                     value={field.value}
@@ -130,7 +130,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                 <DatePicker
                                     onChange={(date) =>
                                         field.onChange(
-                                            moment(date).toISOString()
+                                            moment(date).toISOString(true)
                                         )
                                     }
                                     value={field.value}
