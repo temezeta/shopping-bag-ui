@@ -7,6 +7,7 @@ import Register from './features/register/Register';
 import AddShoppingList from './features/shopping-lists/AddShoppingList';
 import { Role } from './models/user/RoleEnum';
 import AddItem from './features/add-item/AddItem';
+import AdminOrderList from './features/admin-order-list/AdminOrderList';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -26,6 +27,10 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="addshoppinglist"
                     element={<AddShoppingList />}
+                ></Route>
+                <Route
+                    path="shopping-lists"
+                    element={<AdminOrderList />}
                 ></Route>
             </Route>
         </Routes>

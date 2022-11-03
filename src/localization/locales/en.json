@@ -50,9 +50,9 @@
         "edit-item": "Edit item"
     },
     "item": {
-       "name": "Item name",
-       "shopName": "Store",
-       "url": "Link to item",
-       "comment": "Add comment" 
-    }
+        "name": "Item name",
+        "shopName": "Store",
+        "url": "Link to item",
+        "comment": "Add comment" 
+     }
 }

@@ -1,0 +1,12 @@
+.notifyButton {
+    display: flex;
+    justify-content: left;
+    align-items: flex-start;
+    margin-left: -2rem;
+}
+
+.utilityButtons {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
