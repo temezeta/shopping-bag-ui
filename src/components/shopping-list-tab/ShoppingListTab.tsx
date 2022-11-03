@@ -29,6 +29,14 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
+    const copyShoppingListLink = async (): Promise<void> => {
+        var host = window.location.host;
+        var protocol = location.protocol;
+        await navigator.clipboard.writeText(
+            /** TODO: Update right page to url */
+            `${protocol}//${host}/admin-shopping-list-items-page/${list.id}`
+        );
+    };
 
     return (
         <div
@@ -41,8 +49,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                 <div>
                     <Grid2 container spacing={2} className="flex-center">
                         <Grid2 xs={12} className="flex-center">
-                            {/** TODO: Copy functionality */}
-                            <IconButton className={styles.copyButton}>
+                            <IconButton
+                                className={styles.copyButton}
+                                onClick={copyShoppingListLink}
+                            >
                                 <ContentCopy />
                             </IconButton>
                             <Typography
