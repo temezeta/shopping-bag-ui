@@ -5,7 +5,8 @@
         "email_address": "Email address",
         "password": "Password",
         "repeat_password": "Repeat password",
-        "account_settings": "Account settings"
+        "account_settings": "Account settings",
+        "office": "Office"
     },
     "errors": {
         "required": "This value is required!",
@@ -27,7 +28,8 @@
         "cancel": "Cancel",
         "logout": "Log out",
         "add_new_item": "Add new item",
-        "add_new_list": "Add new list"
+        "add_new_list": "Add new list",
+        "add_item": "Add item"
     },
     "dialogs": {
         "verify_account": "Verify your account",
@@ -47,6 +49,12 @@
         "delete-item": "Delete item",
         "edit-item": "Edit item"
     },
+    "item": {
+        "name": "Item name",
+        "shopName": "Store",
+        "url": "Link to item",
+        "comment": "Add comment" 
+     },
     "order": {
         "due_date": "Due date: ",
         "expected_delivery_date": "Expected delivery date: ",

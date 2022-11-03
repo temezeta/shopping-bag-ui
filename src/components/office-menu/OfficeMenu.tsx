@@ -1,29 +1,59 @@
+import { Home } from '@mui/icons-material';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { OfficeDto } from '../../models/office/OfficeDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     getAllOfficesAsync,
     selectOffices,
 } from '../../store/office/office-slice';
+import {
+    selectCurrentOffice,
+    selectHomeOffice,
+    setSessionOffice,
+} from '../../store/user/user-slice';
 import DropdownMenu from '../dropdown-menu/DropdownMenu';
+import styles from './OfficeMenu.module.css';
 
 const OfficeMenu = (): JSX.Element => {
     const offices = useAppSelector(selectOffices);
+    const currentOffice = useAppSelector(selectCurrentOffice);
+    const homeOffice = useAppSelector(selectHomeOffice);
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
 
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
     }, []);
 
-    /**
-     * TODO
-     * Add functionality for selecting "temporary office" which overrides home office for the session
-     * Change the title to display the current temporary office and/or home office
-     */
+    const getOfficeItem = (office: OfficeDto): JSX.Element => {
+        return (
+            <span className="flex-center">
+                {homeOffice?.id === office.id && <Home />}
+                <span
+                    className={
+                        currentOffice?.id === office.id
+                            ? styles.menuItemActive
+                            : styles.menuItem
+                    }
+                >
+                    {office.name}
+                </span>
+            </span>
+        );
+    };
+
+    const setOffice = (office: OfficeDto): void => {
+        dispatch(setSessionOffice(office));
+    };
 
     return (
         <DropdownMenu
-            title={'Offices'}
-            items={offices.map((it) => ({ title: it.name }))}
+            title={currentOffice?.name ?? t('user.office')}
+            items={offices.map((it) => ({
+                title: getOfficeItem(it),
+                onClick: () => setOffice(it),
+            }))}
         />
     );
 };

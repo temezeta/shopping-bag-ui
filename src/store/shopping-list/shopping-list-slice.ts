@@ -3,6 +3,7 @@ import { RootState } from '../store';
 import {
     addShoppingList,
     getShoppingListsByOfficeId,
+    removeItem,
 } from './shopping-list-actions';
 import { ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -35,6 +36,17 @@ export const addShoppingListAsync = createAsyncThunk(
     }
 );
 
+export const removeItemAsync = createAsyncThunk(
+    'shoppinglistitem/remove',
+    async (itemId: number, { rejectWithValue }) => {
+        const response = await removeItem(itemId);
+        if (!response) {
+            return rejectWithValue('Removing item failed');
+        }
+        return itemId;
+    }
+);
+
 // Selectors
 export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
     state.shoppinglist.activeShoppingLists;
@@ -64,6 +76,21 @@ export const shoppingListSlice = createSlice({
             )
             .addCase(addShoppingListAsync.fulfilled, (state, action) => {
                 state.activeShoppingLists.push(action.payload);
+            })
+            .addCase(removeItemAsync.fulfilled, (state, action) => {
+                const itemId = action.payload;
+                for (let i = 0; i < state.activeShoppingLists.length; i++) {
+                    if (
+                        state.activeShoppingLists[i].items.filter(
+                            (e) => e.id === itemId
+                        )
+                    ) {
+                        state.activeShoppingLists[i].items =
+                            state.activeShoppingLists[i].items.filter(
+                                (it) => it.id !== itemId
+                            );
+                    }
+                }
             });
     },
 });

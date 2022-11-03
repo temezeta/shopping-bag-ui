@@ -1,11 +1,4 @@
-import {
-    Button,
-    Checkbox,
-    FormControlLabel,
-    FormLabel,
-    Link,
-    TextField,
-} from '@mui/material';
+import { Button, FormLabel, Link, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './LoginForm.module.css';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -98,23 +91,6 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                         {t('actions.recover_password')}
                         {/* need to create recover pop up */}
                     </Link>
-                </Grid2>
-                <Grid2 xs={12}>
-                    <FormControlLabel
-                        value="end"
-                        control={
-                            <Checkbox
-                                sx={{
-                                    color: '#c2d1fa',
-                                    '&.Mui-checked': {
-                                        color: '#0047f2',
-                                    },
-                                }}
-                            />
-                        }
-                        label={t('actions.remember_user')}
-                        labelPlacement="end"
-                    />
                 </Grid2>
                 <Grid2 xs={12}>
                     <Button
