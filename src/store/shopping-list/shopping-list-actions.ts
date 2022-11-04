@@ -99,3 +99,14 @@ export const getShoppingListById = async (
 
     return (await response.json()) as ShoppingListDto;
 };
+
+export const setLikeStatus = async (
+    data: boolean,
+    itemId: number
+): Promise<boolean | null> => {
+    const response = await ApiClient.post(
+        `item/${itemId}/like?unlike=${String(!data)}`,
+        null
+    );
+    return response.ok;
+};

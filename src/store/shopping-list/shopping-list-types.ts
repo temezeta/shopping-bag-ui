@@ -22,3 +22,8 @@ export interface ModifyItemPayload {
     data: ModifyItemDto;
     itemId: number;
 }
+
+export interface LikeStatusPayload {
+    data: boolean;
+    itemId: number;
+}
