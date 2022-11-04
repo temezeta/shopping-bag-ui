@@ -7,11 +7,19 @@ import {
     removeItem,
     modifyShoppingList,
     removeShoppingList,
+    addItem,
+    modifyItem,
 } from './shopping-list-actions';
-import { ModifyPayload, ShoppingListState } from './shopping-list-types';
+import {
+    AddItemPayload,
+    ModifyItemPayload,
+    ModifyPayload,
+    ShoppingListState,
+} from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { updateOrAdd } from '../../utility/array-helper';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],
@@ -40,6 +48,17 @@ export const addShoppingListAsync = createAsyncThunk(
     }
 );
 
+export const addItemAsync = createAsyncThunk(
+    'shoppinglistitem/addItem',
+    async (data: AddItemPayload, { rejectWithValue }) => {
+        const response = await addItem(data.data, data.listId);
+        if (!response) {
+            return rejectWithValue('An error ocurred adding the item');
+        }
+        return response;
+    }
+);
+
 export const removeItemAsync = createAsyncThunk(
     'shoppinglistitem/remove',
     async (itemId: number, { rejectWithValue }) => {
@@ -48,6 +67,17 @@ export const removeItemAsync = createAsyncThunk(
             return rejectWithValue('Removing item failed');
         }
         return itemId;
+    }
+);
+
+export const modifyItemAsync = createAsyncThunk(
+    'shoppinglistitem/modify',
+    async (data: ModifyItemPayload, { rejectWithValue }) => {
+        const response = await modifyItem(data.data, data.itemId);
+        if (!response) {
+            return rejectWithValue('An error occured in modifying item');
+        }
+        return response;
     }
 );
 
@@ -95,6 +125,22 @@ export const selectShoppingListById = (
 ): ShoppingListDto | undefined =>
     selectActiveLists(state).find((it) => it.id === listId) ??
     selectInactiveLists(state).find((it) => it.id === listId);
+export const selectItemById = (
+    state: RootState,
+    itemId: number
+): ItemDto | undefined => {
+    const lists = selectActiveLists(state).concat(selectInactiveLists(state));
+    let item: ItemDto | undefined;
+
+    for (const list of lists) {
+        const itemIndex = list.items.findIndex((it) => it.id === itemId);
+        if (itemIndex !== -1) {
+            item = list.items[itemIndex];
+            break;
+        }
+    }
+    return item;
+};
 
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
