@@ -5,12 +5,13 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import AddShoppingListForm from '../../components/add-shopping-list-form/AddShoppingListForm';
+import ShoppingListForm from '../../components/shopping-list-form/ShoppingListForm';
 import MainLayout from '../../components/main-layout/MainLayout';
-import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { addShoppingListAsync } from '../../store/shopping-list/shopping-list-slice';
 import { selectCurrentOffice } from '../../store/user/user-slice';
+import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
+import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 
 const AddShoppingList = (): JSX.Element => {
     const { t } = useTranslation();
@@ -18,8 +19,12 @@ const AddShoppingList = (): JSX.Element => {
     const navigate = useNavigate();
     const currentOffice = useAppSelector(selectCurrentOffice);
 
-    const onSubmit: SubmitHandler<AddShoppingListDto> = async (data) => {
-        unwrapResult(await dispatch(addShoppingListAsync(data)));
+    const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {
+        const addShoppingList: AddShoppingListDto = {
+            ...data,
+            officeId: currentOffice!.id,
+        };
+        unwrapResult(await dispatch(addShoppingListAsync(addShoppingList)));
         navigate('/home');
     };
 
@@ -49,7 +54,7 @@ const AddShoppingList = (): JSX.Element => {
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
-                        <AddShoppingListForm onSubmit={onSubmit} />
+                        <ShoppingListForm onSubmit={onSubmit} />
                     </Grid2>
                 </Grid2>
             </MainLayout>

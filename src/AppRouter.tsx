@@ -5,6 +5,7 @@ import Home from './features/home/Home';
 import Login from './features/login/Login';
 import Register from './features/register/Register';
 import AddShoppingList from './features/shopping-lists/AddShoppingList';
+import EditShoppingList from './features/shopping-lists/EditShoppingList';
 import { Role } from './models/user/RoleEnum';
 import AddItem from './features/add-item/AddItem';
 import AdminOrderList from './features/admin-order-list/AdminOrderList';
@@ -31,6 +32,10 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="shopping-lists"
                     element={<AdminOrderList />}
+                ></Route>
+                <Route
+                    path="editshoppinglist/:listId"
+                    element={<EditShoppingList />}
                 ></Route>
             </Route>
         </Routes>

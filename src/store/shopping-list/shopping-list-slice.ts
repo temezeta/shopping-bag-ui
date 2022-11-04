@@ -2,12 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import {
     addShoppingList,
+    getShoppingListById,
     getShoppingListsByOfficeId,
     removeItem,
+    modifyShoppingList,
+    removeShoppingList,
 } from './shopping-list-actions';
-import { ShoppingListState } from './shopping-list-types';
+import { ModifyPayload, ShoppingListState } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
+import { updateOrAdd } from '../../utility/array-helper';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],
@@ -47,11 +51,50 @@ export const removeItemAsync = createAsyncThunk(
     }
 );
 
+export const modifyShoppingListAsync = createAsyncThunk(
+    'shoppinglist/modify',
+    async (action: ModifyPayload, { rejectWithValue }) => {
+        const response = await modifyShoppingList(action.data, action.listId);
+        if (!response) {
+            return rejectWithValue('Error modifying shopping list');
+        }
+        return response;
+    }
+);
+
+export const removeShoppingListAsync = createAsyncThunk(
+    'shoppinglist/remove',
+    async (data: ShoppingListDto, { rejectWithValue }) => {
+        const response = await removeShoppingList(data.id);
+        if (!response) {
+            return rejectWithValue('Error removing shopping list');
+        }
+        return data;
+    }
+);
+
+export const getShoppingListByIdAsync = createAsyncThunk(
+    'shoppinglist/by-id',
+    async (listId: number, { rejectWithValue }) => {
+        const response = await getShoppingListById(listId);
+        if (!response) {
+            return rejectWithValue('Error fetching shopping list by id');
+        }
+        return response;
+    }
+);
+
 // Selectors
 export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
     state.shoppinglist.activeShoppingLists;
 export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
     state.shoppinglist.inactiveShoppingLists;
+export const selectShoppingListById = (
+    state: RootState,
+    listId: number
+): ShoppingListDto | undefined =>
+    selectActiveLists(state).find((it) => it.id === listId) ??
+    selectInactiveLists(state).find((it) => it.id === listId);
 
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
@@ -90,6 +133,45 @@ export const shoppingListSlice = createSlice({
                                 (it) => it.id !== itemId
                             );
                     }
+                }
+            })
+            .addCase(modifyShoppingListAsync.fulfilled, (state, action) => {
+                const list = action.payload;
+                if (!list.ordered) {
+                    state.activeShoppingLists = state.activeShoppingLists.map(
+                        (it) => (it.id === list.id ? list : it)
+                    );
+                } else {
+                    state.inactiveShoppingLists =
+                        state.inactiveShoppingLists.map((it) =>
+                            it.id === list.id ? list : it
+                        );
+                }
+            })
+            .addCase(removeShoppingListAsync.fulfilled, (state, action) => {
+                const list = action.payload;
+                if (!list.ordered) {
+                    state.activeShoppingLists =
+                        state.activeShoppingLists.filter(
+                            (it) => it.id !== list.id
+                        );
+                } else {
+                    state.inactiveShoppingLists =
+                        state.inactiveShoppingLists.filter(
+                            (it) => it.id !== list.id
+                        );
+                }
+            })
+            .addCase(getShoppingListByIdAsync.fulfilled, (state, action) => {
+                const list = action.payload;
+                if (!list.ordered) {
+                    updateOrAdd(state.activeShoppingLists, (it) => it.id, list);
+                } else {
+                    updateOrAdd(
+                        state.inactiveShoppingLists,
+                        (it) => it.id,
+                        list
+                    );
                 }
             });
     },
