@@ -7,6 +7,7 @@ import styles from './ItemForm.module.css';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
 import { oneFieldRequired } from '../../utility/validation-helper';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { useEffect } from 'react';
 
 interface ItemFormProps {
     initialValues?: ItemDto;
@@ -27,12 +28,18 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
     const {
         control,
         handleSubmit,
+        reset,
         watch,
         formState: { isValid },
     } = useForm<AddItemDto>({
         defaultValues,
         mode: 'onChange',
     });
+
+    useEffect(() => {
+        reset(defaultValues);
+    }, [defaultValues]);
+
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
         props.onSubmit?.(data);
     };
@@ -45,7 +52,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Grid2 container spacing={2}>
-                <Grid2 xs={10}>
+                <Grid2 xs={initialValues ? 12 : 10}>
                     <FormLabel className={styles.label} id="item_name">
                         {t('item.name')}
                     </FormLabel>
@@ -71,12 +78,14 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         )}
                     />
                 </Grid2>
-                <Grid2 xs={2} className="flex-center">
-                    <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                    />
-                </Grid2>
+                {!initialValues && (
+                    <Grid2 xs={2} className="flex-center">
+                        <Checkbox
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite />}
+                        />
+                    </Grid2>
+                )}
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="shopName ">
@@ -145,7 +154,9 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         disabled={!isValid}
                         fullWidth
                     >
-                        {t('actions.add_item')}
+                        {initialValues
+                            ? t('list.edit-item')
+                            : t('actions.add_item')}
                     </Button>
                 </Grid2>
             </Grid2>

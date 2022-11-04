@@ -9,7 +9,12 @@ import ConfirmationDialog from '../../components/confirmation-popup/Confirmation
 import ItemForm from '../../components/item-form/ItemForm';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+    modifyItemAsync,
+    selectItemById,
+} from '../../store/shopping-list/shopping-list-slice';
+import { RootState } from '../../store/store';
 
 const EditItem = (): JSX.Element => {
     const { itemId } = useParams();
@@ -21,12 +26,31 @@ const EditItem = (): JSX.Element => {
     );
     const [isModifyOpen, setModifyOpen] = useState<boolean>(false);
 
+    const item = useAppSelector((state: RootState) =>
+        selectItemById(state, Number(itemId))
+    );
+
     const onSubmit: SubmitHandler<AddItemDto> = async (data) => {
         setModification(data);
         setModifyOpen(true);
     };
 
-    const onModifyConfirm = async (): Promise<void> => {};
+    const onModifyConfirm = async (): Promise<void> => {
+        if (modification && item) {
+            await dispatch(
+                modifyItemAsync({
+                    data: {
+                        ...item,
+                        ...modification,
+                    },
+                    itemId: Number(itemId),
+                })
+            );
+            setModification(undefined);
+            setModifyOpen(false);
+            navigate('/home');
+        }
+    };
 
     return (
         <>
@@ -41,11 +65,11 @@ const EditItem = (): JSX.Element => {
                             display="flex"
                             justifyContent="center"
                         >
-                            {t('actions.edit_list')}
+                            {t('list.edit-item')}
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
-                        <ItemForm onSubmit={onSubmit} />
+                        <ItemForm onSubmit={onSubmit} initialValues={item} />
                     </Grid2>
                 </Grid2>
             </MainLayout>
@@ -53,7 +77,7 @@ const EditItem = (): JSX.Element => {
                 open={isModifyOpen}
                 onConfirm={onModifyConfirm}
                 onCancel={() => setModifyOpen(false)}
-                title={t('actions.edit_list')}
+                title={t('list.edit-item')}
             >
                 <DialogContentText>
                     {t('dialogs.confirmation')}

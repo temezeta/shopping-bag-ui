@@ -9,7 +9,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch } from '../../store/hooks';
-import { addItemAsync } from '../../store/lists/item-slice';
+import { addItemAsync } from '../../store/shopping-list/shopping-list-slice';
 
 const AddItem = (): JSX.Element => {
     const { listId } = useParams();
