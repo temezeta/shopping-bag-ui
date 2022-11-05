@@ -21,10 +21,10 @@ const Navbar = (): JSX.Element => {
     return (
         <Box bgcolor="primary.dark" color="white">
             <Grid2 container className={styles.header}>
-                <Grid2 xs={12} sm={6} className={styles.headerLogo}>
+                <Grid2 xs={8} sm={6} className={styles.headerLogo}>
                     <AppLogo />
                 </Grid2>
-                <Grid2 xs={12} sm={6} className={styles.headerControls}>
+                <Grid2 xs={4} sm={6} className={styles.headerControls}>
                     <UserMenu />
                     <OfficeMenu />
                 </Grid2>
