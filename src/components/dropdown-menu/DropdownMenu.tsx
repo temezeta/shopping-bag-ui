@@ -83,7 +83,7 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
                     onClick={handleClick}
                     sx={{
                         '&:hover': {
-                            'background-color': 'rgba(255, 255, 255, 0.22)',
+                            backgroundColor: 'rgba(255, 255, 255, 0.22)',
                         },
                     }}
                 >
