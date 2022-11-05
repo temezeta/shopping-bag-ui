@@ -31,12 +31,12 @@ export const addShoppingList = async (
 export const addItem = async (
     data: AddItemDto,
     listId: number
-): Promise<AddItemDto | null> => {
+): Promise<ItemDto | null> => {
     const response = await ApiClient.post(`item?listId=${listId}`, data);
     if (!response.ok) {
         return null;
     }
-    return (await response.json()) as AddItemDto;
+    return (await response.json()) as ItemDto;
 };
 
 export const removeItem = async (itemId: number): Promise<boolean> => {
