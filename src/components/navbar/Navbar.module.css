@@ -16,16 +16,18 @@
 @media screen and (max-width: 600px) {
     .header {
         height: fit-content;
-        padding-top: 0px;
+        padding-bottom: 0px;
+        padding-top: 0.5rem;
     }
     .headerLogo {
+        align-items: flex-end;
         display: flex;
-        justify-content: center;
-        padding: 0;
     }
 
     .headerControls {
+        align-items: flex-end;
         display: flex;
-        justify-content: space-around;
+        gap: 1rem;
+        justify-content: flex-end;
     }
 }

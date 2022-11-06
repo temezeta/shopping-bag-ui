@@ -5,7 +5,11 @@ import Home from './features/home/Home';
 import Login from './features/login/Login';
 import Register from './features/register/Register';
 import AddShoppingList from './features/shopping-lists/AddShoppingList';
+import EditShoppingList from './features/shopping-lists/EditShoppingList';
 import { Role } from './models/user/RoleEnum';
+import AddItem from './features/add-item/AddItem';
+import AdminOrderList from './features/admin-order-list/AdminOrderList';
+import EditItem from './features/edit-item/EditItem';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -18,12 +22,22 @@ const AppRouter = (): JSX.Element => {
             {/** Protected routes */}
             <Route element={<AuthGuard />}>
                 <Route path="home" element={<Home />}></Route>
+                <Route path="addItem/:listId" element={<AddItem />}></Route>
+                <Route path="editItem/:itemId" element={<EditItem />}></Route>
             </Route>
             {/** Admin routes */}
             <Route element={<AuthGuard roles={[Role.Admin]} />}>
                 <Route
                     path="addshoppinglist"
                     element={<AddShoppingList />}
+                ></Route>
+                <Route
+                    path="shopping-lists"
+                    element={<AdminOrderList />}
+                ></Route>
+                <Route
+                    path="editshoppinglist/:listId"
+                    element={<EditShoppingList />}
                 ></Route>
             </Route>
         </Routes>

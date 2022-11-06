@@ -141,6 +141,13 @@ const HuldTheme = createTheme({
                 }),
             },
         },
+        MuiDialogContentText: {
+            styleOverrides: {
+                root: ({ theme }) => ({
+                    color: theme.palette.text.primary,
+                }),
+            },
+        },
     },
 });
 
