@@ -1,11 +1,5 @@
-import {
-    Box,
-    Checkbox,
-    IconButton,
-    ListItem,
-    Typography,
-} from '@mui/material';
-import { ContentCopy, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Box, Checkbox, ListItem, Typography } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
