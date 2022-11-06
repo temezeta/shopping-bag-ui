@@ -19,6 +19,8 @@ import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { useEffect, useState } from 'react';
 import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
@@ -26,10 +28,34 @@ interface ShoppingListTabProps {
     value: number;
 }
 
+const sortByItemName = (a: ItemDto, b: ItemDto): number => {
+    if (typeof a.name === 'undefined' || typeof b.name === 'undefined')
+        return 0;
+    else return a.name.localeCompare(b.name);
+};
+
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
+    const [sortedItems, setSortedItems] = useState<ItemDto[]>(list.items);
+    const [sortOptions, setSortOption] = useState<{
+        sortType: string;
+        sortDescending: boolean;
+    }>({
+        sortType: 'none',
+        sortDescending: false,
+    });
+
+    useEffect(() => {
+        if (sortOptions.sortDescending) {
+            const _sortedItems = [...list.items].sort(sortByItemName);
+            setSortedItems(_sortedItems);
+        } else {
+            const _sortedItems = [...list.items].sort(sortByItemName).reverse();
+            setSortedItems(_sortedItems);
+        }
+    }, [sortOptions]);
 
     return (
         <div
@@ -116,7 +142,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
                             <Grid2 xs={8}>
-                                <Typography variant="body1">
+                                <Typography
+                                    variant="body1"
+                                    onClick={() =>
+                                        setSortOption({
+                                            sortType: 'itemName',
+                                            sortDescending:
+                                                !sortOptions.sortDescending,
+                                        })
+                                    }
+                                >
                                     {t('list.item_details')}
                                 </Typography>
                             </Grid2>
@@ -133,7 +168,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                         </Grid2>
                     </Box>
                     <List className="full-width">
-                        {list.items.map((it, i) => (
+                        {sortedItems.map((it, i) => (
                             <ShoppingListItem item={it} key={i} />
                         ))}
                     </List>
