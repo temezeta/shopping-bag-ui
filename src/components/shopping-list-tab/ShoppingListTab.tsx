@@ -42,7 +42,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const [sortedItems, setSortedItems] = useState<ItemDto[]>(list.items);
-    const [sortOptions, setSortOption] = useState<{
+    const [sortOptions, setSortOptions] = useState<{
         sortType: string;
         sortDescending: boolean;
     }>({
@@ -155,7 +155,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     {t('list.item_details')}
                                     <IconButton
                                         onClick={() =>
-                                            setSortOption({
+                                            setSortOptions({
                                                 sortType: 'itemName',
                                                 sortDescending:
                                                     !sortOptions.sortDescending,
