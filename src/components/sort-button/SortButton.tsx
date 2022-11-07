@@ -1,20 +1,25 @@
-import {
-    KeyboardArrowDown,
-    KeyboardArrowRight,
-    KeyboardArrowUp,
-} from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Button, Typography } from '@mui/material';
+import theme from '../../theme';
+import { SortType } from '../../utility/sort-helper';
 
 interface SortButtonProps {
-    sortOptions: { sortType: String; sortDescending: boolean };
+    sortOptions: { sortType: SortType; sortDescending: boolean };
     setSortOptions: Function;
-    columnSortType: String;
+    columnSortType: SortType;
+    columnName: String;
 }
 
 const SortButton = (props: SortButtonProps): JSX.Element => {
-    const { sortOptions, setSortOptions, columnSortType } = props;
+    const { sortOptions, setSortOptions, columnSortType, columnName } = props;
     return (
-        <IconButton
+        <Button
+            sx={{
+                textTransform: 'none',
+                opacity: 1,
+                fontWeight: 'bold',
+                color: theme.palette.text.primary,
+            }}
             onClick={() =>
                 sortOptions.sortType !== columnSortType
                     ? setSortOptions({
@@ -27,16 +32,15 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
                       })
             }
         >
-            {sortOptions.sortType === columnSortType ? (
+            <Typography variant="body1">{columnName}</Typography>
+            {sortOptions.sortType !== SortType.None ? (
                 sortOptions.sortDescending ? (
                     <KeyboardArrowDown />
                 ) : (
                     <KeyboardArrowUp />
                 )
-            ) : (
-                <KeyboardArrowRight />
-            )}
-        </IconButton>
+            ) : null}
+        </Button>
     );
 };
 export default SortButton;

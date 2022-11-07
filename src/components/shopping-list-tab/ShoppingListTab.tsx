@@ -22,7 +22,11 @@ import { useNavigate } from 'react-router-dom';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useEffect, useState } from 'react';
 import SortButton from '../sort-button/SortButton';
-import { sortByItemName } from '../../utility/sort-functions';
+import {
+    sortByItemName,
+    SortType,
+    SortOptions,
+} from '../../utility/sort-helper';
 import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
@@ -35,27 +39,21 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const [sortedItems, setSortedItems] = useState<ItemDto[]>(list.items);
-    const [sortOptions, setSortOptions] = useState<{
-        sortType: string;
-        sortDescending: boolean;
-    }>({
-        sortType: 'none',
+    const [sortOptions, setSortOptions] = useState<SortOptions>({
+        sortType: SortType.None,
         sortDescending: false,
     });
 
     useEffect(() => {
-        let sortFunction;
         switch (sortOptions.sortType) {
-            case 'itemName':
-                sortFunction = sortByItemName;
+            case SortType.Name:
+                setSortedItems(
+                    sortByItemName(list.items, sortOptions.sortDescending)
+                );
                 break;
-        }
-        if (sortOptions.sortDescending) {
-            const _sortedItems = [...list.items].sort(sortFunction);
-            setSortedItems(_sortedItems);
-        } else {
-            const _sortedItems = [...list.items].sort(sortFunction).reverse();
-            setSortedItems(_sortedItems);
+            default:
+                setSortedItems(list.items);
+                break;
         }
     }, [sortOptions]);
 
@@ -144,14 +142,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
                             <Grid2 xs={8}>
-                                <Typography variant="body1">
-                                    {t('list.item_details')}
-                                    <SortButton
-                                        sortOptions={sortOptions}
-                                        setSortOptions={setSortOptions}
-                                        columnSortType={'itemName'}
-                                    ></SortButton>
-                                </Typography>
+                                <SortButton
+                                    sortOptions={sortOptions}
+                                    setSortOptions={setSortOptions}
+                                    columnSortType={SortType.Name}
+                                    columnName={t('list.item_details')}
+                                ></SortButton>
                             </Grid2>
                             <Grid2 xs={2} className={'flex-center'}>
                                 <Typography variant="body1">
