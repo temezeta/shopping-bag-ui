@@ -38,7 +38,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
 
     useEffect(() => {
         reset(defaultValues);
-    }, [defaultValues]);
+    }, [initialValues]);
 
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
         props.onSubmit?.(data);
