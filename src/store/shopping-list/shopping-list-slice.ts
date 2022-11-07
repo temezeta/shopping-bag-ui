@@ -9,9 +9,11 @@ import {
     removeShoppingList,
     addItem,
     modifyItem,
+    setLikeStatus,
 } from './shopping-list-actions';
 import {
     AddItemPayload,
+    LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
     ShoppingListState,
@@ -109,6 +111,17 @@ export const getShoppingListByIdAsync = createAsyncThunk(
         const response = await getShoppingListById(listId);
         if (!response) {
             return rejectWithValue('Error fetching shopping list by id');
+        }
+        return response;
+    }
+);
+
+export const setLikeStatusAsync = createAsyncThunk(
+    'item/setLikeStatus',
+    async (data: LikeStatusPayload, { rejectWithValue }) => {
+        const response = await setLikeStatus(data.data, data.itemId);
+        if (!response) {
+            return rejectWithValue('An error ocurred setting like status');
         }
         return response;
     }
