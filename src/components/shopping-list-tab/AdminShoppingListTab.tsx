@@ -150,6 +150,27 @@ const AdminShoppingListTab = (
                             <AdminShoppingListItem item={it} key={i} />
                         ))}
                     </List>
+                    <Grid2 container spacing={2} className="flex-center">
+                        <Grid2>
+                            <Button
+                                variant="contained"
+                                // TODO save    onClick={save}
+                                fullWidth
+                            >
+                                {t('actions.save')}
+                            </Button>
+                        </Grid2>
+                        <Grid2>
+                            <Button
+                                variant="contained"
+                                // TODO order items
+                                onClick={() => navigate(`/shopping-lists`)}
+                                fullWidth
+                            >
+                                {t('actions.order')}
+                            </Button>
+                        </Grid2>
+                    </Grid2>
                 </div>
             )}
         </div>
