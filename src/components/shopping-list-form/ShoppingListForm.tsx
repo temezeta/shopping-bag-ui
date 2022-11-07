@@ -38,7 +38,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
 
     useEffect(() => {
         reset(defaultValues);
-    }, [defaultValues]);
+    }, [initialValues]);
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = (data) => {
         props.onSubmit?.(data);
