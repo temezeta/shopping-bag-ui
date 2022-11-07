@@ -155,11 +155,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     {t('list.item_details')}
                                     <IconButton
                                         onClick={() =>
-                                            setSortOptions({
-                                                sortType: 'itemName',
-                                                sortDescending:
-                                                    !sortOptions.sortDescending,
-                                            })
+                                            sortOptions.sortType !== 'itemName'
+                                                ? setSortOptions({
+                                                      sortType: 'itemName',
+                                                      sortDescending: true,
+                                                  })
+                                                : setSortOptions({
+                                                      sortType: 'itemName',
+                                                      sortDescending:
+                                                          !sortOptions.sortDescending,
+                                                  })
                                         }
                                     >
                                         {sortOptions.sortType === 'itemName' ? (
