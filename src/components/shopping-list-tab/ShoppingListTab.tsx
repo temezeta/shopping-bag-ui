@@ -1,6 +1,9 @@
 import {
     Add,
     ContentCopy,
+    KeyboardArrowDown,
+    KeyboardArrowRight,
+    KeyboardArrowUp,
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
@@ -48,11 +51,17 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     });
 
     useEffect(() => {
+        let sortFunction;
+        switch (sortOptions.sortType) {
+            case 'itemName':
+                sortFunction = sortByItemName;
+                break;
+        }
         if (sortOptions.sortDescending) {
-            const _sortedItems = [...list.items].sort(sortByItemName);
+            const _sortedItems = [...list.items].sort(sortFunction);
             setSortedItems(_sortedItems);
         } else {
-            const _sortedItems = [...list.items].sort(sortByItemName).reverse();
+            const _sortedItems = [...list.items].sort(sortFunction).reverse();
             setSortedItems(_sortedItems);
         }
     }, [sortOptions]);
@@ -142,17 +151,27 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
                             <Grid2 xs={8}>
-                                <Typography
-                                    variant="body1"
-                                    onClick={() =>
-                                        setSortOption({
-                                            sortType: 'itemName',
-                                            sortDescending:
-                                                !sortOptions.sortDescending,
-                                        })
-                                    }
-                                >
+                                <Typography variant="body1">
                                     {t('list.item_details')}
+                                    <IconButton
+                                        onClick={() =>
+                                            setSortOption({
+                                                sortType: 'itemName',
+                                                sortDescending:
+                                                    !sortOptions.sortDescending,
+                                            })
+                                        }
+                                    >
+                                        {sortOptions.sortType === 'itemName' ? (
+                                            sortOptions.sortDescending ? (
+                                                <KeyboardArrowDown />
+                                            ) : (
+                                                <KeyboardArrowUp />
+                                            )
+                                        ) : (
+                                            <KeyboardArrowRight />
+                                        )}
+                                    </IconButton>
                                 </Typography>
                             </Grid2>
                             <Grid2 xs={2} className={'flex-center'}>
