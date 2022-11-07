@@ -23,9 +23,9 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
         shopName: '',
         url: '',
         comment: '',
+        like: false,
     };
 
-    let isLike = false;
     const {
         control,
         handleSubmit,
@@ -42,7 +42,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
     }, [initialValues]);
 
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
-        props.onSubmit?.({ like: isLike, ...data });
+        props.onSubmit?.(data);
     };
     const watchNameAndUrl = watch(['name', 'url']);
 
@@ -80,15 +80,19 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                     />
                 </Grid2>
                 {!initialValues && (
-                    <Grid2 xs={2} className="flex-center">
-                        <Checkbox
-                            icon={<FavoriteBorder />}
-                            checkedIcon={<Favorite />}
-                            onChange={(event) =>
-                                (isLike = event.target.checked)
-                            }
-                        />
-                    </Grid2>
+                    <Controller
+                        name="like"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid2 xs={2} className="flex-center">
+                                <Checkbox
+                                    {...field}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite />}
+                                />
+                            </Grid2>
+                        )}
+                    />
                 )}
 
                 <Grid2 xs={12}>

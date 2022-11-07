@@ -21,7 +21,6 @@ const AddItem = (): JSX.Element => {
     const navigate = useNavigate();
     const onSubmit: SubmitHandler<AddItemDto> = async (data) => {
         const isLike = data.like;
-        delete data.like;
         const item = unwrapResult(
             await dispatch(addItemAsync({ data, listId: Number(listId) }))
         );
