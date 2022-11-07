@@ -1,12 +1,5 @@
-import {
-    Box,
-    Checkbox,
-    IconButton,
-    ListItem,
-    ListItemIcon,
-    Typography,
-} from '@mui/material';
-import { ContentCopy, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Box, Checkbox, ListItem, Typography } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
@@ -25,19 +18,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Box
-                    component={Grid2}
-                    sm={1}
-                    display={{ xs: 'none', md: 'inline' }}
-                >
-                    {/** TODO: copy functionality */}
-                    <ListItemIcon>
-                        <IconButton edge="start" aria-label="copy item">
-                            <ContentCopy fontSize="small" />
-                        </IconButton>
-                    </ListItemIcon>
-                </Box>
-                <Grid2 xs={8} sm={7}>
+                <Grid2 xs={8}>
                     <Box>
                         <a href={props.item.url}>{props.item.name}</a>
                         <Typography variant="body2" fontWeight="medium">
