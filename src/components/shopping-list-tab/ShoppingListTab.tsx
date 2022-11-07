@@ -1,9 +1,6 @@
 import {
     Add,
     ContentCopy,
-    KeyboardArrowDown,
-    KeyboardArrowRight,
-    KeyboardArrowUp,
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
@@ -24,18 +21,14 @@ import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useEffect, useState } from 'react';
+import SortButton from '../sort-button/SortButton';
+import { sortByItemName } from '../../utility/sort-functions';
 import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
     value: number;
 }
-
-const sortByItemName = (a: ItemDto, b: ItemDto): number => {
-    if (typeof a.name === 'undefined' || typeof b.name === 'undefined')
-        return 0;
-    else return a.name.localeCompare(b.name);
-};
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
@@ -153,30 +146,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <Grid2 xs={8}>
                                 <Typography variant="body1">
                                     {t('list.item_details')}
-                                    <IconButton
-                                        onClick={() =>
-                                            sortOptions.sortType !== 'itemName'
-                                                ? setSortOptions({
-                                                      sortType: 'itemName',
-                                                      sortDescending: true,
-                                                  })
-                                                : setSortOptions({
-                                                      sortType: 'itemName',
-                                                      sortDescending:
-                                                          !sortOptions.sortDescending,
-                                                  })
-                                        }
-                                    >
-                                        {sortOptions.sortType === 'itemName' ? (
-                                            sortOptions.sortDescending ? (
-                                                <KeyboardArrowDown />
-                                            ) : (
-                                                <KeyboardArrowUp />
-                                            )
-                                        ) : (
-                                            <KeyboardArrowRight />
-                                        )}
-                                    </IconButton>
+                                    <SortButton
+                                        sortOptions={sortOptions}
+                                        setSortOptions={setSortOptions}
+                                        columnSortType={'itemName'}
+                                    ></SortButton>
                                 </Typography>
                             </Grid2>
                             <Grid2 xs={2} className={'flex-center'}>
