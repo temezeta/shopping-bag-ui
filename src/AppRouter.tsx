@@ -10,6 +10,7 @@ import { Role } from './models/user/RoleEnum';
 import AddItem from './features/add-item/AddItem';
 import AdminOrderList from './features/admin-order-list/AdminOrderList';
 import EditItem from './features/edit-item/EditItem';
+import AdminShoppingList from './features/admin-shopping-list/AdminShoppingList';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -38,6 +39,10 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="editshoppinglist/:listId"
                     element={<EditShoppingList />}
+                ></Route>
+                <Route
+                    path="adminshoppinglist/:listId"
+                    element={<AdminShoppingList />}
                 ></Route>
             </Route>
         </Routes>
