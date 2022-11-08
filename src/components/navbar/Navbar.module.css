@@ -27,7 +27,7 @@
     .headerControls {
         align-items: flex-end;
         display: flex;
+        flex-direction: row-reverse;
         gap: 1rem;
-        justify-content: flex-end;
     }
 }

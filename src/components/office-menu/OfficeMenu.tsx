@@ -1,4 +1,4 @@
-import { Home, PersonOutline } from '@mui/icons-material';
+import { Home } from '@mui/icons-material';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
@@ -21,7 +21,7 @@ const OfficeMenu = (): JSX.Element => {
     const homeOffice = useAppSelector(selectHomeOffice);
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
-    const personIcon = <PersonOutline style={{ color: '#fff' }} />;
+    const homeIcon = <Home style={{ color: '#fff' }} />;
 
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
@@ -55,7 +55,7 @@ const OfficeMenu = (): JSX.Element => {
                 title: getOfficeItem(it),
                 onClick: () => setOffice(it),
             }))}
-            icon={personIcon}
+            icon={homeIcon}
         />
     );
 };
