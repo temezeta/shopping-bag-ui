@@ -33,7 +33,7 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
             }
         >
             <Typography variant="body1">{columnName}</Typography>
-            {sortOptions.sortType !== SortType.None ? (
+            {sortOptions.sortType === columnSortType ? (
                 sortOptions.sortDescending ? (
                     <KeyboardArrowDown />
                 ) : (

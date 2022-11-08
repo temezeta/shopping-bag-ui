@@ -4,12 +4,22 @@ import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
+import { useEffect, useState } from 'react';
 
 interface ShoppingListItemProps {
     item: ItemDto;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
+    const { item } = props;
+    const [itemLikesAmount, setItemLikes] = useState<number>(
+        item.usersWhoLiked.length
+    );
+
+    useEffect(() => {
+        setItemLikes(item.usersWhoLiked.length);
+    }, [item.usersWhoLiked]);
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -37,7 +47,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
                     ></Checkbox>
-                    <Typography variant="body1">1</Typography>
+                    <Typography variant="body1">{itemLikesAmount}</Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
                     <ShoppingListItemActions item={props.item} />

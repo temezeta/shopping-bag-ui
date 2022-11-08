@@ -25,3 +25,15 @@ export const sortByItemName = (
         return sortedItems;
     } else return sortedItems.reverse();
 };
+
+export const sortByItemLikes = (
+    itemsList: ItemDto[],
+    descending: boolean
+): ItemDto[] => {
+    const sortedItems: ItemDto[] = [...itemsList].sort(
+        (a, b) => a.usersWhoLiked.length - b.usersWhoLiked.length
+    );
+    if (descending) {
+        return sortedItems;
+    } else return sortedItems.reverse();
+};

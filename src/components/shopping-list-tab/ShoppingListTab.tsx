@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react';
 import SortButton from '../sort-button/SortButton';
 import {
     sortByItemName,
+    sortByItemLikes,
     SortType,
     SortOptions,
 } from '../../utility/sort-helper';
@@ -51,11 +52,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     sortByItemName(list.items, sortOptions.sortDescending)
                 );
                 break;
+            case SortType.Likes:
+                setSortedItems(
+                    sortByItemLikes(list.items, sortOptions.sortDescending)
+                );
+                break;
             default:
                 setSortedItems(list.items);
                 break;
         }
-    }, [sortOptions]);
+    }, [sortOptions, list]);
 
     return (
         <div
@@ -150,9 +156,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 ></SortButton>
                             </Grid2>
                             <Grid2 xs={2} className={'flex-center'}>
-                                <Typography variant="body1">
-                                    {t('list.likes')}
-                                </Typography>
+                                <SortButton
+                                    sortOptions={sortOptions}
+                                    setSortOptions={setSortOptions}
+                                    columnSortType={SortType.Likes}
+                                    columnName={t('list.likes')}
+                                ></SortButton>
                             </Grid2>
                             <Grid2 xs={2} className={'flex-center'}>
                                 <Typography variant="body1">
