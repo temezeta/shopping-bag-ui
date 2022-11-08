@@ -155,7 +155,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.item_details')}
                                 ></SortButton>
                             </Grid2>
-                            <Grid2 xs={2} className={'flex-center'}>
+                            <Grid2
+                                xs={2}
+                                className={'flex-center'}
+                                paddingLeft={4}
+                            >
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}

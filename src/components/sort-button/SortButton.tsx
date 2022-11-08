@@ -1,5 +1,6 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Button, Typography } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2';
 import theme from '../../theme';
 import { SortType } from '../../utility/sort-helper';
 
@@ -33,13 +34,15 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
             }
         >
             <Typography variant="body1">{columnName}</Typography>
-            {sortOptions.sortType === columnSortType ? (
-                sortOptions.sortDescending ? (
-                    <KeyboardArrowDown />
-                ) : (
-                    <KeyboardArrowUp />
-                )
-            ) : null}
+            <Grid2 container spacing={0} minWidth={29} padding={0}>
+                {sortOptions.sortType === columnSortType ? (
+                    sortOptions.sortDescending ? (
+                        <KeyboardArrowDown />
+                    ) : (
+                        <KeyboardArrowUp />
+                    )
+                ) : null}
+            </Grid2>
         </Button>
     );
 };
