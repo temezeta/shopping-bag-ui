@@ -67,7 +67,9 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <Button
                                 startIcon={<Add />}
                                 variant="contained"
-                                onClick={() => navigate(`/addItem/${list.id}`)}
+                                onClick={() =>
+                                    navigate(`/order/${list.id}/add-item`)
+                                }
                                 fullWidth
                             >
                                 {t('actions.add_new_item')}

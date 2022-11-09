@@ -13,7 +13,8 @@
         "invalid_email": "Email invalid. Make sure it belongs to an allowed domain.",
         "invalid_password": "Password invalid. Make sure it has at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.",
         "password_match": "Passwords do not match!",
-        "access_denied": "Access denied"
+        "access_denied": "Access denied",
+        "page_not_found": "Page not found"
     },
     "actions": {
         "registration": "Registration",
@@ -56,6 +57,11 @@
         "name": "Item name",
         "shopName": "Store",
         "url": "Link to item",
-        "comment": "Add comment" 
-     }
+        "comment": "Add comment"
+    },
+    "management": {
+        "management": "Management",
+        "offices": "Offices",
+        "users": "Users"
+    }
 }

@@ -7,17 +7,34 @@ import OfficeMenu from '../office-menu/OfficeMenu';
 import { Tabs } from '@mui/material';
 import LinkTab from '../link-tab/LinkTab';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import DropdownMenu from '../dropdown-menu/DropdownMenu';
+import { isAdmin } from '../../utility/user-helper';
+import { useAppSelector } from '../../store/hooks';
+import { selectCurrentUser } from '../../store/user/user-slice';
 
 const Navbar = (): JSX.Element => {
     const { t } = useTranslation();
-    const [currentPage, setPage] = useState<number>(0);
-    const handlePageChange = (
-        _: React.SyntheticEvent,
-        newValue: number
-    ): void => {
-        setPage(newValue);
-    };
+    const location = useLocation();
+    const navigate = useNavigate();
+    const user = useAppSelector(selectCurrentUser);
+
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.startsWith('/home') || path.startsWith('/orders')) {
+            setPage(0);
+        } else if (path.startsWith('/past-orders')) {
+            setPage(1);
+        } else if (isAdmin(user) && path.startsWith('/management')) {
+            setPage(2);
+        } else {
+            setPage(false);
+        }
+    }, [location.pathname]);
+
+    const [currentPage, setPage] = useState<number | false>(false);
+
     return (
         <Box bgcolor="primary.dark" color="white">
             <Grid2 container className={styles.header}>
@@ -34,13 +51,30 @@ const Navbar = (): JSX.Element => {
                         scrollButtons="auto"
                         color="secondary"
                         value={currentPage}
-                        onChange={handlePageChange}
                     >
                         <LinkTab label={t('list.active_orders')} to="/home" />
                         <LinkTab
                             label={t('list.past_orders')}
-                            to="/home?showPast=1"
+                            to="/past-orders"
                         />
+                        {isAdmin(user) && (
+                            <DropdownMenu
+                                title={t('management.management')}
+                                items={[
+                                    {
+                                        title: t('management.offices'),
+                                        onClick: () =>
+                                            navigate('/management/offices'),
+                                    },
+                                    {
+                                        title: t('management.users'),
+                                        onClick: () =>
+                                            navigate('/management/users'),
+                                    },
+                                ]}
+                                isTab
+                            />
+                        )}
                     </Tabs>
                 </Grid2>
             </Grid2>
