@@ -7,11 +7,25 @@ import OfficeMenu from '../office-menu/OfficeMenu';
 import { Tabs } from '@mui/material';
 import LinkTab from '../link-tab/LinkTab';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const Navbar = (): JSX.Element => {
     const { t } = useTranslation();
-    const [currentPage, setPage] = useState<number>(0);
+    const location = useLocation();
+
+    useEffect(() => {
+        const path = location.pathname;
+        if (path.startsWith('/home') || path.startsWith('/orders')) {
+            setPage(0);
+        } else if (path.startsWith('/past-orders')) {
+            setPage(1);
+        } else {
+            setPage(false);
+        }
+    }, [location.pathname]);
+
+    const [currentPage, setPage] = useState<number | false>(false);
     const handlePageChange = (
         _: React.SyntheticEvent,
         newValue: number
@@ -39,7 +53,7 @@ const Navbar = (): JSX.Element => {
                         <LinkTab label={t('list.active_orders')} to="/home" />
                         <LinkTab
                             label={t('list.past_orders')}
-                            to="/home?showPast=1"
+                            to="/past-orders"
                         />
                     </Tabs>
                 </Grid2>

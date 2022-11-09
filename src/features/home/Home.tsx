@@ -4,36 +4,29 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
-import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { Role } from '../../models/user/RoleEnum';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     getShoppingListsByOfficeAsync,
     selectActiveLists,
-    selectInactiveLists,
 } from '../../store/shopping-list/shopping-list-slice';
 import {
     selectCurrentOffice,
     selectCurrentUser,
 } from '../../store/user/user-slice';
-import { useQuery } from '../../utility/navigation-hooks';
 
 const Home = (): JSX.Element => {
     const dispatch = useAppDispatch();
-    const query = useQuery();
     const navigate = useNavigate();
-    const showPast = query.get('showPast');
     const user = useAppSelector(selectCurrentUser);
     const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
-    const inactiveShoppingLists = useAppSelector(selectInactiveLists);
-    const [shoppingLists, setShoppingLists] = useState<ShoppingListDto[]>([]);
     const [selectedListId, setSelectedListId] = useState<number | false>(false);
 
     // Handle admin page transition
     useEffect(() => {
         if (user?.userRoles.some((it) => it.roleName === Role.Admin)) {
-            navigate('/shopping-lists', { replace: true });
+            navigate('/orders', { replace: true });
         }
     }, [user]);
 
@@ -48,15 +41,11 @@ const Home = (): JSX.Element => {
         void fetchLists();
     }, [currentOffice]);
 
-    // Handle past vs active changes
     useEffect(() => {
-        const currentLists = showPast
-            ? inactiveShoppingLists
-            : activeShoppingLists;
-
-        setSelectedListId(currentLists.length ? currentLists[0].id : false);
-        setShoppingLists(currentLists);
-    }, [showPast, activeShoppingLists, inactiveShoppingLists]);
+        setSelectedListId(
+            activeShoppingLists.length ? activeShoppingLists[0].id : false
+        );
+    }, [activeShoppingLists]);
 
     const handleTabChange = (_: SyntheticEvent, value: number): void => {
         setSelectedListId(value);
@@ -74,14 +63,14 @@ const Home = (): JSX.Element => {
                         value={selectedListId}
                         onChange={handleTabChange}
                     >
-                        {shoppingLists.map((list, i) => (
+                        {activeShoppingLists.map((list, i) => (
                             <Tab label={list.name} key={i} value={list.id} />
                         ))}
                     </Tabs>
                 </Grid2>
 
                 {selectedListId &&
-                    shoppingLists.map((list, i) => (
+                    activeShoppingLists.map((list, i) => (
                         <ShoppingListTab
                             value={selectedListId}
                             list={list}

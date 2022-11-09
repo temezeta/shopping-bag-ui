@@ -82,7 +82,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     columnSpacing={7}
                 >
                     <IconButton
-                        onClick={() => navigate(`/editshoppinglist/${list.id}`)}
+                        onClick={() => navigate(`/orders/${list.id}/edit`)}
                     >
                         <Edit />
                     </IconButton>

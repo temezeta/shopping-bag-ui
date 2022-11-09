@@ -85,7 +85,7 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
                                 edge="end"
                                 aria-label="edit"
                                 onClick={() =>
-                                    navigate(`/editItem/${props.id}`)
+                                    navigate(`/order/edit-item/${props.id}`)
                                 }
                             >
                                 <Edit />
