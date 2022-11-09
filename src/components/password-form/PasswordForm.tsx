@@ -1,10 +1,8 @@
-import { Button, CircularProgress, FormLabel, TextField } from '@mui/material';
+import { Button, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { SubmitHandler, Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { UserPasswordDto } from '../../models/user/UserDto';
-import { selectRegistrationSending } from '../../store/auth/auth-slice';
-import { useAppSelector } from '../../store/hooks';
 import { isValidPassword } from '../../utility/validation-helper';
 
 interface PasswordFormProps {
@@ -13,7 +11,6 @@ interface PasswordFormProps {
 
 const PasswordForm = (props: PasswordFormProps): JSX.Element => {
     const { t } = useTranslation();
-    const isSending = useAppSelector(selectRegistrationSending);
 
     const {
         control,
@@ -35,122 +32,113 @@ const PasswordForm = (props: PasswordFormProps): JSX.Element => {
 
     return (
         <Grid2 container spacing={2}>
-            {isSending && (
-                <div className="flex-center full-width">
-                    <CircularProgress />
-                </div>
-            )}
-            {!isSending && (
-                <form
-                    id="password-form"
-                    className="full-width"
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    <Grid2 xs={12}>
-                        <FormLabel id="password">
-                            {t('user.current_password')}
-                        </FormLabel>
-                        <Controller
-                            name="currentPassword"
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: t('errors.required'),
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    type="password"
-                                    error={!!errors.currentPassword}
-                                    aria-labelledby="password"
-                                    helperText={errors.currentPassword?.message}
-                                    size="small"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </Grid2>
+            <form
+                id="password-form"
+                className="full-width"
+                onSubmit={handleSubmit(onSubmit)}
+            >
+                <Grid2 xs={12}>
+                    <FormLabel id="password">
+                        {t('user.current_password')}
+                    </FormLabel>
+                    <Controller
+                        name="currentPassword"
+                        control={control}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                type="password"
+                                error={!!errors.currentPassword}
+                                aria-labelledby="password"
+                                helperText={errors.currentPassword?.message}
+                                size="small"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
 
-                    <Grid2 xs={12}>
-                        <FormLabel id="password">
-                            {t('user.new_password')}
-                        </FormLabel>
-                        <Controller
-                            name="newPassword"
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: t('errors.required'),
-                                },
-                                validate: {
-                                    validPassword: (value: string) =>
-                                        isValidPassword(value) ||
-                                        t('errors.invalid_password'),
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    type="password"
-                                    error={!!errors.newPassword}
-                                    aria-labelledby="password"
-                                    helperText={errors.newPassword?.message}
-                                    size="small"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </Grid2>
+                <Grid2 xs={12}>
+                    <FormLabel id="password">
+                        {t('user.new_password')}
+                    </FormLabel>
+                    <Controller
+                        name="newPassword"
+                        control={control}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                            validate: {
+                                validPassword: (value: string) =>
+                                    isValidPassword(value) ||
+                                    t('errors.invalid_password'),
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                type="password"
+                                error={!!errors.newPassword}
+                                aria-labelledby="password"
+                                helperText={errors.newPassword?.message}
+                                size="small"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
 
-                    <Grid2 xs={12}>
-                        <FormLabel id="repeat-password">
-                            {t('user.repeat_new_password')}
-                        </FormLabel>
-                        <Controller
-                            name="repeatNewPassword"
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: t('errors.required'),
-                                },
-                                validate: {
-                                    matches: (value: string) =>
-                                        watch('newPassword') === value ||
-                                        t('errors.password_match'),
-                                },
-                            }}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    type="password"
-                                    error={!!errors.repeatNewPassword}
-                                    aria-labelledby="repeat-password"
-                                    helperText={
-                                        errors.repeatNewPassword?.message
-                                    }
-                                    size="small"
-                                    fullWidth
-                                />
-                            )}
-                        />
-                    </Grid2>
+                <Grid2 xs={12}>
+                    <FormLabel id="repeat-password">
+                        {t('user.repeat_new_password')}
+                    </FormLabel>
+                    <Controller
+                        name="repeatNewPassword"
+                        control={control}
+                        rules={{
+                            required: {
+                                value: true,
+                                message: t('errors.required'),
+                            },
+                            validate: {
+                                matches: (value: string) =>
+                                    watch('newPassword') === value ||
+                                    t('errors.password_match'),
+                            },
+                        }}
+                        render={({ field }) => (
+                            <TextField
+                                {...field}
+                                type="password"
+                                error={!!errors.repeatNewPassword}
+                                aria-labelledby="repeat-password"
+                                helperText={errors.repeatNewPassword?.message}
+                                size="small"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
 
-                    <Grid2 xs={12}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            disabled={!isValid}
-                            fullWidth
-                        >
-                            {t('actions.save')}
-                        </Button>
-                    </Grid2>
-                </form>
-            )}
+                <Grid2 xs={12}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={!isValid}
+                        fullWidth
+                    >
+                        {t('actions.save')}
+                    </Button>
+                </Grid2>
+            </form>
         </Grid2>
     );
 };
