@@ -87,8 +87,8 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                             <Grid2 xs={2} className="flex-center">
                                 <Checkbox
                                     {...field}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite />}
+                                    icon={<Favorite />}
+                                    checkedIcon={<FavoriteBorder />}
                                 />
                             </Grid2>
                         )}
