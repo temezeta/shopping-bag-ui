@@ -14,6 +14,7 @@ import PastOrders from './features/past-orders/PastOrders';
 import OfficeManagement from './features/office-management/OfficeManagement';
 import UserManagement from './features/user-management/UserManagement';
 import NotFound from './features/not-found/NotFound';
+import AccountSettings from './features/account-settings/AccountSettings';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -36,6 +37,10 @@ const AppRouter = (): JSX.Element => {
                     element={<EditItem />}
                 ></Route>
                 <Route path="past-orders" element={<PastOrders />}></Route>
+                <Route
+                    path="account-settings"
+                    element={<AccountSettings />}
+                ></Route>
             </Route>
             {/** Admin routes */}
             <Route element={<AuthGuard roles={[Role.Admin]} />}>
