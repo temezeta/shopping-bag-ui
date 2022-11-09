@@ -72,5 +72,8 @@
         "management": "Management",
         "offices": "Offices",
         "users": "Users"
+    },
+    "general": {
+        "support_markdown": "Styling with Markdown is supported"
     }
 }

@@ -1,4 +1,12 @@
-import { Button, FormLabel, TextField, Tabs, Tab, Paper } from '@mui/material';
+import {
+    Button,
+    FormLabel,
+    TextField,
+    Tabs,
+    Tab,
+    Paper,
+    Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -131,6 +139,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                 <Markdown>{watch('comment')}</Markdown>
                             </Paper>
                         </TabPanel>
+                        <Typography variant="body2">
+                            {t('general.support_markdown')}
+                        </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="due-date">
