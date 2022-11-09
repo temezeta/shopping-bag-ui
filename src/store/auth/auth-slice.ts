@@ -65,8 +65,6 @@ export const logoutAsync = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue, dispatch }) => {
         const response = await logout();
-        localStorage.removeItem('authToken');
-        dispatch(RESET_ALL());
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -76,6 +74,8 @@ export const logoutAsync = createAsyncThunk(
             );
             return rejectWithValue('Logout failed');
         }
+        localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
         return response;
     }
 );

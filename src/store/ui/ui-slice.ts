@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, store } from '../store';
+import { RESET_ALL, RootState, store } from '../store';
 import { SnackbarInfo, UIState } from './ui-types';
 
 const initialState: UIState = {
@@ -27,6 +27,9 @@ export const uiSlice = createSlice({
             state.showSnackbar = false;
             state.snackbarInfo = undefined;
         },
+    },
+    extraReducers: (builder) => {
+        builder.addCase(RESET_ALL, () => initialState);
     },
 });
 
