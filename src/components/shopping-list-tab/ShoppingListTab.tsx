@@ -19,6 +19,7 @@ import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
+import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -54,9 +55,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             </Typography>
                         </Grid2>
                         <Grid2 xs={12}>
-                            <Typography variant="body2">
-                                {list.comment}
-                            </Typography>
+                            <Markdown>{list.comment}</Markdown>
                         </Grid2>
                         <Grid2
                             md={4}
