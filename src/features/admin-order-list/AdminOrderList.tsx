@@ -4,16 +4,19 @@ import {
     getShoppingListsByOfficeAsync,
     selectActiveLists,
 } from '../../store/shopping-list/shopping-list-slice';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { selectCurrentOffice } from '../../store/user/user-slice';
 import OrderListItem from '../../components/order-list-item/OrderListItem';
+import { Add } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const AdminOrderList = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
 
@@ -48,6 +51,19 @@ const AdminOrderList = (): JSX.Element => {
                         >
                             {currentOffice?.name}
                         </Typography>
+                    </Grid2>
+                    <Grid2
+                        xs={12}
+                        className="flex-center"
+                        sx={{ marginTop: '2rem' }}
+                    >
+                        <Button
+                            startIcon={<Add />}
+                            variant="contained"
+                            onClick={() => navigate('/orders/add')}
+                        >
+                            {t('actions.add_new_list')}
+                        </Button>
                     </Grid2>
                     <Grid2 xs={12}>
                         {activeShoppingLists.map((list, i) => (
