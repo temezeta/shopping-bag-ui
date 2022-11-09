@@ -39,14 +39,15 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
                     {moment(list.expectedDeliveryDate, true).isAfter(
                         new Date()
-                    ) && (
-                        <Box>
-                            <Checkbox
-                                icon={<NotificationsNone />}
-                                checkedIcon={<NotificationsActive />}
-                            ></Checkbox>
-                        </Box>
-                    )}
+                    ) &&
+                        !list.ordered && (
+                            <Box>
+                                <Checkbox
+                                    icon={<NotificationsNone />}
+                                    checkedIcon={<NotificationsActive />}
+                                ></Checkbox>
+                            </Box>
+                        )}
                 </Grid2>
                 <Grid2
                     container
@@ -81,11 +82,13 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.utilityButtons}
                     columnSpacing={7}
                 >
-                    <IconButton
-                        onClick={() => navigate(`/orders/${list.id}/edit`)}
-                    >
-                        <Edit />
-                    </IconButton>
+                    {!list.ordered && (
+                        <IconButton
+                            onClick={() => navigate(`/orders/${list.id}/edit`)}
+                        >
+                            <Edit />
+                        </IconButton>
+                    )}
                 </Grid2>
             </Grid2>
         </ListItem>
