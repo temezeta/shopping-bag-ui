@@ -9,7 +9,7 @@ import {
     TableHead,
     TableContainer,
 } from '@mui/material';
-import { ElementType, HTMLProps, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 import {
     HeadingProps,
     LiProps,
@@ -56,34 +56,52 @@ const MarkdownListItem = (props: LiProps): JSX.Element => {
 };
 
 // Table
-const MarkdownTable = (props: { children: ReactNode }): JSX.Element => {
+const MarkdownTable = (
+    props: ComponentPropsWithoutRef<'table'>
+): JSX.Element => {
     return (
         <TableContainer component={Paper}>
-            <Table size="small" aria-label="a dense table">
-                {props.children}
-            </Table>
+            <Table size="small" aria-label="a dense table" {...props} />
         </TableContainer>
     );
 };
 
-const MarkdownTableHead = (props: { children: ReactNode }): JSX.Element => {
-    return <TableHead>{props.children}</TableHead>;
+const MarkdownTableHead = (
+    props: ComponentPropsWithoutRef<'thead'>
+): JSX.Element => {
+    return <TableHead {...props} />;
 };
 
-const MarkdownTableBody = (props: { children: ReactNode }): JSX.Element => {
-    return <TableBody>{props.children}</TableBody>;
+const MarkdownTableBody = (
+    props: ComponentPropsWithoutRef<'tbody'>
+): JSX.Element => {
+    return <TableBody {...props} />;
 };
 
 const MarkdownTableRow = (props: TableRowProps): JSX.Element => {
-    return <TableRow>{props.children}</TableRow>;
+    const { isHeader, ...rest } = props;
+    return <TableRow {...rest} />;
 };
 
 const MarkdownTableCell = (props: TableCellProps): JSX.Element => {
-    return (
-        <TableCell>
-            <Typography>{props.children}</Typography>
-        </TableCell>
-    );
+    let align: TableCellProps['align'];
+    const textAlign = props.style?.textAlign;
+    switch (textAlign) {
+        case 'left':
+            align = 'left';
+            break;
+        case 'center':
+            align = 'center';
+            break;
+        case 'right':
+            align = 'right';
+            break;
+        default:
+            align = undefined;
+            break;
+    }
+
+    return <TableCell align={align}>{props.children}</TableCell>;
 };
 
 // Other
@@ -97,10 +115,6 @@ const MarkdownTypography = (
             {props.children}
         </Typography>
     );
-};
-
-const MarkdownLink = (props: HTMLProps<HTMLAnchorElement>): JSX.Element => {
-    return <a target="_blank" {...props} />;
 };
 
 export const MarkdownComponents: ReactMarkdownOptions['components'] = {
@@ -122,6 +136,4 @@ export const MarkdownComponents: ReactMarkdownOptions['components'] = {
     th: (props) => MarkdownTableCell(props),
     /** Other */
     p: (props) => MarkdownTypography(props, 'p', 'body2'),
-    em: (props) => MarkdownTypography(props, 'em'),
-    a: (props) => MarkdownLink(props),
 };
