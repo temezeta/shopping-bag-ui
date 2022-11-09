@@ -1,43 +1,14 @@
-import { Box, Link, Tab, Tabs, Typography } from '@mui/material';
+import { Link, Tab, Tabs, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
+import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
 import { UserDto } from '../../models/user/UserDto';
 import { useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
-
-interface TabPanelProps {
-    children?: React.ReactNode;
-    index: number;
-    value: number;
-}
-
-function TabPanel(props: TabPanelProps): JSX.Element {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            className={'full-width'}
-            {...other}
-        >
-            {value === index && <Box sx={{ width: '100%' }}>{children}</Box>}
-        </div>
-    );
-}
-
-function a11yProps(index: number): { id: string; 'aria-controls': string } {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
