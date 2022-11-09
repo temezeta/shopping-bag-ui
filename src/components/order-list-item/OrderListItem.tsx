@@ -39,15 +39,14 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
                     {moment(list.expectedDeliveryDate, true).isAfter(
                         new Date()
-                    ) &&
-                        !list.ordered && (
-                            <Box>
-                                <Checkbox
-                                    icon={<NotificationsNone />}
-                                    checkedIcon={<NotificationsActive />}
-                                ></Checkbox>
-                            </Box>
-                        )}
+                    ) && (
+                        <Box>
+                            <Checkbox
+                                icon={<NotificationsNone />}
+                                checkedIcon={<NotificationsActive />}
+                            ></Checkbox>
+                        </Box>
+                    )}
                 </Grid2>
                 <Grid2
                     container
