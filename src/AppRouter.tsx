@@ -11,6 +11,8 @@ import AddItem from './features/add-item/AddItem';
 import AdminOrderList from './features/admin-order-list/AdminOrderList';
 import EditItem from './features/edit-item/EditItem';
 import PastOrders from './features/past-orders/PastOrders';
+import OfficeManagement from './features/office-management/OfficeManagement';
+import UserManagement from './features/user-management/UserManagement';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -41,6 +43,14 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="orders/:listId/edit"
                     element={<EditShoppingList />}
+                ></Route>
+                <Route
+                    path="management/offices"
+                    element={<OfficeManagement />}
+                ></Route>
+                <Route
+                    path="management/users"
+                    element={<UserManagement />}
                 ></Route>
             </Route>
         </Routes>

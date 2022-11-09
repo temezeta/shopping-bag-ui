@@ -4,7 +4,6 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
-import { Role } from '../../models/user/RoleEnum';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     getShoppingListsByOfficeAsync,
@@ -14,6 +13,7 @@ import {
     selectCurrentOffice,
     selectCurrentUser,
 } from '../../store/user/user-slice';
+import { isAdmin } from '../../utility/user-helper';
 
 const Home = (): JSX.Element => {
     const dispatch = useAppDispatch();
@@ -25,7 +25,7 @@ const Home = (): JSX.Element => {
 
     // Handle admin page transition
     useEffect(() => {
-        if (user?.userRoles.some((it) => it.roleName === Role.Admin)) {
+        if (isAdmin(user)) {
             navigate('/orders', { replace: true });
         }
     }, [user]);

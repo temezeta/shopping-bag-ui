@@ -56,6 +56,11 @@
         "name": "Item name",
         "shopName": "Store",
         "url": "Link to item",
-        "comment": "Add comment" 
-     }
+        "comment": "Add comment"
+    },
+    "management": {
+        "management": "Management",
+        "offices": "Offices",
+        "users": "Users"
+    }
 }
