@@ -48,7 +48,9 @@ const MarkdownHeading = (props: HeadingProps): JSX.Element => {
 const MarkdownListItem = (props: LiProps): JSX.Element => {
     return (
         <li>
-            <Typography component="span">{props.children}</Typography>
+            <Typography component="span" variant="body2">
+                {props.children}
+            </Typography>
         </li>
     );
 };

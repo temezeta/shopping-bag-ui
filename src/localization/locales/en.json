@@ -38,7 +38,10 @@
         "add_item": "Add item",
         "edit_list": "Edit list",
         "remove_list": "Remove list",
-        "save": "Save"
+        "save": "Save",
+
+        "input": "Input",
+        "preview": "Preview"
     },
     "dialogs": {
         "verify_account": "Verify your account",
