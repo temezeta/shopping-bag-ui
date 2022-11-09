@@ -15,7 +15,6 @@
         "password_match": "Passwords do not match!",
         "access_denied": "Access denied",
         "page_not_found": "Page not found",
-
         "registration_failed": "Registration failed",
         "login_failed": "Login failed",
         "logout_failed": "Unable to logout"
