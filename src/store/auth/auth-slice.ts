@@ -1,9 +1,9 @@
-import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import { setSnackbar } from '../ui/ui-slice';
 import { login, logout, refreshToken, register } from './auth-actions';
 import { AuthState } from './auth-types';
@@ -79,8 +79,6 @@ export const logoutAsync = createAsyncThunk(
         return response;
     }
 );
-
-export const RESET_ALL = createAction('RESET_ALL');
 
 // Selectors
 export const selectRegistrationSending = (state: RootState): boolean =>

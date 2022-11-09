@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import {
     addShoppingList,
     getShoppingListById,
@@ -22,7 +22,6 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { updateOrAdd } from '../../utility/array-helper';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
-import { RESET_ALL } from '../auth/auth-slice';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],

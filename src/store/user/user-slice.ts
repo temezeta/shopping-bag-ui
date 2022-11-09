@@ -1,8 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto } from '../../models/user/UserDto';
-import { RESET_ALL } from '../auth/auth-slice';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import { getCurrentUser } from './user-actions';
 import { UserState } from './user-types';
 

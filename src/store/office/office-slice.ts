@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { OfficeDto } from '../../models/office/OfficeDto';
-import { RESET_ALL } from '../auth/auth-slice';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import { getAllOffices } from './office-actions';
 import { OfficeState } from './office-types';
 
