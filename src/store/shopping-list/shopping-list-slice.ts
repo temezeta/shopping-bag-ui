@@ -22,6 +22,7 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
 import { updateOrAdd } from '../../utility/array-helper';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { RESET_ALL } from '../auth/auth-slice';
 
 const initialState: ShoppingListState = {
     activeShoppingLists: [],
@@ -161,6 +162,7 @@ export const shoppingListSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(RESET_ALL, () => initialState)
             .addCase(getShoppingListsByOfficeAsync.pending, (state) => {
                 state.activeShoppingLists = [];
                 state.inactiveShoppingLists = [];

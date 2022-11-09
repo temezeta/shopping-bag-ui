@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
@@ -66,6 +66,7 @@ export const logoutAsync = createAsyncThunk(
     async (_, { rejectWithValue, dispatch }) => {
         const response = await logout();
         localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -79,6 +80,8 @@ export const logoutAsync = createAsyncThunk(
     }
 );
 
+export const RESET_ALL = createAction('RESET_ALL');
+
 // Selectors
 export const selectRegistrationSending = (state: RootState): boolean =>
     state.auth.registrationSending;
@@ -89,6 +92,7 @@ export const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(RESET_ALL, () => initialState)
             .addCase(registerAsync.pending, (state) => {
                 state.registrationSending = true;
             })
