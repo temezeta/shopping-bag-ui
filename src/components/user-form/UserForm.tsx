@@ -8,12 +8,12 @@ import { useEffect } from 'react';
 import { UserDto } from '../../models/user/UserDto';
 import OfficeSelect from '../office-select/OfficeSelect';
 
-interface ItemFormProps {
+interface UserFormProps {
     initialValues?: UserDto;
     onSubmit?: SubmitHandler<UserDto>;
 }
 
-const UserForm = (props: ItemFormProps): JSX.Element => {
+const UserForm = (props: UserFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
 
