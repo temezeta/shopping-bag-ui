@@ -13,6 +13,7 @@ import EditItem from './features/edit-item/EditItem';
 import PastOrders from './features/past-orders/PastOrders';
 import OfficeManagement from './features/office-management/OfficeManagement';
 import UserManagement from './features/user-management/UserManagement';
+import NotFound from './features/not-found/NotFound';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -53,6 +54,7 @@ const AppRouter = (): JSX.Element => {
                     element={<UserManagement />}
                 ></Route>
             </Route>
+            <Route path="*" element={<NotFound />}></Route>
         </Routes>
     );
 };
