@@ -1,9 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RootState, store } from '../store';
 import { SnackbarInfo, UIState } from './ui-types';
 
 const initialState: UIState = {
     showSnackbar: false,
+};
+
+export const showResponseError = async (response: Response): Promise<void> => {
+    store.dispatch(
+        setSnackbar({ type: 'error', message: await response.text() })
+    );
 };
 
 // Selectors
