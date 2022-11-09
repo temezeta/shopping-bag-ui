@@ -17,3 +17,10 @@ export interface ItemAdderUserDto {
     email: string;
     homeOffice: OfficeDto;
 }
+
+export interface UserPasswordDto {
+    id: number;
+    currentPassword: string;
+    newPassword: string;
+    repeatNewPassword: string;
+}
