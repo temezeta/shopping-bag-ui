@@ -52,7 +52,11 @@ const AdminOrderList = (): JSX.Element => {
                             {currentOffice?.name}
                         </Typography>
                     </Grid2>
-                    <Grid2 xs={12} className="flex-center">
+                    <Grid2
+                        xs={12}
+                        className="flex-center"
+                        sx={{ marginTop: '2rem' }}
+                    >
                         <Button
                             startIcon={<Add />}
                             variant="contained"
