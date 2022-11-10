@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
+import PasswordForm from '../../components/password-form/PasswordForm';
 import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
-import { UserDto } from '../../models/user/UserDto';
+import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
 import { useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
 
@@ -23,7 +24,9 @@ const AccountSettings = (): JSX.Element => {
 
     const user = useAppSelector(selectCurrentUser);
 
-    const onSubmit: SubmitHandler<UserDto> = async (data) => {};
+    const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
+
+    const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {};
 
     return (
         <>
@@ -57,7 +60,7 @@ const AccountSettings = (): JSX.Element => {
                     <TabPanel value={currentTab} index={0}>
                         <Grid2 xs={12}>
                             <UserForm
-                                onSubmit={onSubmit}
+                                onSubmit={userDetailsOnSubmit}
                                 initialValues={user}
                             />
                         </Grid2>
@@ -68,7 +71,9 @@ const AccountSettings = (): JSX.Element => {
                         </Grid2>
                     </TabPanel>
                     <TabPanel value={currentTab} index={1}>
-                        {/* TODO: Add Password form */}
+                        <Grid2 xs={12}>
+                            <PasswordForm onSubmit={passwordOnSubmit} />
+                        </Grid2>
                     </TabPanel>
                 </Grid2>
             </MainLayout>
