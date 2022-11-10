@@ -1,12 +1,11 @@
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import theme from '../../theme';
-import { SortType } from '../../utility/sort-helper';
+import { SortOptions, SortType } from '../../utility/sort-helper';
 
 interface SortButtonProps {
-    sortOptions: { sortType: SortType; sortDescending: boolean };
-    setSortOptions: Function;
+    sortOptions: SortOptions;
+    setSortOptions: (options: SortOptions) => void;
     columnSortType: SortType;
     columnName: String;
 }
@@ -19,14 +18,19 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
                 textTransform: 'none',
                 opacity: 1,
                 fontWeight: 'bold',
-                color: theme.palette.text.primary,
+                color: 'text.primary',
             }}
             onClick={() =>
                 sortOptions.sortType !== columnSortType
-                    ? setSortOptions({
-                          sortType: columnSortType,
-                          sortDescending: true,
-                      })
+                    ? sortOptions.sortType === SortType.Likes
+                        ? setSortOptions({
+                              sortType: columnSortType,
+                              sortDescending: true,
+                          })
+                        : setSortOptions({
+                              sortType: columnSortType,
+                              sortDescending: false,
+                          })
                     : setSortOptions({
                           sortType: columnSortType,
                           sortDescending: !sortOptions.sortDescending,

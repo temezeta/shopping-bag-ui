@@ -39,11 +39,13 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
-    const [sortedItems, setSortedItems] = useState<ItemDto[]>(list.items);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
-        sortType: SortType.None,
+        sortType: SortType.Likes,
         sortDescending: false,
     });
+    const [sortedItems, setSortedItems] = useState<ItemDto[]>(
+        sortByItemLikes(list.items, sortOptions.sortDescending)
+    );
 
     useEffect(() => {
         switch (sortOptions.sortType) {
@@ -166,11 +168,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnSortType={SortType.Likes}
                                     columnName={t('list.likes')}
                                 ></SortButton>
-                            </Grid2>
-                            <Grid2 xs={2} className={'flex-center'}>
-                                <Typography variant="body1">
-                                    {t('list.actions')}
-                                </Typography>
                             </Grid2>
                         </Grid2>
                     </Box>
