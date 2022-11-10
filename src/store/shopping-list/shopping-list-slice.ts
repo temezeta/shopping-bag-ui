@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import {
     addShoppingList,
     getShoppingListById,
@@ -161,6 +161,7 @@ export const shoppingListSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(RESET_ALL, () => initialState)
             .addCase(getShoppingListsByOfficeAsync.pending, (state) => {
                 state.activeShoppingLists = [];
                 state.inactiveShoppingLists = [];

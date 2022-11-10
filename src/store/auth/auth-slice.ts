@@ -3,7 +3,7 @@ import { t } from 'i18next';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
 import { setSnackbar } from '../ui/ui-slice';
 import { login, logout, refreshToken, register } from './auth-actions';
 import { AuthState } from './auth-types';
@@ -65,7 +65,6 @@ export const logoutAsync = createAsyncThunk(
     'auth/logout',
     async (_, { rejectWithValue, dispatch }) => {
         const response = await logout();
-        localStorage.removeItem('authToken');
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -75,6 +74,8 @@ export const logoutAsync = createAsyncThunk(
             );
             return rejectWithValue('Logout failed');
         }
+        localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
         return response;
     }
 );
@@ -89,6 +90,7 @@ export const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(RESET_ALL, () => initialState)
             .addCase(registerAsync.pending, (state) => {
                 state.registrationSending = true;
             })
