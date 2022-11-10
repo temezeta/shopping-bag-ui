@@ -6,6 +6,7 @@ import {
     DialogTitle,
     TextField,
     FormLabel,
+    IconButton,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import CloseIcon from '@mui/icons-material/Close';
@@ -33,13 +34,19 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                     sx={{ textAlign: 'center' }}
                 >
                     {props.title}
-                    <CloseIcon
-                        fontSize="medium"
+                    <IconButton
                         onClick={props.onCancel}
+                        sx={{
+                            '&:hover': {
+                                backgroundColor: 'light-grey',
+                            },
+                        }}
                         style={{
                             float: 'right',
                         }}
-                    />
+                    >
+                        <CloseIcon fontSize="medium" />
+                    </IconButton>
                 </DialogTitle>
             </Grid2>
             <DialogContent>{props.children}</DialogContent>
