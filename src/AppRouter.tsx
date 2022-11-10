@@ -31,9 +31,8 @@ const AppRouter = (): JSX.Element => {
                     path="order/:listId/add-item"
                     element={<AddItem />}
                 ></Route>
-                {/** TODO: Add listId to edit item route when available in ItemDto */}
                 <Route
-                    path="order/edit-item/:itemId"
+                    path="order/:listId/edit-item/:itemId"
                     element={<EditItem />}
                 ></Route>
                 <Route path="past-orders" element={<PastOrders />}></Route>

@@ -3,9 +3,12 @@ import { ModifyItemDto } from '../../models/shopping-list/ModifyItemDto';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 
+export interface ShoppingListMap {
+    [key: number]: ShoppingListDto;
+}
+
 export interface ShoppingListState {
-    activeShoppingLists: ShoppingListDto[];
-    inactiveShoppingLists: ShoppingListDto[];
+    shoppingLists: ShoppingListMap;
 }
 
 export interface ModifyPayload {

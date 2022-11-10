@@ -40,7 +40,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     <Typography variant="body1">1</Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    <ShoppingListItemActions id={props.item.id} />
+                    <ShoppingListItemActions item={props.item} />
                 </Grid2>
                 <Box
                     component={Grid2}

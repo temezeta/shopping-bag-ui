@@ -8,5 +8,6 @@ export interface ItemDto {
     comment?: string;
     isChecked: boolean;
     amountOrdered: number;
+    shoppingListId: number;
     itemAdder: ItemAdderUserDto;
 }
