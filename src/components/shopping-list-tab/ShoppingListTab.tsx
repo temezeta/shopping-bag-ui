@@ -33,8 +33,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         var host = window.location.host;
         var protocol = location.protocol;
         await navigator.clipboard.writeText(
-            /** TODO: Update right page to url */
-            `${protocol}//${host}/admin-shopping-list-items-page/${list.id}`
+            `${protocol}//${host}/adminshoppinglist/${list.id}`
         );
     };
 
