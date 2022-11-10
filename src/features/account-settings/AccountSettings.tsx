@@ -1,4 +1,4 @@
-import { Link, Tab, Tabs, Typography } from '@mui/material';
+import { Link, Tab, Tabs, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
@@ -9,6 +9,7 @@ import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
 import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
 import { useAppSelector } from '../../store/hooks';
+import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import { selectCurrentUser } from '../../store/user/user-slice';
 
 const AccountSettings = (): JSX.Element => {
@@ -27,6 +28,9 @@ const AccountSettings = (): JSX.Element => {
     const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
 
     const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {};
+
+    const onModifyConfirm = async (): Promise<void> => {};
+    const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     return (
         <>
@@ -65,7 +69,12 @@ const AccountSettings = (): JSX.Element => {
                             />
                         </Grid2>
                         <Grid2 xs={12} className="flex-center">
-                            <Link component="button" onClick={() => {}}>
+                            <Link
+                                component="button"
+                                onClick={() => {
+                                    setDeleteOpen(true);
+                                }}
+                            >
                                 {t('user.delete_account')}
                             </Link>
                         </Grid2>
@@ -78,6 +87,16 @@ const AccountSettings = (): JSX.Element => {
                 </Grid2>
             </MainLayout>
             {/* TODO: Add delete confirmation dialogue */}
+            <DeleteAccountDialog
+                title={t('user.delete_account')}
+                onConfirm={onModifyConfirm}
+                open={isDeleteOpen}
+                onCancel={() => setDeleteOpen(false)}
+            >
+                <DialogContentText>
+                    {t('dialogs.delete_account')}
+                </DialogContentText>
+            </DeleteAccountDialog>
         </>
     );
 };
