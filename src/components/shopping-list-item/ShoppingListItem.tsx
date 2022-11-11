@@ -10,6 +10,8 @@ interface ShoppingListItemProps {
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
+    const { item } = props;
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -37,7 +39,9 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
                     ></Checkbox>
-                    <Typography variant="body1">1</Typography>
+                    <Typography variant="body1">
+                        {item.usersWhoLiked.length}
+                    </Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
                     <ShoppingListItemActions item={props.item} />

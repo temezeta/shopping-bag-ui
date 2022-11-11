@@ -19,6 +19,15 @@ import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { useEffect, useState } from 'react';
+import SortButton from '../sort-button/SortButton';
+import {
+    sortByItemName,
+    sortByItemLikes,
+    SortType,
+    SortOptions,
+} from '../../utility/sort-helper';
 import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
@@ -30,6 +39,31 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
+    const [sortOptions, setSortOptions] = useState<SortOptions>({
+        sortType: SortType.Likes,
+        sortDescending: false,
+    });
+    const [sortedItems, setSortedItems] = useState<ItemDto[]>(
+        sortByItemLikes(list.items, sortOptions.sortDescending)
+    );
+
+    useEffect(() => {
+        switch (sortOptions.sortType) {
+            case SortType.Name:
+                setSortedItems(
+                    sortByItemName(list.items, sortOptions.sortDescending)
+                );
+                break;
+            case SortType.Likes:
+                setSortedItems(
+                    sortByItemLikes(list.items, sortOptions.sortDescending)
+                );
+                break;
+            default:
+                setSortedItems(list.items);
+                break;
+        }
+    }, [sortOptions, list]);
 
     return (
         <div
@@ -116,24 +150,29 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
                             <Grid2 xs={8}>
-                                <Typography variant="body1">
-                                    {t('list.item_details')}
-                                </Typography>
+                                <SortButton
+                                    sortOptions={sortOptions}
+                                    setSortOptions={setSortOptions}
+                                    columnSortType={SortType.Name}
+                                    columnName={t('list.item_details')}
+                                ></SortButton>
                             </Grid2>
-                            <Grid2 xs={2} className={'flex-center'}>
-                                <Typography variant="body1">
-                                    {t('list.likes')}
-                                </Typography>
-                            </Grid2>
-                            <Grid2 xs={2} className={'flex-center'}>
-                                <Typography variant="body1">
-                                    {t('list.actions')}
-                                </Typography>
+                            <Grid2
+                                xs={2}
+                                className={'flex-center'}
+                                paddingLeft={4}
+                            >
+                                <SortButton
+                                    sortOptions={sortOptions}
+                                    setSortOptions={setSortOptions}
+                                    columnSortType={SortType.Likes}
+                                    columnName={t('list.likes')}
+                                ></SortButton>
                             </Grid2>
                         </Grid2>
                     </Box>
                     <List className="full-width">
-                        {list.items.map((it, i) => (
+                        {sortedItems.map((it, i) => (
                             <ShoppingListItem item={it} key={i} />
                         ))}
                     </List>
