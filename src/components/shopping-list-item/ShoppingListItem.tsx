@@ -56,7 +56,6 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     </Box>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    {/** TODO: like functionality */}
                     <Checkbox
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}

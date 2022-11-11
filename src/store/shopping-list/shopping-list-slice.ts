@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RESET_ALL, RootState } from '../store';
 import {
     addShoppingList,
@@ -27,6 +27,7 @@ import { sortByDate } from '../../utility/date-helper';
 
 const initialState: ShoppingListState = {
     shoppingLists: {},
+    activeShoppingListId: false,
 };
 
 export const getShoppingListsByOfficeAsync = createAsyncThunk(
@@ -152,10 +153,20 @@ export const selectItemById =
             (it) => it.id === itemId
         );
 
+export const selectActiveShoppingListId = (state: RootState): number | false =>
+    state.shoppinglist.activeShoppingListId;
+
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
     initialState,
-    reducers: {},
+    reducers: {
+        setActiveShoppingListId: (
+            state,
+            action: PayloadAction<number | false>
+        ) => {
+            state.activeShoppingListId = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(RESET_ALL, () => initialState)
@@ -214,5 +225,7 @@ export const shoppingListSlice = createSlice({
             });
     },
 });
+
+export const { setActiveShoppingListId } = shoppingListSlice.actions;
 
 export default shoppingListSlice.reducer;

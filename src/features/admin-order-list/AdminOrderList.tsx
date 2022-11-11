@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-    getShoppingListsByOfficeAsync,
-    selectActiveLists,
-} from '../../store/shopping-list/shopping-list-slice';
+import { useAppSelector } from '../../store/hooks';
+import { selectActiveLists } from '../../store/shopping-list/shopping-list-slice';
 import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
@@ -15,20 +11,9 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminOrderList = (): JSX.Element => {
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
-
-    // Handle office change
-    useEffect(() => {
-        const fetchLists = async (): Promise<void> => {
-            if (currentOffice) {
-                await dispatch(getShoppingListsByOfficeAsync(currentOffice.id));
-            }
-        };
-        void fetchLists();
-    }, [currentOffice]);
 
     return (
         <>

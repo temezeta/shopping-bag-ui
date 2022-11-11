@@ -9,6 +9,7 @@ export interface ShoppingListMap {
 
 export interface ShoppingListState {
     shoppingLists: ShoppingListMap;
+    activeShoppingListId: number | false;
 }
 
 export interface ModifyPayload {
