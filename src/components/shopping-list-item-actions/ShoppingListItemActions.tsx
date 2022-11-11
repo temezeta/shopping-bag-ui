@@ -10,13 +10,14 @@ import {
 import { useState, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useAppDispatch } from '../../store/hooks';
 import { removeItemAsync } from '../../store/shopping-list/shopping-list-slice';
 import ConfirmationDialog from '../confirmation-popup/ConfirmationDialog';
 import styles from './ShoppingListItemActions.module.css';
 
 interface ShoppingListItemProps {
-    id: number;
+    item: ItemDto;
 }
 
 const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
@@ -40,7 +41,7 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
     };
 
     const removeItem = async (): Promise<void> => {
-        await dispatch(removeItemAsync(props.id));
+        await dispatch(removeItemAsync(props.item));
         setModifyOpen(false);
         handleClose();
     };
@@ -85,7 +86,9 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
                                 edge="end"
                                 aria-label="edit"
                                 onClick={() =>
-                                    navigate(`/order/edit-item/${props.id}`)
+                                    navigate(
+                                        `/order/${props.item.shoppingListId}/edit-item/${props.item.id}`
+                                    )
                                 }
                             >
                                 <Edit />

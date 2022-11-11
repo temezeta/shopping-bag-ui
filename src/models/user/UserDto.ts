@@ -10,7 +10,7 @@ export interface UserDto {
     homeOffice: OfficeDto;
 }
 
-export interface ItemAdderUserDto {
+export interface RedactedUserDto {
     id: number;
     firstName: string;
     lastName: string;

@@ -12,7 +12,6 @@ import {
     removeShoppingListAsync,
     selectShoppingListById,
 } from '../../store/shopping-list/shopping-list-slice';
-import { RootState } from '../../store/store';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { useEffect, useState } from 'react';
@@ -38,9 +37,7 @@ const EditShoppingList = (): JSX.Element => {
         void dispatch(getShoppingListByIdAsync(id));
     }, []);
 
-    const shoppingList = useAppSelector((state: RootState) =>
-        selectShoppingListById(state, id)
-    );
+    const shoppingList = useAppSelector(selectShoppingListById(id));
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {
         setModification(data);

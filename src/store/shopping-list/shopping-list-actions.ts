@@ -45,7 +45,7 @@ export const addItem = async (
 
 export const removeItem = async (itemId: number): Promise<boolean> => {
     const response = await ApiClient.delete(`Item/${itemId}`, '');
-    if (response.ok) {
+    if (!response.ok) {
         await showResponseError(response);
     }
     return response.ok;
@@ -114,7 +114,7 @@ export const getShoppingListById = async (
 export const setLikeStatus = async (
     data: boolean,
     itemId: number
-): Promise<boolean | null> => {
+): Promise<ItemDto | null> => {
     const response = await ApiClient.post(
         `item/${itemId}/like?unlike=${String(!data)}`,
         null
@@ -122,7 +122,8 @@ export const setLikeStatus = async (
 
     if (!response.ok) {
         await showResponseError(response);
+        return null;
     }
 
-    return response.ok;
+    return (await response.json()) as ItemDto;
 };

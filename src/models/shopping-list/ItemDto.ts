@@ -1,4 +1,4 @@
-import { ItemAdderUserDto } from '../user/UserDto';
+import { RedactedUserDto } from '../user/UserDto';
 
 export interface ItemDto {
     id: number;
@@ -8,5 +8,7 @@ export interface ItemDto {
     comment?: string;
     isChecked: boolean;
     amountOrdered: number;
-    itemAdder: ItemAdderUserDto;
+    shoppingListId: number;
+    itemAdder: RedactedUserDto;
+    usersWhoLiked: RedactedUserDto[];
 }

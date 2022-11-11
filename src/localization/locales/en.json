@@ -42,6 +42,8 @@
         "edit_list": "Edit list",
         "remove_list": "Remove list",
         "save": "Save",
+        "input": "Input",
+        "preview": "Preview"
         "delete": "Delete"
     },
     "dialogs": {
@@ -75,5 +77,8 @@
         "management": "Management",
         "offices": "Offices",
         "users": "Users"
+    },
+    "general": {
+        "support_markdown": "Styling with Markdown is supported"
     }
 }
