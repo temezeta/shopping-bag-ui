@@ -16,16 +16,17 @@ import {
     LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
+    ShoppingListMap,
     ShoppingListState,
 } from './shopping-list-types';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
-import { updateOrAdd } from '../../utility/array-helper';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { updateOrAdd } from '../../utility/array-helper';
+import { sortByDate } from '../../utility/date-helper';
 
 const initialState: ShoppingListState = {
-    activeShoppingLists: [],
-    inactiveShoppingLists: [],
+    shoppingLists: {},
 };
 
 export const getShoppingListsByOfficeAsync = createAsyncThunk(
@@ -45,39 +46,6 @@ export const addShoppingListAsync = createAsyncThunk(
         const response = await addShoppingList(shoppingList);
         if (!response) {
             return rejectWithValue('Error adding shopping list');
-        }
-        return response;
-    }
-);
-
-export const addItemAsync = createAsyncThunk(
-    'shoppinglistitem/addItem',
-    async (data: AddItemPayload, { rejectWithValue }) => {
-        const response = await addItem(data.data, data.listId);
-        if (!response) {
-            return rejectWithValue('An error ocurred adding the item');
-        }
-        return response;
-    }
-);
-
-export const removeItemAsync = createAsyncThunk(
-    'shoppinglistitem/remove',
-    async (itemId: number, { rejectWithValue }) => {
-        const response = await removeItem(itemId);
-        if (!response) {
-            return rejectWithValue('Removing item failed');
-        }
-        return itemId;
-    }
-);
-
-export const modifyItemAsync = createAsyncThunk(
-    'shoppinglistitem/modify',
-    async (data: ModifyItemPayload, { rejectWithValue }) => {
-        const response = await modifyItem(data.data, data.itemId);
-        if (!response) {
-            return rejectWithValue('An error occured in modifying item');
         }
         return response;
     }
@@ -116,6 +84,39 @@ export const getShoppingListByIdAsync = createAsyncThunk(
     }
 );
 
+export const addItemAsync = createAsyncThunk(
+    'shoppinglistitem/addItem',
+    async (data: AddItemPayload, { rejectWithValue }) => {
+        const response = await addItem(data.data, data.listId);
+        if (!response) {
+            return rejectWithValue('An error ocurred adding the item');
+        }
+        return response;
+    }
+);
+
+export const modifyItemAsync = createAsyncThunk(
+    'shoppinglistitem/modify',
+    async (data: ModifyItemPayload, { rejectWithValue }) => {
+        const response = await modifyItem(data.data, data.itemId);
+        if (!response) {
+            return rejectWithValue('An error occured in modifying item');
+        }
+        return response;
+    }
+);
+
+export const removeItemAsync = createAsyncThunk(
+    'shoppinglistitem/remove',
+    async (data: ItemDto, { rejectWithValue }) => {
+        const response = await removeItem(data.id);
+        if (!response) {
+            return rejectWithValue('Removing item failed');
+        }
+        return data;
+    }
+);
+
 export const setLikeStatusAsync = createAsyncThunk(
     'item/setLikeStatus',
     async (data: LikeStatusPayload, { rejectWithValue }) => {
@@ -128,32 +129,28 @@ export const setLikeStatusAsync = createAsyncThunk(
 );
 
 // Selectors
+// Returns active lists, with latest created first
 export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
-    state.shoppinglist.activeShoppingLists;
+    Object.values(state.shoppinglist.shoppingLists)
+        .filter((it) => !it.ordered)
+        .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
+// Returns inactive lists, with latest created first
 export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
-    state.shoppinglist.inactiveShoppingLists;
-export const selectShoppingListById = (
-    state: RootState,
-    listId: number
-): ShoppingListDto | undefined =>
-    selectActiveLists(state).find((it) => it.id === listId) ??
-    selectInactiveLists(state).find((it) => it.id === listId);
-export const selectItemById = (
-    state: RootState,
-    itemId: number
-): ItemDto | undefined => {
-    const lists = selectActiveLists(state).concat(selectInactiveLists(state));
-    let item: ItemDto | undefined;
+    Object.values(state.shoppinglist.shoppingLists)
+        .filter((it) => it.ordered)
+        .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 
-    for (const list of lists) {
-        const itemIndex = list.items.findIndex((it) => it.id === itemId);
-        if (itemIndex !== -1) {
-            item = list.items[itemIndex];
-            break;
-        }
-    }
-    return item;
-};
+export const selectShoppingListById =
+    (listId: number) =>
+    (state: RootState): ShoppingListDto | undefined =>
+        state.shoppinglist.shoppingLists[listId];
+
+export const selectItemById =
+    (listId: number, itemId: number) =>
+    (state: RootState): ItemDto | undefined =>
+        state.shoppinglist.shoppingLists[listId]?.items.find(
+            (it) => it.id === itemId
+        );
 
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
@@ -163,76 +160,57 @@ export const shoppingListSlice = createSlice({
         builder
             .addCase(RESET_ALL, () => initialState)
             .addCase(getShoppingListsByOfficeAsync.pending, (state) => {
-                state.activeShoppingLists = [];
-                state.inactiveShoppingLists = [];
+                state.shoppingLists = {};
             })
             .addCase(
                 getShoppingListsByOfficeAsync.fulfilled,
                 (state, action) => {
-                    state.activeShoppingLists = action.payload.filter(
-                        (it) => !it.ordered
-                    );
-                    state.inactiveShoppingLists = action.payload.filter(
-                        (it) => it.ordered
-                    );
+                    const shoppingLists: ShoppingListMap = {};
+                    for (const list of action.payload) {
+                        shoppingLists[list.id] = list;
+                    }
+                    state.shoppingLists = shoppingLists;
                 }
             )
             .addCase(addShoppingListAsync.fulfilled, (state, action) => {
-                state.activeShoppingLists.push(action.payload);
-            })
-            .addCase(removeItemAsync.fulfilled, (state, action) => {
-                const itemId = action.payload;
-                for (let i = 0; i < state.activeShoppingLists.length; i++) {
-                    if (
-                        state.activeShoppingLists[i].items.filter(
-                            (e) => e.id === itemId
-                        )
-                    ) {
-                        state.activeShoppingLists[i].items =
-                            state.activeShoppingLists[i].items.filter(
-                                (it) => it.id !== itemId
-                            );
-                    }
-                }
+                state.shoppingLists[action.payload.id] = action.payload;
             })
             .addCase(modifyShoppingListAsync.fulfilled, (state, action) => {
-                const list = action.payload;
-                if (!list.ordered) {
-                    state.activeShoppingLists = state.activeShoppingLists.map(
-                        (it) => (it.id === list.id ? list : it)
-                    );
-                } else {
-                    state.inactiveShoppingLists =
-                        state.inactiveShoppingLists.map((it) =>
-                            it.id === list.id ? list : it
-                        );
-                }
+                state.shoppingLists[action.payload.id] = action.payload;
             })
             .addCase(removeShoppingListAsync.fulfilled, (state, action) => {
-                const list = action.payload;
-                if (!list.ordered) {
-                    state.activeShoppingLists =
-                        state.activeShoppingLists.filter(
-                            (it) => it.id !== list.id
-                        );
-                } else {
-                    state.inactiveShoppingLists =
-                        state.inactiveShoppingLists.filter(
-                            (it) => it.id !== list.id
-                        );
-                }
+                // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+                delete state.shoppingLists[action.payload.id];
             })
             .addCase(getShoppingListByIdAsync.fulfilled, (state, action) => {
-                const list = action.payload;
-                if (!list.ordered) {
-                    updateOrAdd(state.activeShoppingLists, (it) => it.id, list);
-                } else {
-                    updateOrAdd(
-                        state.inactiveShoppingLists,
-                        (it) => it.id,
-                        list
-                    );
-                }
+                state.shoppingLists[action.payload.id] = action.payload;
+            })
+            .addCase(addItemAsync.fulfilled, (state, action) => {
+                updateOrAdd(
+                    state.shoppingLists[action.payload.shoppingListId].items,
+                    (it) => it.id,
+                    action.payload
+                );
+            })
+            .addCase(modifyItemAsync.fulfilled, (state, action) => {
+                updateOrAdd(
+                    state.shoppingLists[action.payload.shoppingListId].items,
+                    (it) => it.id,
+                    action.payload
+                );
+            })
+            .addCase(removeItemAsync.fulfilled, (state, action) => {
+                state.shoppingLists[action.payload.shoppingListId].items =
+                    state.shoppingLists[
+                        action.payload.shoppingListId
+                    ].items.filter((it) => it.id !== action.payload.id);
+            })
+            .addCase(setLikeStatusAsync.fulfilled, (state, action) => {
+                updateOrAdd(
+                    state.shoppingLists[action.payload.shoppingListId].items,
+                    (it) => it.id,
+                    action.payload
+                );
             });
     },
 });

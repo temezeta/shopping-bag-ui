@@ -14,10 +14,9 @@ import {
     modifyItemAsync,
     selectItemById,
 } from '../../store/shopping-list/shopping-list-slice';
-import { RootState } from '../../store/store';
 
 const EditItem = (): JSX.Element => {
-    const { itemId } = useParams();
+    const { itemId, listId } = useParams();
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -26,9 +25,7 @@ const EditItem = (): JSX.Element => {
     );
     const [isModifyOpen, setModifyOpen] = useState<boolean>(false);
 
-    const item = useAppSelector((state: RootState) =>
-        selectItemById(state, Number(itemId))
-    );
+    const item = useAppSelector(selectItemById(Number(listId), Number(itemId)));
 
     const onSubmit: SubmitHandler<AddItemDto> = async (data) => {
         setModification(data);
