@@ -29,7 +29,9 @@ const AccountSettings = (): JSX.Element => {
 
     const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {};
 
-    const onModifyConfirm = async (): Promise<void> => {};
+    const onDeleteConfirm = async (): Promise<void> => {
+        /* TODO: Add delete account functionality */
+    };
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     return (
@@ -86,10 +88,9 @@ const AccountSettings = (): JSX.Element => {
                     </TabPanel>
                 </Grid2>
             </MainLayout>
-            {/* TODO: Add delete confirmation dialogue */}
             <DeleteAccountDialog
                 title={t('user.delete_account')}
-                onConfirm={onModifyConfirm}
+                onConfirm={onDeleteConfirm}
                 open={isDeleteOpen}
                 onCancel={() => setDeleteOpen(false)}
             >

@@ -11,17 +11,40 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
+import { Controller, useForm } from 'react-hook-form';
+import { useState } from 'react';
 
 interface DeleteAccountgProps {
     open: boolean;
     title: string;
     onConfirm: () => Promise<void> | void;
-    onCancel?: () => Promise<void> | void;
+    onCancel: () => void;
     children?: React.ReactNode;
 }
 
 const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
     const { t } = useTranslation();
+    const {
+        control,
+        formState: { errors },
+    } = useForm({
+        mode: 'onChange',
+        defaultValues: {
+            deleteBox: '',
+        },
+    });
+
+    const [deleteText, setDeleteText] = useState('');
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+    const handleChange = (event: any): void => {
+        setButtonDisabled(true);
+        setDeleteText(event.target.value);
+        if (event.target.value === 'DELETE') {
+            setButtonDisabled(false);
+        }
+    };
+
     return (
         <Dialog
             open={props.open}
@@ -35,7 +58,11 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                 >
                     {props.title}
                     <IconButton
-                        onClick={props.onCancel}
+                        onClick={() => {
+                            setButtonDisabled(true);
+                            setDeleteText('');
+                            props.onCancel();
+                        }}
                         sx={{
                             '&:hover': {
                                 backgroundColor: 'light-grey',
@@ -62,10 +89,21 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                             <FormLabel id="type-delete">
                                 {t('dialogs.type_delete')}
                             </FormLabel>
-                            <TextField
-                                aria-labelledby="type-delete"
-                                size="small"
-                                fullWidth
+                            <Controller
+                                name="deleteBox"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        type="delete"
+                                        error={!!errors.deleteBox}
+                                        aria-labelledby="type-delete"
+                                        size="small"
+                                        value={deleteText}
+                                        onChange={handleChange}
+                                        fullWidth
+                                    />
+                                )}
                             />
                         </Grid2>
                         <Grid2 xs={6} md={3}>
@@ -73,6 +111,7 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                                 variant="contained"
                                 color="primary"
                                 onClick={props.onConfirm}
+                                disabled={buttonDisabled}
                                 autoFocus
                             >
                                 {t('actions.delete')}
