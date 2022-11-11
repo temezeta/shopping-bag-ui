@@ -13,6 +13,7 @@ import {
 } from './shopping-list-actions';
 import {
     AddItemPayload,
+    GetListByIdPayload,
     LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
@@ -76,10 +77,13 @@ export const removeShoppingListAsync = createAsyncThunk(
 
 export const getShoppingListByIdAsync = createAsyncThunk(
     'shoppinglist/by-id',
-    async (listId: number, { rejectWithValue }) => {
-        const response = await getShoppingListById(listId);
+    async (data: GetListByIdPayload, { rejectWithValue, dispatch }) => {
+        const response = await getShoppingListById(data.listId);
         if (!response) {
             return rejectWithValue('Error fetching shopping list by id');
+        }
+        if (data.isEditing) {
+            dispatch(setEditShoppingList(response));
         }
         return response;
     }
@@ -141,17 +145,21 @@ export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
         .filter((it) => it.ordered)
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 
-export const selectShoppingListById =
+export const selectEditShoppingListById =
     (listId: number) =>
     (state: RootState): ShoppingListDto | undefined =>
-        state.shoppinglist.shoppingLists[listId];
+        state.shoppinglist.editShoppingList?.id === listId
+            ? state.shoppinglist.editShoppingList
+            : undefined;
 
-export const selectItemById =
+export const selectEditItemById =
     (listId: number, itemId: number) =>
     (state: RootState): ItemDto | undefined =>
-        state.shoppinglist.shoppingLists[listId]?.items.find(
-            (it) => it.id === itemId
-        );
+        state.shoppinglist.editShoppingList?.id === listId
+            ? state.shoppinglist.editShoppingList.items.find(
+                  (it) => it.id === itemId
+              )
+            : undefined;
 
 export const selectActiveShoppingListId = (state: RootState): number | false =>
     state.shoppinglist.activeShoppingListId;
@@ -165,6 +173,12 @@ export const shoppingListSlice = createSlice({
             action: PayloadAction<number | false>
         ) => {
             state.activeShoppingListId = action.payload;
+        },
+        setEditShoppingList: (
+            state,
+            action: PayloadAction<ShoppingListDto | undefined>
+        ) => {
+            state.editShoppingList = action.payload;
         },
     },
     extraReducers: (builder) => {
@@ -197,6 +211,7 @@ export const shoppingListSlice = createSlice({
                 state.shoppingLists[action.payload.id] = action.payload;
             })
             .addCase(addItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -204,6 +219,7 @@ export const shoppingListSlice = createSlice({
                 );
             })
             .addCase(modifyItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -211,12 +227,14 @@ export const shoppingListSlice = createSlice({
                 );
             })
             .addCase(removeItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 state.shoppingLists[action.payload.shoppingListId].items =
                     state.shoppingLists[
                         action.payload.shoppingListId
                     ].items.filter((it) => it.id !== action.payload.id);
             })
             .addCase(setLikeStatusAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -226,6 +244,7 @@ export const shoppingListSlice = createSlice({
     },
 });
 
-export const { setActiveShoppingListId } = shoppingListSlice.actions;
+export const { setActiveShoppingListId, setEditShoppingList } =
+    shoppingListSlice.actions;
 
 export default shoppingListSlice.reducer;

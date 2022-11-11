@@ -36,7 +36,7 @@ function App(): JSX.Element {
 
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
-    }, []);
+    }, [user]);
 
     // Call refresh token every 5 minutes
     useEffect(() => {
