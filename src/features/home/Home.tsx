@@ -42,9 +42,15 @@ const Home = (): JSX.Element => {
     }, [currentOffice]);
 
     useEffect(() => {
-        setSelectedListId(
-            activeShoppingLists.length ? activeShoppingLists[0].id : false
-        );
+        /**
+         * Reset selectedListId only when the active shopping lists office changes
+         * to avoid that liking an item resets it.
+         */
+        if (!activeShoppingLists.find((it) => it.id === selectedListId)) {
+            setSelectedListId(
+                activeShoppingLists.length ? activeShoppingLists[0].id : false
+            );
+        }
     }, [activeShoppingLists]);
 
     const handleTabChange = (_: SyntheticEvent, value: number): void => {

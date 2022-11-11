@@ -4,6 +4,11 @@ import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setLikeStatusAsync } from '../../store/shopping-list/shopping-list-slice';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { hasUserLikedItem } from '../../utility/user-helper';
 
 interface ShoppingListItemProps {
     item: ItemDto;
@@ -11,6 +16,23 @@ interface ShoppingListItemProps {
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const { item } = props;
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(selectCurrentUser);
+
+    const handleItemLike = async (
+        event: ChangeEvent<HTMLInputElement>,
+        checked: boolean
+    ): Promise<void> => {
+        // Disable the button until dispatch resolve to avoid duplicate clicks
+        event.target.disabled = true;
+        try {
+            await dispatch(
+                setLikeStatusAsync({ data: checked, itemId: item.id })
+            );
+        } finally {
+            event.target.disabled = false;
+        }
+    };
 
     return (
         <ListItem divider={true}>
@@ -22,13 +44,13 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
             >
                 <Grid2 xs={8}>
                     <Box>
-                        <a href={props.item.url}>{props.item.name}</a>
+                        <a href={item.url}>{item.name}</a>
                         <Typography variant="body2" fontWeight="medium">
-                            {props.item.shopName}
+                            {item.shopName}
                         </Typography>
                         <Box display={{ xs: 'none', sm: 'inline' }}>
                             <Typography variant="body2">
-                                {props.item.comment}
+                                {item.comment}
                             </Typography>
                         </Box>
                     </Box>
@@ -38,13 +60,15 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     <Checkbox
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
+                        checked={hasUserLikedItem(item, user)}
+                        onChange={handleItemLike}
                     ></Checkbox>
                     <Typography variant="body1">
                         {item.usersWhoLiked.length}
                     </Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    <ShoppingListItemActions item={props.item} />
+                    <ShoppingListItemActions item={item} />
                 </Grid2>
                 <Box
                     component={Grid2}
@@ -53,9 +77,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     display={{ xs: 'inline', sm: 'none' }}
                     className={styles.itemCommentPhone}
                 >
-                    <Typography variant="body2">
-                        {props.item.comment}
-                    </Typography>
+                    <Typography variant="body2">{item.comment}</Typography>
                 </Box>
             </Grid2>
         </ListItem>
