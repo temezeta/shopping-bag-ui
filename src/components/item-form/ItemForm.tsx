@@ -23,7 +23,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
         shopName: '',
         url: '',
         comment: '',
-        like: false,
+        like: true,
     };
 
     const {
@@ -87,8 +87,8 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                             <Grid2 xs={2} className="flex-center">
                                 <Checkbox
                                     {...field}
-                                    icon={<Favorite />}
-                                    checkedIcon={<FavoriteBorder />}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite />}
                                 />
                             </Grid2>
                         )}
