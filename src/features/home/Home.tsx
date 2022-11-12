@@ -52,7 +52,12 @@ const Home = (): JSX.Element => {
     return (
         <MainLayout>
             <Grid2 container spacing={1}>
-                <Grid2 xs={12}>
+                <Grid2
+                    xs={12}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                >
                     <Tabs
                         variant="scrollable"
                         scrollButtons="auto"
