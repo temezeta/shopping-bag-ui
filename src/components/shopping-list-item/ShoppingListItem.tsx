@@ -44,7 +44,11 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
             >
                 <Grid2 xs={8}>
                     <Box>
-                        <a href={item.url}>{item.name}</a>
+                        {item.url !== '' ? (
+                            <a href={item.url}>{item.name}</a>
+                        ) : (
+                            <div>{item.name}</div>
+                        )}
                         <Typography variant="body2" fontWeight="medium">
                             {item.shopName}
                         </Typography>
@@ -60,6 +64,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
                         checked={hasUserLikedItem(item, user)}
+                        color="info"
                         onChange={handleItemLike}
                     ></Checkbox>
                     <Typography variant="body1">

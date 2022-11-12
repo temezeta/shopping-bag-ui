@@ -1,4 +1,4 @@
-import { Button, Checkbox, FormLabel, TextField } from '@mui/material';
+import { Box, Button, Checkbox, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -23,7 +23,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
         shopName: '',
         url: '',
         comment: '',
-        like: false,
+        like: true,
     };
 
     const {
@@ -58,10 +58,27 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Grid2 container spacing={2}>
-                <Grid2 xs={initialValues ? 12 : 10}>
-                    <FormLabel className={styles.label} id="item_name">
-                        {t('item.name')}
-                    </FormLabel>
+                <Grid2 xs={12}>
+                    <Box className={styles.nameLabel}>
+                        <FormLabel className={styles.label} id="item_name">
+                            {t('item.name')}
+                        </FormLabel>
+                        {!initialValues && (
+                            <Controller
+                                name="like"
+                                control={control}
+                                render={({ field }) => (
+                                    <Checkbox
+                                        {...field}
+                                        color="info"
+                                        icon={<FavoriteBorder />}
+                                        checkedIcon={<Favorite />}
+                                        defaultChecked={true}
+                                    />
+                                )}
+                            />
+                        )}
+                    </Box>
                     <Controller
                         name="name"
                         control={control}
@@ -86,21 +103,6 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         )}
                     />
                 </Grid2>
-                {!initialValues && (
-                    <Controller
-                        name="like"
-                        control={control}
-                        render={({ field }) => (
-                            <Grid2 xs={2} className="flex-center">
-                                <Checkbox
-                                    {...field}
-                                    icon={<FavoriteBorder />}
-                                    checkedIcon={<Favorite />}
-                                />
-                            </Grid2>
-                        )}
-                    />
-                )}
 
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="shopName">
