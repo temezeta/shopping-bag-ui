@@ -1,12 +1,8 @@
 import { Home } from '@mui/icons-material';
-import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-    getAllOfficesAsync,
-    selectOffices,
-} from '../../store/office/office-slice';
+import { selectOffices } from '../../store/office/office-slice';
 import {
     selectCurrentOffice,
     selectHomeOffice,
@@ -21,10 +17,7 @@ const OfficeMenu = (): JSX.Element => {
     const homeOffice = useAppSelector(selectHomeOffice);
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
-
-    useEffect(() => {
-        void dispatch(getAllOfficesAsync());
-    }, []);
+    const homeIcon = <Home style={{ color: '#fff' }} />;
 
     const getOfficeItem = (office: OfficeDto): JSX.Element => {
         return (
@@ -54,6 +47,7 @@ const OfficeMenu = (): JSX.Element => {
                 title: getOfficeItem(it),
                 onClick: () => setOffice(it),
             }))}
+            icon={homeIcon}
         />
     );
 };

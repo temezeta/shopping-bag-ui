@@ -10,8 +10,8 @@ import { useTranslation } from 'react-i18next';
 interface ConfirmationDialogProps {
     open: boolean;
     title: string;
-    onConfirm: () => void;
-    onCancel?: () => void;
+    onConfirm: () => Promise<void> | void;
+    onCancel?: () => Promise<void> | void;
     children?: React.ReactNode;
 }
 
@@ -31,7 +31,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps): JSX.Element => {
                 {props.onCancel && (
                     <Button
                         variant="contained"
-                        color="warning"
+                        color="secondary"
                         onClick={props.onCancel}
                     >
                         {t('actions.cancel')}

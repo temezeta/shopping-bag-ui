@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { KeyboardArrowDown } from '@mui/icons-material';
-import { MenuItem, MenuList } from '@mui/material';
+import { Box, IconButton, MenuItem, MenuList, Tab } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { useState, MouseEvent } from 'react';
@@ -14,6 +14,8 @@ export interface DropdownMenuItem {
 interface DropdownMenuProps {
     title: string;
     items: DropdownMenuItem[];
+    icon?: JSX.Element;
+    isTab?: boolean;
 }
 
 const StyledMenu = styled((props: MenuProps) => (
@@ -65,16 +67,59 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
         handleClose();
     };
 
+    const getButtonComponent = (): JSX.Element => {
+        const { isTab, ...rest } = props;
+        if (isTab) {
+            return (
+                <Tab
+                    component="button"
+                    icon={<KeyboardArrowDown fontSize="small" />}
+                    iconPosition="end"
+                    onClick={handleClick}
+                    label={props.title}
+                    {...rest}
+                />
+            );
+        }
+
+        return (
+            <>
+                <Box
+                    display={{
+                        xs: props.icon ? 'none' : 'inline',
+                        sm: 'inline',
+                    }}
+                >
+                    <Button
+                        variant="text"
+                        className={styles.menuText}
+                        onClick={handleClick}
+                        endIcon={<KeyboardArrowDown />}
+                    >
+                        {props.title}
+                    </Button>
+                </Box>
+                <Box
+                    display={{ xs: props.icon ? 'inline' : 'none', sm: 'none' }}
+                >
+                    <IconButton
+                        onClick={handleClick}
+                        sx={{
+                            '&:hover': {
+                                backgroundColor: 'rgba(255, 255, 255, 0.22)',
+                            },
+                        }}
+                    >
+                        {props.icon}
+                    </IconButton>
+                </Box>
+            </>
+        );
+    };
+
     return (
         <div>
-            <Button
-                variant="text"
-                className={styles.menuText}
-                onClick={handleClick}
-                endIcon={<KeyboardArrowDown />}
-            >
-                {props.title}
-            </Button>
+            {getButtonComponent()}
             <StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
                 <MenuList className={styles.menuItems}>
                     {props.items.map((item, i) => (

@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { t } from 'i18next';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
-import { RootState } from '../store';
+import { RESET_ALL, RootState } from '../store';
+import { setSnackbar } from '../ui/ui-slice';
 import { login, logout, refreshToken, register } from './auth-actions';
 import { AuthState } from './auth-types';
 
@@ -12,9 +14,15 @@ const initialState: AuthState = {
 
 export const registerAsync = createAsyncThunk(
     'auth/register',
-    async (data: RegisterDto, { rejectWithValue }) => {
+    async (data: RegisterDto, { rejectWithValue, dispatch }) => {
         const response = await register(data);
         if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.registration_failed'),
+                })
+            );
             return rejectWithValue('Registration failed');
         }
         return response;
@@ -23,10 +31,16 @@ export const registerAsync = createAsyncThunk(
 
 export const loginAsync = createAsyncThunk(
     'auth/login',
-    async (data: LoginDto, { rejectWithValue }) => {
+    async (data: LoginDto, { rejectWithValue, dispatch }) => {
         localStorage.removeItem('authToken');
         const response = await login(data);
         if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.login_failed'),
+                })
+            );
             return rejectWithValue('Login failed');
         }
         localStorage.setItem('authToken', response.token);
@@ -49,12 +63,19 @@ export const refreshTokenAsync = createAsyncThunk(
 
 export const logoutAsync = createAsyncThunk(
     'auth/logout',
-    async (_, { rejectWithValue }) => {
+    async (_, { rejectWithValue, dispatch }) => {
         const response = await logout();
-        localStorage.removeItem('authToken');
         if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.logout_failed'),
+                })
+            );
             return rejectWithValue('Logout failed');
         }
+        localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
         return response;
     }
 );
@@ -69,6 +90,7 @@ export const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(RESET_ALL, () => initialState)
             .addCase(registerAsync.pending, (state) => {
                 state.registrationSending = true;
             })

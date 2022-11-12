@@ -1,8 +1,8 @@
-export interface AddItemDto {
+export interface ModifyItemDto {
     name?: string;
     shopName?: string;
     url?: string;
     comment?: string;
-    shoppingListId: number;
-    userId: number;
+    isChecked: boolean;
+    amountOrdered: number;
 }

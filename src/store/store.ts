@@ -1,8 +1,16 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import {
+    configureStore,
+    ThunkAction,
+    Action,
+    createAction,
+} from '@reduxjs/toolkit';
 import authReducer from './auth/auth-slice';
 import officesReducer from './office/office-slice';
 import userReducer from './user/user-slice';
 import shoppingListReducer from './shopping-list/shopping-list-slice';
+import uiReducer from './ui/ui-slice';
+
+export const RESET_ALL = createAction('RESET_ALL');
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +18,7 @@ export const store = configureStore({
         offices: officesReducer,
         user: userReducer,
         shoppinglist: shoppingListReducer,
+        ui: uiReducer,
     },
 });
 

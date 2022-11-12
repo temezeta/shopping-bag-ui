@@ -2,36 +2,55 @@ import { Button, Checkbox, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { AddItemDto } from '../../models/lists/AddItemDto';
-import styles from './AddItemForm.module.css';
+import { AddItemDto } from '../../models/shopping-list/AddItemDto';
+import styles from './ItemForm.module.css';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { oneFieldRequired } from '../../utility/validation-helper';
+import { isUrl, oneFieldRequired } from '../../utility/validation-helper';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { useEffect } from 'react';
 
-interface AddItemFormProps {
+interface ItemFormProps {
+    initialValues?: ItemDto;
     onSubmit?: SubmitHandler<AddItemDto>;
 }
 
-const AddItemForm = (props: AddItemFormProps): JSX.Element => {
+const ItemForm = (props: ItemFormProps): JSX.Element => {
     const { t } = useTranslation();
+    const { initialValues } = props;
+
+    const defaultValues: Partial<AddItemDto> = initialValues ?? {
+        name: '',
+        shopName: '',
+        url: '',
+        comment: '',
+        like: false,
+    };
+
     const {
         control,
         handleSubmit,
+        reset,
+        trigger,
         watch,
-        formState: { isValid },
+        formState: { isValid, errors },
     } = useForm<AddItemDto>({
-        defaultValues: {
-            name: '',
-            shopName: '',
-            url: '',
-            comment: '',
-        },
+        defaultValues,
         mode: 'onChange',
     });
+
+    const watchNameAndUrl = watch(['name', 'url']);
+
+    useEffect(() => {
+        reset(defaultValues);
+    }, [initialValues]);
+
+    useEffect(() => {
+        void trigger(['name', 'url']);
+    }, [watchNameAndUrl[0], watchNameAndUrl[1]]);
+
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
         props.onSubmit?.(data);
     };
-    const watchNameAndUrl = watch(['name', 'url']);
-
     return (
         <form
             id="Add-Item-Form"
@@ -39,7 +58,7 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Grid2 container spacing={2}>
-                <Grid2 xs={10}>
+                <Grid2 xs={initialValues ? 12 : 10}>
                     <FormLabel className={styles.label} id="item_name">
                         {t('item.name')}
                     </FormLabel>
@@ -52,28 +71,39 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                                     oneFieldRequired(
                                         value,
                                         watchNameAndUrl[1]
-                                    ) || t('errors.required'),
+                                    ) || t('errors.one_value_required'),
                             },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                error={!!errors.name}
                                 aria-labelledby="item_name"
+                                helperText={errors.name?.message}
                                 size="small"
                                 fullWidth
                             />
                         )}
                     />
                 </Grid2>
-                <Grid2 xs={2} className="flex-center">
-                    <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
+                {!initialValues && (
+                    <Controller
+                        name="like"
+                        control={control}
+                        render={({ field }) => (
+                            <Grid2 xs={2} className="flex-center">
+                                <Checkbox
+                                    {...field}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite />}
+                                />
+                            </Grid2>
+                        )}
                     />
-                </Grid2>
+                )}
 
                 <Grid2 xs={12}>
-                    <FormLabel className={styles.label} id="shopName ">
+                    <FormLabel className={styles.label} id="shopName">
                         {t('item.shopName')}
                     </FormLabel>
                     <Controller
@@ -82,7 +112,9 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                aria-labelledby="shopName "
+                                error={!!errors.shopName}
+                                aria-labelledby="shopName"
+                                helperText={errors.shopName?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -102,13 +134,20 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                                     oneFieldRequired(
                                         value,
                                         watchNameAndUrl[0]
-                                    ) || t('errors.required'),
+                                    ) || t('errors.one_value_required'),
+                                isUrl: (value?: string) =>
+                                    !value ||
+                                    isUrl(value) ||
+                                    t('errors.url_not_valid'),
                             },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                type="url"
+                                error={!!errors.url}
                                 aria-labelledby="url"
+                                helperText={errors.url?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -125,7 +164,9 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                error={!!errors.comment}
                                 aria-labelledby="comment"
+                                helperText={errors.comment?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -139,11 +180,13 @@ const AddItemForm = (props: AddItemFormProps): JSX.Element => {
                         disabled={!isValid}
                         fullWidth
                     >
-                        {t('actions.add_item')}
+                        {initialValues
+                            ? t('list.edit-item')
+                            : t('actions.add_item')}
                     </Button>
                 </Grid2>
             </Grid2>
         </form>
     );
 };
-export default AddItemForm;
+export default ItemForm;

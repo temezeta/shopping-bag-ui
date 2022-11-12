@@ -1,38 +1,69 @@
-import { Button, FormLabel, TextField } from '@mui/material';
+import {
+    Button,
+    FormLabel,
+    TextField,
+    Tabs,
+    Tab,
+    Paper,
+    Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDto';
-import styles from './AddShoppingListForm.module.css';
+import styles from './ShoppingListForm.module.css';
 import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
-import { useAppSelector } from '../../store/hooks';
-import { selectCurrentOffice } from '../../store/user/user-slice';
+import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
+import { useEffect, useState } from 'react';
+import TabPanel from '../tab-panel/TabPanel';
+import Markdown from '../markdown/Markdown';
 
-interface AddShoppingListFormProps {
-    onSubmit?: SubmitHandler<AddShoppingListDto>;
+interface ShoppingListFormProps {
+    initialValues?: ShoppingListDto;
+    onSubmit?: SubmitHandler<ModifyShoppingListDto>;
+    onDelete?: SubmitHandler<ShoppingListDto>;
 }
 
-const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
+const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
-    const currentOffice = useAppSelector(selectCurrentOffice);
+    const { initialValues } = props;
+    const [tabIndex, setTabIndex] = useState<number>(0);
+
+    const defaultValues: Partial<ModifyShoppingListDto> = initialValues ?? {
+        name: '',
+        comment: '',
+        dueDate: null,
+        expectedDeliveryDate: null,
+    };
+
     const {
         control,
         handleSubmit,
+        reset,
+        watch,
         formState: { isValid, errors },
-    } = useForm<AddShoppingListDto>({
-        defaultValues: {
-            name: '',
-            comment: '',
-            officeId: currentOffice?.id,
-            dueDate: null,
-            expectedDeliveryDate: null,
-        },
+    } = useForm<ModifyShoppingListDto>({
+        defaultValues,
         mode: 'onChange',
     });
 
-    const onSubmit: SubmitHandler<AddShoppingListDto> = (data) => {
+    useEffect(() => {
+        reset(defaultValues);
+    }, [initialValues]);
+
+    const onSubmit: SubmitHandler<ModifyShoppingListDto> = (data) => {
         props.onSubmit?.(data);
+    };
+
+    const onDelete = async (): Promise<void> => {
+        if (initialValues) {
+            await props.onDelete?.(initialValues);
+        }
+    };
+
+    const handleChange = (_: React.SyntheticEvent, value: number): void => {
+        setTabIndex(value);
     };
 
     return (
@@ -73,22 +104,44 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                         <FormLabel className={styles.label} id="comment">
                             {t('list.comment')}
                         </FormLabel>
-                        <Controller
-                            name="comment"
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    error={!!errors.comment}
-                                    aria-labelledby="comment"
-                                    helperText={errors.comment?.message}
-                                    size="small"
-                                    fullWidth
-                                    multiline
-                                    rows={4}
-                                />
-                            )}
-                        />
+                        <Tabs
+                            color="primary"
+                            value={tabIndex}
+                            onChange={handleChange}
+                            aria-label="basic tabs example"
+                        >
+                            <Tab label={t('actions.input')} />
+                            <Tab label={t('actions.preview')} />
+                        </Tabs>
+                        <TabPanel index={0} value={tabIndex}>
+                            <Controller
+                                name="comment"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.comment}
+                                        aria-labelledby="comment"
+                                        helperText={errors.comment?.message}
+                                        size="small"
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                    />
+                                )}
+                            />
+                        </TabPanel>
+                        <TabPanel index={1} value={tabIndex}>
+                            <Paper
+                                className={styles.previewTab}
+                                variant="outlined"
+                            >
+                                <Markdown>{watch('comment')}</Markdown>
+                            </Paper>
+                        </TabPanel>
+                        <Typography variant="body2">
+                            {t('general.support_markdown')}
+                        </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="due-date">
@@ -101,7 +154,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                 <DateTimePicker
                                     onChange={(date) =>
                                         field.onChange(
-                                            moment(date).toISOString()
+                                            moment(date).toISOString(true)
                                         )
                                     }
                                     value={field.value}
@@ -130,7 +183,7 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                                 <DatePicker
                                     onChange={(date) =>
                                         field.onChange(
-                                            moment(date).toISOString()
+                                            moment(date).toISOString(true)
                                         )
                                     }
                                     value={field.value}
@@ -144,7 +197,6 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             )}
                         />
                     </Grid2>
-
                     <Grid2 xs={12}>
                         <Button
                             type="submit"
@@ -152,13 +204,27 @@ const AddShoppingListForm = (props: AddShoppingListFormProps): JSX.Element => {
                             disabled={!isValid}
                             fullWidth
                         >
-                            {t('actions.add_new_list')}
+                            {initialValues
+                                ? t('actions.edit_list')
+                                : t('actions.add_new_list')}
                         </Button>
                     </Grid2>
+                    {initialValues && (
+                        <Grid2 xs={12}>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                fullWidth
+                                onClick={onDelete}
+                            >
+                                {t('actions.remove_list')}
+                            </Button>
+                        </Grid2>
+                    )}
                 </form>
             }
         </Grid2>
     );
 };
 
-export default AddShoppingListForm;
+export default ShoppingListForm;
