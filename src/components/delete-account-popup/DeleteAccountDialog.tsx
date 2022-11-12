@@ -11,7 +11,6 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
-import { Controller, useForm } from 'react-hook-form';
 import { useState } from 'react';
 
 interface DeleteAccountgProps {
@@ -24,15 +23,6 @@ interface DeleteAccountgProps {
 
 const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
     const { t } = useTranslation();
-    const {
-        control,
-        formState: { errors },
-    } = useForm({
-        mode: 'onChange',
-        defaultValues: {
-            deleteBox: '',
-        },
-    });
 
     const [deleteText, setDeleteText] = useState('');
     const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -84,21 +74,13 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                             <FormLabel id="type-delete">
                                 {t('dialogs.type_delete')}
                             </FormLabel>
-                            <Controller
-                                name="deleteBox"
-                                control={control}
-                                render={({ field }) => (
-                                    <TextField
-                                        {...field}
-                                        type="delete"
-                                        error={!!errors.deleteBox}
-                                        aria-labelledby="type-delete"
-                                        size="small"
-                                        value={deleteText}
-                                        onChange={handleChange}
-                                        fullWidth
-                                    />
-                                )}
+                            <TextField
+                                type="delete"
+                                aria-labelledby="type-delete"
+                                size="small"
+                                value={deleteText}
+                                onChange={handleChange}
+                                fullWidth
                             />
                         </Grid2>
                         <Grid2 xs={6} md={3}>
