@@ -45,7 +45,9 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 <Grid2 xs={8}>
                     <Box>
                         {item.url ? (
-                            <a href={item.url}>{item.name}</a>
+                            <a href={item.url}>
+                                {item.name ? item.name : item.url}
+                            </a>
                         ) : (
                             <div>{item.name}</div>
                         )}
