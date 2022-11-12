@@ -47,8 +47,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         sortByItemLikes(list.items, sortOptions.sortDescending)
     );
     const copyShoppingListLink = async (): Promise<void> => {
-        var host = window.location.host;
-        var protocol = location.protocol;
+        const host = window.location.host;
+        const protocol = location.protocol;
         await navigator.clipboard.writeText(
             `${protocol}//${host}/adminshoppinglist/${list.id}`
         );
