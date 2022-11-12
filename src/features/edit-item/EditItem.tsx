@@ -14,7 +14,7 @@ import {
     getShoppingListByIdAsync,
     modifyItemAsync,
     selectEditItemById,
-    setEditShoppingList,
+    clearEditShoppingList,
 } from '../../store/shopping-list/shopping-list-slice';
 
 const EditItem = (): JSX.Element => {
@@ -35,7 +35,7 @@ const EditItem = (): JSX.Element => {
             })
         );
         return () => {
-            dispatch(setEditShoppingList(undefined));
+            dispatch(clearEditShoppingList());
         };
     }, []);
 

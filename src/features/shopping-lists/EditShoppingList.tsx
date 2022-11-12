@@ -11,7 +11,7 @@ import {
     modifyShoppingListAsync,
     removeShoppingListAsync,
     selectEditShoppingListById,
-    setEditShoppingList,
+    clearEditShoppingList,
 } from '../../store/shopping-list/shopping-list-slice';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -39,7 +39,7 @@ const EditShoppingList = (): JSX.Element => {
             getShoppingListByIdAsync({ listId: id, isEditing: true })
         );
         return () => {
-            dispatch(setEditShoppingList(undefined));
+            dispatch(clearEditShoppingList());
         };
     }, []);
 
