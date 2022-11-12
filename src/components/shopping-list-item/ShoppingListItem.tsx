@@ -45,7 +45,11 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 <Grid2 xs={8}>
                     <Box>
                         {item.url ? (
-                            <a href={item.url}>
+                            <a
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 {item.name ? item.name : item.url}
                             </a>
                         ) : (
