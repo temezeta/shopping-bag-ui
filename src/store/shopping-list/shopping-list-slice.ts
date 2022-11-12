@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RESET_ALL, RootState } from '../store';
 import {
     addShoppingList,
@@ -13,6 +13,7 @@ import {
 } from './shopping-list-actions';
 import {
     AddItemPayload,
+    GetListByIdPayload,
     LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
@@ -27,6 +28,7 @@ import { sortByDate } from '../../utility/date-helper';
 
 const initialState: ShoppingListState = {
     shoppingLists: {},
+    activeShoppingListId: false,
 };
 
 export const getShoppingListsByOfficeAsync = createAsyncThunk(
@@ -75,12 +77,13 @@ export const removeShoppingListAsync = createAsyncThunk(
 
 export const getShoppingListByIdAsync = createAsyncThunk(
     'shoppinglist/by-id',
-    async (listId: number, { rejectWithValue }) => {
-        const response = await getShoppingListById(listId);
+    async (data: GetListByIdPayload, { rejectWithValue, dispatch }) => {
+        const response = await getShoppingListById(data.listId);
         if (!response) {
             return rejectWithValue('Error fetching shopping list by id');
         }
-        return response;
+
+        return { isEdit: !!data.isEditing, data: response };
     }
 );
 
@@ -152,10 +155,39 @@ export const selectItemById =
             (it) => it.id === itemId
         );
 
+export const selectEditShoppingListById =
+    (listId: number) =>
+    (state: RootState): ShoppingListDto | undefined =>
+        state.shoppinglist.editShoppingList?.id === listId
+            ? state.shoppinglist.editShoppingList
+            : undefined;
+
+export const selectEditItemById =
+    (listId: number, itemId: number) =>
+    (state: RootState): ItemDto | undefined =>
+        state.shoppinglist.editShoppingList?.id === listId
+            ? state.shoppinglist.editShoppingList.items.find(
+                  (it) => it.id === itemId
+              )
+            : undefined;
+
+export const selectActiveShoppingListId = (state: RootState): number | false =>
+    state.shoppinglist.activeShoppingListId;
+
 export const shoppingListSlice = createSlice({
     name: 'shoppinglist',
     initialState,
-    reducers: {},
+    reducers: {
+        setActiveShoppingListId: (
+            state,
+            action: PayloadAction<number | false>
+        ) => {
+            state.activeShoppingListId = action.payload;
+        },
+        clearEditShoppingList: (state) => {
+            state.editShoppingList = undefined;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(RESET_ALL, () => initialState)
@@ -176,6 +208,7 @@ export const shoppingListSlice = createSlice({
                 state.shoppingLists[action.payload.id] = action.payload;
             })
             .addCase(modifyShoppingListAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.id]) return;
                 state.shoppingLists[action.payload.id] = action.payload;
             })
             .addCase(removeShoppingListAsync.fulfilled, (state, action) => {
@@ -183,9 +216,15 @@ export const shoppingListSlice = createSlice({
                 delete state.shoppingLists[action.payload.id];
             })
             .addCase(getShoppingListByIdAsync.fulfilled, (state, action) => {
-                state.shoppingLists[action.payload.id] = action.payload;
+                if (action.payload.isEdit) {
+                    state.editShoppingList = action.payload.data;
+                } else {
+                    state.shoppingLists[action.payload.data.id] =
+                        action.payload.data;
+                }
             })
             .addCase(addItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -193,6 +232,7 @@ export const shoppingListSlice = createSlice({
                 );
             })
             .addCase(modifyItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -200,12 +240,14 @@ export const shoppingListSlice = createSlice({
                 );
             })
             .addCase(removeItemAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 state.shoppingLists[action.payload.shoppingListId].items =
                     state.shoppingLists[
                         action.payload.shoppingListId
                     ].items.filter((it) => it.id !== action.payload.id);
             })
             .addCase(setLikeStatusAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.shoppingListId]) return;
                 updateOrAdd(
                     state.shoppingLists[action.payload.shoppingListId].items,
                     (it) => it.id,
@@ -214,5 +256,8 @@ export const shoppingListSlice = createSlice({
             });
     },
 });
+
+export const { setActiveShoppingListId, clearEditShoppingList } =
+    shoppingListSlice.actions;
 
 export default shoppingListSlice.reducer;

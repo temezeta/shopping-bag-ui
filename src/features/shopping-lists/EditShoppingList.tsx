@@ -10,7 +10,8 @@ import {
     getShoppingListByIdAsync,
     modifyShoppingListAsync,
     removeShoppingListAsync,
-    selectShoppingListById,
+    selectEditShoppingListById,
+    clearEditShoppingList,
 } from '../../store/shopping-list/shopping-list-slice';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -34,10 +35,15 @@ const EditShoppingList = (): JSX.Element => {
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     useEffect(() => {
-        void dispatch(getShoppingListByIdAsync(id));
+        void dispatch(
+            getShoppingListByIdAsync({ listId: id, isEditing: true })
+        );
+        return () => {
+            dispatch(clearEditShoppingList());
+        };
     }, []);
 
-    const shoppingList = useAppSelector(selectShoppingListById(id));
+    const shoppingList = useAppSelector(selectEditShoppingListById(id));
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {
         setModification(data);

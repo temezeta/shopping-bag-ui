@@ -9,6 +9,8 @@ export interface ShoppingListMap {
 
 export interface ShoppingListState {
     shoppingLists: ShoppingListMap;
+    activeShoppingListId: number | false;
+    editShoppingList?: ShoppingListDto;
 }
 
 export interface ModifyPayload {
@@ -29,4 +31,9 @@ export interface ModifyItemPayload {
 export interface LikeStatusPayload {
     data: boolean;
     itemId: number;
+}
+
+export interface GetListByIdPayload {
+    listId: number;
+    isEditing?: boolean;
 }

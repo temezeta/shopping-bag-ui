@@ -22,7 +22,9 @@
         "page_not_found": "Page not found",
         "registration_failed": "Registration failed",
         "login_failed": "Login failed",
-        "logout_failed": "Unable to logout"
+        "logout_failed": "Unable to logout",
+        "url_not_valid": "The URL must include https:// or http://",
+        "one_value_required": "One of these values is required!"
     },
     "actions": {
         "registration": "Registration",

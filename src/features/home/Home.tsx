@@ -1,27 +1,26 @@
 import { Tab, Tabs } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
-    getShoppingListsByOfficeAsync,
     selectActiveLists,
+    selectActiveShoppingListId,
+    setActiveShoppingListId,
 } from '../../store/shopping-list/shopping-list-slice';
-import {
-    selectCurrentOffice,
-    selectCurrentUser,
-} from '../../store/user/user-slice';
+import { selectCurrentUser } from '../../store/user/user-slice';
 import { isAdmin } from '../../utility/user-helper';
 
 const Home = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const user = useAppSelector(selectCurrentUser);
-    const currentOffice = useAppSelector(selectCurrentOffice);
     const activeShoppingLists = useAppSelector(selectActiveLists);
-    const [selectedListId, setSelectedListId] = useState<number | false>(false);
+    const activeListId = useAppSelector(selectActiveShoppingListId);
+    const selectedListId =
+        activeShoppingLists.find((it) => it.id === activeListId)?.id ?? false;
 
     // Handle admin page transition
     useEffect(() => {
@@ -30,25 +29,24 @@ const Home = (): JSX.Element => {
         }
     }, [user]);
 
-    // Handle office change
     useEffect(() => {
-        const fetchLists = async (): Promise<void> => {
-            if (currentOffice) {
-                await dispatch(getShoppingListsByOfficeAsync(currentOffice.id));
-            }
-        };
-        setSelectedListId(false);
-        void fetchLists();
-    }, [currentOffice]);
-
-    useEffect(() => {
-        setSelectedListId(
-            activeShoppingLists.length ? activeShoppingLists[0].id : false
-        );
+        /**
+         * Reset selectedListId only when the active shopping lists office changes
+         * to avoid that liking an item resets it.
+         */
+        if (!activeShoppingLists.find((it) => it.id === selectedListId)) {
+            dispatch(
+                setActiveShoppingListId(
+                    activeShoppingLists.length
+                        ? activeShoppingLists[0].id
+                        : false
+                )
+            );
+        }
     }, [activeShoppingLists]);
 
     const handleTabChange = (_: SyntheticEvent, value: number): void => {
-        setSelectedListId(value);
+        dispatch(setActiveShoppingListId(value));
     };
 
     return (

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import styles from './ItemForm.module.css';
 import { FavoriteBorder, Favorite } from '@mui/icons-material';
-import { oneFieldRequired } from '../../utility/validation-helper';
+import { isUrl, oneFieldRequired } from '../../utility/validation-helper';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useEffect } from 'react';
 
@@ -30,22 +30,27 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
         control,
         handleSubmit,
         reset,
+        trigger,
         watch,
-        formState: { isValid },
+        formState: { isValid, errors },
     } = useForm<AddItemDto>({
         defaultValues,
         mode: 'onChange',
     });
 
+    const watchNameAndUrl = watch(['name', 'url']);
+
     useEffect(() => {
         reset(defaultValues);
     }, [initialValues]);
 
+    useEffect(() => {
+        void trigger(['name', 'url']);
+    }, [watchNameAndUrl[0], watchNameAndUrl[1]]);
+
     const onSubmit: SubmitHandler<AddItemDto> = (data) => {
         props.onSubmit?.(data);
     };
-    const watchNameAndUrl = watch(['name', 'url']);
-
     return (
         <form
             id="Add-Item-Form"
@@ -66,13 +71,15 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                                     oneFieldRequired(
                                         value,
                                         watchNameAndUrl[1]
-                                    ) || t('errors.required'),
+                                    ) || t('errors.one_value_required'),
                             },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                error={!!errors.name}
                                 aria-labelledby="item_name"
+                                helperText={errors.name?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -96,7 +103,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                 )}
 
                 <Grid2 xs={12}>
-                    <FormLabel className={styles.label} id="shopName ">
+                    <FormLabel className={styles.label} id="shopName">
                         {t('item.shopName')}
                     </FormLabel>
                     <Controller
@@ -105,7 +112,9 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
-                                aria-labelledby="shopName "
+                                error={!!errors.shopName}
+                                aria-labelledby="shopName"
+                                helperText={errors.shopName?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -125,13 +134,20 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                                     oneFieldRequired(
                                         value,
                                         watchNameAndUrl[0]
-                                    ) || t('errors.required'),
+                                    ) || t('errors.one_value_required'),
+                                isUrl: (value?: string) =>
+                                    !value ||
+                                    isUrl(value) ||
+                                    t('errors.url_not_valid'),
                             },
                         }}
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                type="url"
+                                error={!!errors.url}
                                 aria-labelledby="url"
+                                helperText={errors.url?.message}
                                 size="small"
                                 fullWidth
                             />
@@ -148,7 +164,9 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         render={({ field }) => (
                             <TextField
                                 {...field}
+                                error={!!errors.comment}
                                 aria-labelledby="comment"
+                                helperText={errors.comment?.message}
                                 size="small"
                                 fullWidth
                             />

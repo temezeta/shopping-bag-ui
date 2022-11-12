@@ -1,9 +1,5 @@
-import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-    getShoppingListsByOfficeAsync,
-    selectInactiveLists,
-} from '../../store/shopping-list/shopping-list-slice';
+import { useAppSelector } from '../../store/hooks';
+import { selectInactiveLists } from '../../store/shopping-list/shopping-list-slice';
 import { Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
@@ -13,19 +9,8 @@ import OrderListItem from '../../components/order-list-item/OrderListItem';
 
 const PastOrders = (): JSX.Element => {
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
     const currentOffice = useAppSelector(selectCurrentOffice);
     const inactiveShoppingLists = useAppSelector(selectInactiveLists);
-
-    // Handle office change
-    useEffect(() => {
-        const fetchLists = async (): Promise<void> => {
-            if (currentOffice) {
-                await dispatch(getShoppingListsByOfficeAsync(currentOffice.id));
-            }
-        };
-        void fetchLists();
-    }, [currentOffice]);
 
     return (
         <MainLayout>
