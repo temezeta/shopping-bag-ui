@@ -63,11 +63,6 @@ const DeleteAccountDialog = (props: DeleteAccountgProps): JSX.Element => {
                             setDeleteText('');
                             props.onCancel();
                         }}
-                        sx={{
-                            '&:hover': {
-                                backgroundColor: 'light-grey',
-                            },
-                        }}
                         style={{
                             float: 'right',
                         }}
