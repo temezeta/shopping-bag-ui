@@ -145,6 +145,18 @@ export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
         .filter((it) => it.ordered)
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 
+export const selectShoppingListById =
+    (listId: number) =>
+    (state: RootState): ShoppingListDto | undefined =>
+        state.shoppinglist.shoppingLists[listId];
+
+export const selectItemById =
+    (listId: number, itemId: number) =>
+    (state: RootState): ItemDto | undefined =>
+        state.shoppinglist.shoppingLists[listId]?.items.find(
+            (it) => it.id === itemId
+        );
+
 export const selectEditShoppingListById =
     (listId: number) =>
     (state: RootState): ShoppingListDto | undefined =>
