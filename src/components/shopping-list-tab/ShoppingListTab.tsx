@@ -23,13 +23,13 @@ import { useNavigate } from 'react-router-dom';
 interface ShoppingListTabProps {
     list: ShoppingListDto;
     value: number;
+    showControls: Boolean;
 }
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { value, list } = props;
-
+    const { value, list, showControls } = props;
     return (
         <div
             role="tabpanel"
@@ -141,6 +141,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <ShoppingListItem item={it} key={i} />
                         ))}
                     </List>
+                    {showControls && (
+                        <Grid2 justifyContent={'center'}>
+                            <Box textAlign="center">
+                                {/* TODO ORDER FUNCTIONALITY */}
+                                <Button variant="contained">
+                                    {t('actions.order')}
+                                </Button>
+                            </Box>
+                        </Grid2>
+                    )}
                 </div>
             )}
         </div>

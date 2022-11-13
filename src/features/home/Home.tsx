@@ -81,8 +81,14 @@ const Home = (): JSX.Element => {
                 </Grid2>
 
                 {selectedListId &&
+                    user?.userRoles.some(
+                        (userRole) => userRole.roleName === Role.User
+                    ) &&
                     shoppingLists.map((list, i) => (
                         <ShoppingListTab
+                            showControls={user?.userRoles.some(
+                                (userRole) => userRole.roleName === Role.User
+                            )}
                             value={selectedListId}
                             list={list}
                             key={i}

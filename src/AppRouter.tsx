@@ -25,6 +25,10 @@ const AppRouter = (): JSX.Element => {
                 <Route path="home" element={<Home />}></Route>
                 <Route path="addItem/:listId" element={<AddItem />}></Route>
                 <Route path="editItem/:itemId" element={<EditItem />}></Route>
+                <Route
+                    path="order/:listId"
+                    element={<AdminShoppingList />}
+                ></Route>
             </Route>
             {/** Admin routes */}
             <Route element={<AuthGuard roles={[Role.Admin]} />}>
@@ -39,10 +43,6 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="editshoppinglist/:listId"
                     element={<EditShoppingList />}
-                ></Route>
-                <Route
-                    path="adminshoppinglist/:listId"
-                    element={<AdminShoppingList />}
                 ></Route>
             </Route>
         </Routes>
