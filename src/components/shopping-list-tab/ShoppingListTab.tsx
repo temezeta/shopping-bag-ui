@@ -21,6 +21,7 @@ import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useEffect, useState } from 'react';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import SortButton from '../sort-button/SortButton';
 import {
     sortByItemName,
@@ -52,6 +53,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         await navigator.clipboard.writeText(
             `${protocol}//${host}/adminshoppinglist/${list.id}`
         );
+        await showSuccessSnackBar(t('list.list-copy-successful'));
     };
 
     useEffect(() => {
