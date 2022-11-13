@@ -51,7 +51,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         const host = window.location.host;
         const protocol = location.protocol;
         await navigator.clipboard.writeText(
-            `${protocol}//${host}/adminshoppinglist/${list.id}`
+            `${protocol}//${host}/order/${list.id}`
         );
         await showSuccessSnackBar(t('list.list-copy-successful'));
     };
