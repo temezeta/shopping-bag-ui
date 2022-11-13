@@ -1,6 +1,6 @@
 import {
     Add,
-    ContentCopy,
+    Link,
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
@@ -87,7 +87,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 className={styles.copyButton}
                                 onClick={copyShoppingListLink}
                             >
-                                <ContentCopy />
+                                <Link />
                             </IconButton>
                             <Typography
                                 variant="h1"
