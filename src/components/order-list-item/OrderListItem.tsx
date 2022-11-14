@@ -54,11 +54,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.textRows}
                 >
                     <div>
-                        <Link
-                            onClick={() => {
-                                navigate(`/order/${list.id}`);
-                            }}
-                        >
+                        <Link href={'/order/' + String(list.id)}>
                             <Typography
                                 color="info.main"
                                 variant="h3"
