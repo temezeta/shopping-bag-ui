@@ -12,6 +12,10 @@ export const showResponseError = async (response: Response): Promise<void> => {
     );
 };
 
+export const showSuccessSnackBar = async (msg: string): Promise<void> => {
+    store.dispatch(setSnackbar({ type: 'success', message: msg }));
+};
+
 // Selectors
 export const selectUIState = (state: RootState): UIState => state.ui;
 

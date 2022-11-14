@@ -67,7 +67,8 @@
         "store": "Store",
         "actions": "Actions",
         "delete-item": "Delete item",
-        "edit-item": "Edit item"
+        "edit-item": "Edit item",
+        "list-copy-successful": "List address copied to clipboard"
     },
     "item": {
         "name": "Item name",

@@ -1,6 +1,6 @@
 import {
     Add,
-    ContentCopy,
+    Link,
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
@@ -21,6 +21,7 @@ import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { useEffect, useState } from 'react';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import SortButton from '../sort-button/SortButton';
 import {
     sortByItemName,
@@ -46,6 +47,14 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const [sortedItems, setSortedItems] = useState<ItemDto[]>(
         sortByItemLikes(list.items, sortOptions.sortDescending)
     );
+    const copyShoppingListLink = async (): Promise<void> => {
+        const host = window.location.host;
+        const protocol = location.protocol;
+        await navigator.clipboard.writeText(
+            `${protocol}//${host}/order/${list.id}`
+        );
+        await showSuccessSnackBar(t('list.list-copy-successful'));
+    };
 
     useEffect(() => {
         switch (sortOptions.sortType) {
@@ -76,9 +85,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                 <div>
                     <Grid2 container spacing={2} className="flex-center">
                         <Grid2 xs={12} className="flex-center">
-                            {/** TODO: Copy functionality */}
-                            <IconButton className={styles.copyButton}>
-                                <ContentCopy />
+                            <IconButton
+                                className={styles.copyButton}
+                                onClick={copyShoppingListLink}
+                            >
+                                <Link />
                             </IconButton>
                             <Typography
                                 variant="h1"
