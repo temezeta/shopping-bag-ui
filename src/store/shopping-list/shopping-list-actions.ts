@@ -5,12 +5,14 @@ import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShopping
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { ModifyItemDto } from '../../models/shopping-list/ModifyItemDto';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
+import { showResponseError } from '../ui/ui-slice';
 
 export const getShoppingListsByOfficeId = async (
     officeId: number
 ): Promise<ShoppingListDto[] | null> => {
     const response = await ApiClient.get(`shoppinglist?officeId=${officeId}`);
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
@@ -22,6 +24,7 @@ export const addShoppingList = async (
 ): Promise<ShoppingListDto | null> => {
     const response = await ApiClient.post(`shoppinglist`, data);
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
@@ -31,16 +34,20 @@ export const addShoppingList = async (
 export const addItem = async (
     data: AddItemDto,
     listId: number
-): Promise<AddItemDto | null> => {
+): Promise<ItemDto | null> => {
     const response = await ApiClient.post(`item?listId=${listId}`, data);
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
-    return (await response.json()) as AddItemDto;
+    return (await response.json()) as ItemDto;
 };
 
 export const removeItem = async (itemId: number): Promise<boolean> => {
     const response = await ApiClient.delete(`Item/${itemId}`, '');
+    if (!response.ok) {
+        await showResponseError(response);
+    }
     return response.ok;
 };
 
@@ -50,6 +57,7 @@ export const modifyItem = async (
 ): Promise<ItemDto | null> => {
     const response = await ApiClient.put(`item/${itemId}`, data);
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
@@ -65,6 +73,7 @@ export const modifyShoppingList = async (
         data
     );
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
@@ -80,6 +89,7 @@ export const removeShoppingList = async (
     );
 
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
@@ -94,8 +104,26 @@ export const getShoppingListById = async (
     );
 
     if (!response.ok) {
+        await showResponseError(response);
         return null;
     }
 
     return (await response.json()) as ShoppingListDto;
+};
+
+export const setLikeStatus = async (
+    data: boolean,
+    itemId: number
+): Promise<ItemDto | null> => {
+    const response = await ApiClient.post(
+        `item/${itemId}/like?unlike=${String(!data)}`,
+        null
+    );
+
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+
+    return (await response.json()) as ItemDto;
 };

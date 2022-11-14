@@ -134,6 +134,7 @@ const HuldTheme = createTheme({
                     textTransform: 'none',
                     color: 'inherit',
                     opacity: 1,
+                    minHeight: '50px',
                     '&.Mui-selected': {
                         color: theme.palette.info.main,
                         fontWeight: 'bold',

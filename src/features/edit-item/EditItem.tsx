@@ -1,7 +1,7 @@
 import { ArrowBackIos } from '@mui/icons-material';
 import { IconButton, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,13 +11,14 @@ import MainLayout from '../../components/main-layout/MainLayout';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
+    getShoppingListByIdAsync,
     modifyItemAsync,
-    selectItemById,
+    selectEditItemById,
+    clearEditShoppingList,
 } from '../../store/shopping-list/shopping-list-slice';
-import { RootState } from '../../store/store';
 
 const EditItem = (): JSX.Element => {
-    const { itemId } = useParams();
+    const { itemId, listId } = useParams();
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -26,8 +27,20 @@ const EditItem = (): JSX.Element => {
     );
     const [isModifyOpen, setModifyOpen] = useState<boolean>(false);
 
-    const item = useAppSelector((state: RootState) =>
-        selectItemById(state, Number(itemId))
+    useEffect(() => {
+        void dispatch(
+            getShoppingListByIdAsync({
+                listId: Number(listId),
+                isEditing: true,
+            })
+        );
+        return () => {
+            dispatch(clearEditShoppingList());
+        };
+    }, []);
+
+    const item = useAppSelector(
+        selectEditItemById(Number(listId), Number(itemId))
     );
 
     const onSubmit: SubmitHandler<AddItemDto> = async (data) => {

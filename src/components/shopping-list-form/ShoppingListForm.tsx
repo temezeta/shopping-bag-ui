@@ -1,4 +1,12 @@
-import { Button, FormLabel, TextField } from '@mui/material';
+import {
+    Button,
+    FormLabel,
+    TextField,
+    Tabs,
+    Tab,
+    Paper,
+    Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +15,9 @@ import { DatePicker, DateTimePicker } from '@mui/x-date-pickers';
 import moment from 'moment';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import TabPanel from '../tab-panel/TabPanel';
+import Markdown from '../markdown/Markdown';
 
 interface ShoppingListFormProps {
     initialValues?: ShoppingListDto;
@@ -18,6 +28,7 @@ interface ShoppingListFormProps {
 const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
+    const [tabIndex, setTabIndex] = useState<number>(0);
 
     const defaultValues: Partial<ModifyShoppingListDto> = initialValues ?? {
         name: '',
@@ -30,6 +41,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         control,
         handleSubmit,
         reset,
+        watch,
         formState: { isValid, errors },
     } = useForm<ModifyShoppingListDto>({
         defaultValues,
@@ -38,7 +50,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
 
     useEffect(() => {
         reset(defaultValues);
-    }, [defaultValues]);
+    }, [initialValues]);
 
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = (data) => {
         props.onSubmit?.(data);
@@ -48,6 +60,10 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         if (initialValues) {
             await props.onDelete?.(initialValues);
         }
+    };
+
+    const handleChange = (_: React.SyntheticEvent, value: number): void => {
+        setTabIndex(value);
     };
 
     return (
@@ -88,22 +104,44 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <FormLabel className={styles.label} id="comment">
                             {t('list.comment')}
                         </FormLabel>
-                        <Controller
-                            name="comment"
-                            control={control}
-                            render={({ field }) => (
-                                <TextField
-                                    {...field}
-                                    error={!!errors.comment}
-                                    aria-labelledby="comment"
-                                    helperText={errors.comment?.message}
-                                    size="small"
-                                    fullWidth
-                                    multiline
-                                    rows={4}
-                                />
-                            )}
-                        />
+                        <Tabs
+                            color="primary"
+                            value={tabIndex}
+                            onChange={handleChange}
+                            aria-label="basic tabs example"
+                        >
+                            <Tab label={t('actions.input')} />
+                            <Tab label={t('actions.preview')} />
+                        </Tabs>
+                        <TabPanel index={0} value={tabIndex}>
+                            <Controller
+                                name="comment"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        error={!!errors.comment}
+                                        aria-labelledby="comment"
+                                        helperText={errors.comment?.message}
+                                        size="small"
+                                        fullWidth
+                                        multiline
+                                        rows={4}
+                                    />
+                                )}
+                            />
+                        </TabPanel>
+                        <TabPanel index={1} value={tabIndex}>
+                            <Paper
+                                className={styles.previewTab}
+                                variant="outlined"
+                            >
+                                <Markdown>{watch('comment')}</Markdown>
+                            </Paper>
+                        </TabPanel>
+                        <Typography variant="body2">
+                            {t('general.support_markdown')}
+                        </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
                         <FormLabel className={styles.label} id="due-date">

@@ -1,22 +1,39 @@
-import {
-    Box,
-    Checkbox,
-    IconButton,
-    ListItem,
-    ListItemIcon,
-    Typography,
-} from '@mui/material';
-import { ContentCopy, Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Box, Checkbox, ListItem, Typography } from '@mui/material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
+import { ChangeEvent } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setLikeStatusAsync } from '../../store/shopping-list/shopping-list-slice';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { hasUserLikedItem } from '../../utility/user-helper';
 
 interface ShoppingListItemProps {
     item: ItemDto;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
+    const { item } = props;
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(selectCurrentUser);
+
+    const handleItemLike = async (
+        event: ChangeEvent<HTMLInputElement>,
+        checked: boolean
+    ): Promise<void> => {
+        // Disable the button until dispatch resolve to avoid duplicate clicks
+        event.target.disabled = true;
+        try {
+            await dispatch(
+                setLikeStatusAsync({ data: checked, itemId: item.id })
+            );
+        } finally {
+            event.target.disabled = false;
+        }
+    };
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -25,41 +42,43 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Box
-                    component={Grid2}
-                    sm={1}
-                    display={{ xs: 'none', md: 'inline' }}
-                >
-                    {/** TODO: copy functionality */}
-                    <ListItemIcon>
-                        <IconButton edge="start" aria-label="copy item">
-                            <ContentCopy fontSize="small" />
-                        </IconButton>
-                    </ListItemIcon>
-                </Box>
-                <Grid2 xs={8} sm={7}>
+                <Grid2 xs={8}>
                     <Box>
-                        <a href={props.item.url}>{props.item.name}</a>
+                        {item.url ? (
+                            <a
+                                href={item.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {item.name ? item.name : item.url}
+                            </a>
+                        ) : (
+                            <div>{item.name}</div>
+                        )}
                         <Typography variant="body2" fontWeight="medium">
-                            {props.item.shopName}
+                            {item.shopName}
                         </Typography>
                         <Box display={{ xs: 'none', sm: 'inline' }}>
                             <Typography variant="body2">
-                                {props.item.comment}
+                                {item.comment}
                             </Typography>
                         </Box>
                     </Box>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    {/** TODO: like functionality */}
                     <Checkbox
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
+                        checked={hasUserLikedItem(item, user)}
+                        color="info"
+                        onChange={handleItemLike}
                     ></Checkbox>
-                    <Typography variant="body1">1</Typography>
+                    <Typography variant="body1">
+                        {item.usersWhoLiked.length}
+                    </Typography>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
-                    <ShoppingListItemActions id={props.item.id} />
+                    <ShoppingListItemActions item={item} />
                 </Grid2>
                 <Box
                     component={Grid2}
@@ -68,9 +87,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     display={{ xs: 'inline', sm: 'none' }}
                     className={styles.itemCommentPhone}
                 >
-                    <Typography variant="body2">
-                        {props.item.comment}
-                    </Typography>
+                    <Typography variant="body2">{item.comment}</Typography>
                 </Box>
             </Grid2>
         </ListItem>

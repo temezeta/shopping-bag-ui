@@ -14,3 +14,10 @@ export const formatDate = (
 
     return dateLike.format(format);
 };
+
+export const sortByDate = (
+    a?: moment.MomentInput,
+    b?: moment.MomentInput
+): number => {
+    return moment(a).diff(b);
+};

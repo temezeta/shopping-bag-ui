@@ -80,11 +80,13 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.utilityButtons}
                     columnSpacing={7}
                 >
-                    <IconButton
-                        onClick={() => navigate(`/editshoppinglist/${list.id}`)}
-                    >
-                        <Edit />
-                    </IconButton>
+                    {!list.ordered && (
+                        <IconButton
+                            onClick={() => navigate(`/orders/${list.id}/edit`)}
+                        >
+                            <Edit />
+                        </IconButton>
+                    )}
                 </Grid2>
             </Grid2>
         </ListItem>
