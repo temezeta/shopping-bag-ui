@@ -84,7 +84,7 @@ const Home = (): JSX.Element => {
                     user?.userRoles.some(
                         (userRole) => userRole.roleName === Role.User
                     ) &&
-                    shoppingLists.map((list, i) => (
+                    activeShoppingLists.map((list, i) => (
                         <ShoppingListTab
                             showControls={user?.userRoles.some(
                                 (userRole) => userRole.roleName === Role.User

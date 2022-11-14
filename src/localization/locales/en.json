@@ -5,15 +5,26 @@
         "email_address": "Email address",
         "password": "Password",
         "repeat_password": "Repeat password",
+        "current_password": "Current password",
+        "new_password": "New password",
+        "repeat_new_password": "Repeat new password",
         "account_settings": "Account settings",
-        "office": "Office"
+        "office": "Office",
+        "profile": "Profile",
+        "delete_account": "Delete account"
     },
     "errors": {
         "required": "This value is required!",
         "invalid_email": "Email invalid. Make sure it belongs to an allowed domain.",
         "invalid_password": "Password invalid. Make sure it has at least 8 characters, 1 lowercase letter, 1 uppercase letter, 1 number and 1 special character.",
         "password_match": "Passwords do not match!",
-        "access_denied": "Access denied"
+        "access_denied": "Access denied",
+        "page_not_found": "Page not found",
+        "registration_failed": "Registration failed",
+        "login_failed": "Login failed",
+        "logout_failed": "Unable to logout",
+        "url_not_valid": "The URL must include https:// or http://",
+        "one_value_required": "One of these values is required!"
     },
     "actions": {
         "registration": "Registration",
@@ -32,14 +43,18 @@
         "add_item": "Add item",
         "edit_list": "Edit list",
         "remove_list": "Remove list",
-        "check": "Check",
+        "order": "Order",
         "save": "Save",
-        "order": "Order"
+        "input": "Input",
+        "preview": "Preview",
+        "delete": "Delete"
     },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email.",
-        "confirmation": "Are you sure you wish to continue?"
+        "confirmation": "Are you sure you wish to continue?",
+        "delete_account": "Deleting your account will remove your information from our database. This cannot be undone.",
+        "type_delete": "To confirm this, type DELETE"
     },
     "list": {
         "due_date": "Due date",
@@ -53,12 +68,21 @@
         "store": "Store",
         "actions": "Actions",
         "delete-item": "Delete item",
-        "edit-item": "Edit item"
+        "edit-item": "Edit item",
+        "list-copy-successful": "List address copied to clipboard"
     },
     "item": {
         "name": "Item name",
         "shopName": "Store",
         "url": "Link to item",
-        "comment": "Add comment" 
-     }
+        "comment": "Add comment"
+    },
+    "management": {
+        "management": "Management",
+        "offices": "Offices",
+        "users": "Users"
+    },
+    "general": {
+        "support_markdown": "Styling with Markdown is supported"
+    }
 }

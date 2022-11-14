@@ -19,6 +19,17 @@ import styles from './ShoppingListTab.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
+import { ItemDto } from '../../models/shopping-list/ItemDto';
+import { useEffect, useState } from 'react';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import SortButton from '../sort-button/SortButton';
+import {
+    sortByItemName,
+    sortByItemLikes,
+    SortType,
+    SortOptions,
+} from '../../utility/sort-helper';
+import Markdown from '../markdown/Markdown';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -30,6 +41,39 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list, showControls } = props;
+    const [sortOptions, setSortOptions] = useState<SortOptions>({
+        sortType: SortType.Likes,
+        sortDescending: false,
+    });
+    const [sortedItems, setSortedItems] = useState<ItemDto[]>(
+        sortByItemLikes(list.items, sortOptions.sortDescending)
+    );
+    const copyShoppingListLink = async (): Promise<void> => {
+        const host = window.location.host;
+        const protocol = location.protocol;
+        await navigator.clipboard.writeText(
+            `${protocol}//${host}/order/${list.id}`
+        );
+        await showSuccessSnackBar(t('list.list-copy-successful'));
+    };
+
+    useEffect(() => {
+        switch (sortOptions.sortType) {
+            case SortType.Name:
+                setSortedItems(
+                    sortByItemName(list.items, sortOptions.sortDescending)
+                );
+                break;
+            case SortType.Likes:
+                setSortedItems(
+                    sortByItemLikes(list.items, sortOptions.sortDescending)
+                );
+                break;
+            default:
+                setSortedItems(list.items);
+                break;
+        }
+    }, [sortOptions, list]);
     return (
         <div
             role="tabpanel"
