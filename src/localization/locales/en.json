@@ -11,7 +11,8 @@
         "account_settings": "Account settings",
         "office": "Office",
         "profile": "Profile",
-        "delete_account": "Delete account"
+        "delete_account": "Delete account",
+        "password_change_successful": "Password changed"
     },
     "errors": {
         "required": "This value is required!",
@@ -24,7 +25,8 @@
         "login_failed": "Login failed",
         "logout_failed": "Unable to logout",
         "url_not_valid": "The URL must include https:// or http://",
-        "one_value_required": "One of these values is required!"
+        "one_value_required": "One of these values is required!",
+        "password_change_failed": "Password change failed"
     },
     "actions": {
         "registration": "Registration",
