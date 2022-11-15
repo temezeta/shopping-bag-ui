@@ -20,7 +20,7 @@ export const changePasswordAsync = createAsyncThunk(
                     message: t('errors.password_change_failed'),
                 })
             );
-            return rejectWithValue('Registration failed');
+            return rejectWithValue('Password change failed!');
         }
         await showSuccessSnackBar(t('user.password_change_successful'));
         return response;
