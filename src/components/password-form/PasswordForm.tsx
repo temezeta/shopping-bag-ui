@@ -16,6 +16,7 @@ const PasswordForm = (props: PasswordFormProps): JSX.Element => {
         control,
         handleSubmit,
         watch,
+        reset,
         formState: { isValid, errors },
     } = useForm<ChangePasswordDto>({
         defaultValues: {
@@ -28,6 +29,7 @@ const PasswordForm = (props: PasswordFormProps): JSX.Element => {
 
     const onSubmit: SubmitHandler<ChangePasswordDto> = (data) => {
         props.onSubmit?.(data);
+        reset();
     };
 
     return (
