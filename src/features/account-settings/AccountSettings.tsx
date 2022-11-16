@@ -16,11 +16,7 @@ import {
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
 
-interface PasswordFormProps {
-    onSubmit?: SubmitHandler<UserPasswordDto>;
-}
-
-const AccountSettings = (props: PasswordFormProps): JSX.Element => {
+const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
     const [currentTab, setCurrentTab] = useState(0);
     const dispatch = useAppDispatch();
@@ -37,7 +33,6 @@ const AccountSettings = (props: PasswordFormProps): JSX.Element => {
     const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
 
     const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {
-        console.log('passwordOnSubmit');
         unwrapResult(await dispatch(changePasswordAsync(data)));
     };
 
