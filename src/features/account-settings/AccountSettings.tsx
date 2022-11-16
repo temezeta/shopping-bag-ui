@@ -7,14 +7,19 @@ import MainLayout from '../../components/main-layout/MainLayout';
 import PasswordForm from '../../components/password-form/PasswordForm';
 import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
-import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
-import { useAppSelector } from '../../store/hooks';
+import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
-import { selectCurrentUser } from '../../store/user/user-slice';
+import {
+    changePasswordAsync,
+    selectCurrentUser,
+} from '../../store/user/user-slice';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
     const [currentTab, setCurrentTab] = useState(0);
+    const dispatch = useAppDispatch();
 
     const handleTabChange = (
         event: React.SyntheticEvent,
@@ -27,7 +32,9 @@ const AccountSettings = (): JSX.Element => {
 
     const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
 
-    const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {};
+    const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
+        unwrapResult(await dispatch(changePasswordAsync(data)));
+    };
 
     const onDeleteConfirm = async (): Promise<void> => {
         /* TODO: Add delete account functionality */

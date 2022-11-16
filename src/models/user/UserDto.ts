@@ -18,8 +18,7 @@ export interface RedactedUserDto {
     homeOffice: OfficeDto;
 }
 
-export interface UserPasswordDto {
-    id: number;
+export interface ChangePasswordDto {
     currentPassword: string;
     newPassword: string;
     repeatNewPassword: string;
