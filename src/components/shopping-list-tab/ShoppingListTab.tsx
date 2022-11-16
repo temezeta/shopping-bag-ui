@@ -119,21 +119,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 {t('actions.add_new_item')}
                             </Button>
                         </Grid2>
-                        <Grid2
-                            md={2}
-                            xs={3}
-                            order={{ xs: 2, md: 2 }}
-                            className="flex-center"
-                        >
-                            <div>
-                                <div>{t('list.due_date')}</div>
-                                <div>{formatDate(list.dueDate)}</div>
-                            </div>
+                        <Grid2 md={6} xs={10} order={{ xs: 1, md: 2 }}>
+                            {t('list.due_date')} {formatDate(list.dueDate)}
+                            <br />
+                            {t('list.expected_delivery_date')}{' '}
+                            {formatDate(list.expectedDeliveryDate)}
                         </Grid2>
                         <Grid2
                             md={1}
                             xs={2}
-                            order={{ xs: 1, md: 3 }}
+                            order={{ xs: 3, md: 4 }}
                             className="flex-center"
                         >
                             {/** TODO: Notification functionality */}
@@ -141,21 +136,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 icon={<NotificationsNone />}
                                 checkedIcon={<NotificationsActive />}
                             ></Checkbox>
-                        </Grid2>
-                        <Grid2
-                            md={4}
-                            xs={7}
-                            order={{ xs: 3, md: 4 }}
-                            className="flex-center"
-                        >
-                            <div>
-                                <div className={styles.expectedDate}>
-                                    {t('list.expected_delivery_date')}
-                                </div>
-                                <div className={styles.expectedDate}>
-                                    {formatDate(list.expectedDeliveryDate)}
-                                </div>
-                            </div>
                         </Grid2>
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
