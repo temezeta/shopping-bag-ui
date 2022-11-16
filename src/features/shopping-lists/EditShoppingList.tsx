@@ -25,10 +25,6 @@ const EditShoppingList = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [modification, setModification] = useState<
-        ModifyShoppingListDto | undefined
-    >(undefined);
-    const [isModifyOpen, setModifyOpen] = useState<boolean>(false);
     const [toDelete, setToDelete] = useState<ShoppingListDto | undefined>(
         undefined
     );
@@ -45,9 +41,18 @@ const EditShoppingList = (): JSX.Element => {
 
     const shoppingList = useAppSelector(selectEditShoppingListById(id));
 
-    const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (data) => {
-        setModification(data);
-        setModifyOpen(true);
+    const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (
+        modifiedData
+    ) => {
+        if (modifiedData && shoppingList) {
+            await dispatch(
+                modifyShoppingListAsync({
+                    data: modifiedData,
+                    listId: shoppingList.id,
+                })
+            ).unwrap();
+            navigate('/home');
+        }
     };
 
     const onDelete: SubmitHandler<ShoppingListDto> = async (data) => {
@@ -60,20 +65,6 @@ const EditShoppingList = (): JSX.Element => {
             await dispatch(removeShoppingListAsync(toDelete)).unwrap();
             setToDelete(undefined);
             setDeleteOpen(false);
-            navigate('/home');
-        }
-    };
-
-    const onModifyConfirm = async (): Promise<void> => {
-        if (modification && shoppingList) {
-            await dispatch(
-                modifyShoppingListAsync({
-                    data: modification,
-                    listId: shoppingList.id,
-                })
-            ).unwrap();
-            setModification(undefined);
-            setModifyOpen(false);
             navigate('/home');
         }
     };
@@ -103,16 +94,6 @@ const EditShoppingList = (): JSX.Element => {
                     </Grid2>
                 </Grid2>
             </MainLayout>
-            <ConfirmationDialog
-                open={isModifyOpen}
-                onConfirm={onModifyConfirm}
-                onCancel={() => setModifyOpen(false)}
-                title={t('actions.edit_list')}
-            >
-                <DialogContentText>
-                    {t('dialogs.confirmation')}
-                </DialogContentText>
-            </ConfirmationDialog>
             <ConfirmationDialog
                 open={isDeleteOpen}
                 onConfirm={onDeleteConfirm}

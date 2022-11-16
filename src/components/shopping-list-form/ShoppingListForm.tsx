@@ -205,7 +205,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                             fullWidth
                         >
                             {initialValues
-                                ? t('actions.edit_list')
+                                ? t('actions.save')
                                 : t('actions.add_new_list')}
                         </Button>
                     </Grid2>
