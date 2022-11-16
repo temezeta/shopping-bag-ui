@@ -7,7 +7,7 @@ import MainLayout from '../../components/main-layout/MainLayout';
 import PasswordForm from '../../components/password-form/PasswordForm';
 import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
-import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
+import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
@@ -32,7 +32,7 @@ const AccountSettings = (): JSX.Element => {
 
     const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
 
-    const passwordOnSubmit: SubmitHandler<UserPasswordDto> = async (data) => {
+    const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
         unwrapResult(await dispatch(changePasswordAsync(data)));
     };
 

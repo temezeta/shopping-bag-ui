@@ -1,4 +1,4 @@
-import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
+import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import ApiClient from '../client';
 
 export const getCurrentUser = async (): Promise<UserDto | null> => {
@@ -10,7 +10,7 @@ export const getCurrentUser = async (): Promise<UserDto | null> => {
 };
 
 export const changePassword = async (
-    data: UserPasswordDto
+    data: ChangePasswordDto
 ): Promise<UserDto | null> => {
     const response = await ApiClient.put('user/change-password', data);
     if (!response.ok) {

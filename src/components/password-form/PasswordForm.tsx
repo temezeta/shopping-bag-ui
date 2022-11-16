@@ -2,11 +2,11 @@ import { Button, FormLabel, TextField } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { SubmitHandler, Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { UserPasswordDto } from '../../models/user/UserDto';
+import { ChangePasswordDto } from '../../models/user/UserDto';
 import { isValidPassword } from '../../utility/validation-helper';
 
 interface PasswordFormProps {
-    onSubmit?: SubmitHandler<UserPasswordDto>;
+    onSubmit?: SubmitHandler<ChangePasswordDto>;
 }
 
 const PasswordForm = (props: PasswordFormProps): JSX.Element => {
@@ -17,7 +17,7 @@ const PasswordForm = (props: PasswordFormProps): JSX.Element => {
         handleSubmit,
         watch,
         formState: { isValid, errors },
-    } = useForm<UserPasswordDto>({
+    } = useForm<ChangePasswordDto>({
         defaultValues: {
             currentPassword: '',
             newPassword: '',
@@ -26,7 +26,7 @@ const PasswordForm = (props: PasswordFormProps): JSX.Element => {
         mode: 'onChange',
     });
 
-    const onSubmit: SubmitHandler<UserPasswordDto> = (data) => {
+    const onSubmit: SubmitHandler<ChangePasswordDto> = (data) => {
         props.onSubmit?.(data);
     };
 

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
-import { UserDto, UserPasswordDto } from '../../models/user/UserDto';
+import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import { changePassword, getCurrentUser } from './user-actions';
@@ -11,7 +11,7 @@ const initialState: UserState = {};
 
 export const changePasswordAsync = createAsyncThunk(
     'user/change-password',
-    async (data: UserPasswordDto, { rejectWithValue, dispatch }) => {
+    async (data: ChangePasswordDto, { rejectWithValue, dispatch }) => {
         const response = await changePassword(data);
         if (!response) {
             dispatch(
