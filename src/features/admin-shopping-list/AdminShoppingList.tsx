@@ -1,5 +1,5 @@
 import { ArrowBackIos } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 // import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,8 +13,10 @@ import { selectCurrentUser } from '../../store/user/user-slice';
 import { useEffect } from 'react';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
 import { Role } from '../../models/user/RoleEnum';
+import { useTranslation } from 'react-i18next';
 
 const AdminShoppingList = (): JSX.Element => {
+    const { t } = useTranslation();
     const { listId } = useParams();
     const id = Number(listId);
     const navigate = useNavigate();
@@ -34,19 +36,21 @@ const AdminShoppingList = (): JSX.Element => {
                         </IconButton>
                     </Grid2>
                     <Grid2 xs={12}>
-                        {shoppingList !== undefined &&
-                            user?.userRoles.some(
-                                (userRole) => userRole.roleName === Role.Admin
-                            ) && (
-                                <ShoppingListTab
-                                    showControls={user?.userRoles.some(
-                                        (userRole) =>
-                                            userRole.roleName === Role.Admin
-                                    )}
-                                    value={id}
-                                    list={shoppingList}
-                                />
-                            )}
+                        {shoppingList !== undefined && (
+                            <ShoppingListTab value={id} list={shoppingList} />
+                        )}
+                        {user?.userRoles.some(
+                            (userRole) => userRole.roleName === Role.Admin
+                        ) && (
+                            <Grid2 justifyContent={'center'}>
+                                <Box textAlign="center">
+                                    {/* TODO ORDER FUNCTIONALITY */}
+                                    <Button variant="contained">
+                                        {t('actions.order')}
+                                    </Button>
+                                </Box>
+                            </Grid2>
+                        )}
                     </Grid2>
                 </Grid2>
             </MainLayout>

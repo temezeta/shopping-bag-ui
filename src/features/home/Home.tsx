@@ -79,9 +79,6 @@ const Home = (): JSX.Element => {
                     ) &&
                     activeShoppingLists.map((list, i) => (
                         <ShoppingListTab
-                            showControls={user?.userRoles.some(
-                                (userRole) => userRole.roleName === Role.User
-                            )}
                             value={selectedListId}
                             list={list}
                             key={i}

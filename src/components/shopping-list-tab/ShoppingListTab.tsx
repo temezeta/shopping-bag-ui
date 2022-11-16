@@ -34,13 +34,12 @@ import Markdown from '../markdown/Markdown';
 interface ShoppingListTabProps {
     list: ShoppingListDto;
     value: number;
-    showControls: Boolean;
 }
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { value, list, showControls } = props;
+    const { value, list } = props;
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Likes,
         sortDescending: false,
@@ -188,16 +187,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             <ShoppingListItem item={it} key={i} />
                         ))}
                     </List>
-                    {showControls && (
-                        <Grid2 justifyContent={'center'}>
-                            <Box textAlign="center">
-                                {/* TODO ORDER FUNCTIONALITY */}
-                                <Button variant="contained">
-                                    {t('actions.order')}
-                                </Button>
-                            </Box>
-                        </Grid2>
-                    )}
                 </div>
             )}
         </div>
