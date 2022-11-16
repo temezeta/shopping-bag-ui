@@ -4,7 +4,6 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 // import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
-import { RootState } from '../../store/store';
 import {
     selectShoppingListById,
     getShoppingListByIdAsync,
@@ -22,11 +21,9 @@ const AdminShoppingList = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
     useEffect(() => {
-        void dispatch(getShoppingListByIdAsync(id));
+        void dispatch(getShoppingListByIdAsync({ listId: id }));
     }, []);
-    const shoppingList = useAppSelector((state: RootState) =>
-        selectShoppingListById(state, id)
-    );
+    const shoppingList = useAppSelector(selectShoppingListById(id));
     return (
         <>
             <MainLayout>
@@ -37,7 +34,7 @@ const AdminShoppingList = (): JSX.Element => {
                         </IconButton>
                     </Grid2>
                     <Grid2 xs={12}>
-                        {shoppingList &&
+                        {shoppingList !== undefined &&
                             user?.userRoles.some(
                                 (userRole) => userRole.roleName === Role.Admin
                             ) && (

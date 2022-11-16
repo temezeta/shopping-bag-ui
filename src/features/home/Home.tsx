@@ -4,6 +4,7 @@ import { SyntheticEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
+import { Role } from '../../models/user/RoleEnum';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     selectActiveLists,
