@@ -44,7 +44,7 @@ const EditShoppingList = (): JSX.Element => {
     const onSubmit: SubmitHandler<ModifyShoppingListDto> = async (
         modifiedData
     ) => {
-        if (shoppingList) {
+        if (modifiedData && shoppingList) {
             await dispatch(
                 modifyShoppingListAsync({
                     data: modifiedData,
