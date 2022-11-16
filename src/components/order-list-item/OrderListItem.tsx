@@ -27,7 +27,6 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const { list } = props;
     const navigate = useNavigate();
-
     return (
         <ListItem divider={true}>
             <Grid2
@@ -55,7 +54,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.textRows}
                 >
                     <div>
-                        <Link>
+                        <Link href={'/order/' + String(list.id)}>
                             <Typography
                                 color="info.main"
                                 variant="h3"

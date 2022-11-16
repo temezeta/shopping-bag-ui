@@ -10,6 +10,7 @@ import { Role } from './models/user/RoleEnum';
 import AddItem from './features/add-item/AddItem';
 import AdminOrderList from './features/admin-order-list/AdminOrderList';
 import EditItem from './features/edit-item/EditItem';
+import AdminShoppingList from './features/admin-shopping-list/AdminShoppingList';
 import PastOrders from './features/past-orders/PastOrders';
 import OfficeManagement from './features/office-management/OfficeManagement';
 import UserManagement from './features/user-management/UserManagement';
@@ -39,6 +40,10 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="account-settings"
                     element={<AccountSettings />}
+                ></Route>
+                <Route
+                    path="order/:listId"
+                    element={<AdminShoppingList />}
                 ></Route>
             </Route>
             {/** Admin routes */}
