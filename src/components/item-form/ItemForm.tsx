@@ -183,7 +183,7 @@ const ItemForm = (props: ItemFormProps): JSX.Element => {
                         fullWidth
                     >
                         {initialValues
-                            ? t('list.edit-item')
+                            ? t('actions.save')
                             : t('actions.add_item')}
                     </Button>
                 </Grid2>

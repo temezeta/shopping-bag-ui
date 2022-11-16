@@ -1,11 +1,10 @@
 import { ArrowBackIos } from '@mui/icons-material';
-import { IconButton, Typography, DialogContentText } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
-import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 import ItemForm from '../../components/item-form/ItemForm';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
@@ -22,10 +21,6 @@ const EditItem = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [modification, setModification] = useState<AddItemDto | undefined>(
-        undefined
-    );
-    const [isModifyOpen, setModifyOpen] = useState<boolean>(false);
 
     useEffect(() => {
         void dispatch(
@@ -43,24 +38,17 @@ const EditItem = (): JSX.Element => {
         selectEditItemById(Number(listId), Number(itemId))
     );
 
-    const onSubmit: SubmitHandler<AddItemDto> = async (data) => {
-        setModification(data);
-        setModifyOpen(true);
-    };
-
-    const onModifyConfirm = async (): Promise<void> => {
-        if (modification && item) {
+    const onSubmit: SubmitHandler<AddItemDto> = async (modifiedData) => {
+        if (modifiedData && item) {
             await dispatch(
                 modifyItemAsync({
                     data: {
                         ...item,
-                        ...modification,
+                        ...modifiedData,
                     },
                     itemId: Number(itemId),
                 })
             );
-            setModification(undefined);
-            setModifyOpen(false);
             navigate('/home');
         }
     };
@@ -86,16 +74,6 @@ const EditItem = (): JSX.Element => {
                     </Grid2>
                 </Grid2>
             </MainLayout>
-            <ConfirmationDialog
-                open={isModifyOpen}
-                onConfirm={onModifyConfirm}
-                onCancel={() => setModifyOpen(false)}
-                title={t('list.edit-item')}
-            >
-                <DialogContentText>
-                    {t('dialogs.confirmation')}
-                </DialogContentText>
-            </ConfirmationDialog>
         </>
     );
 };
