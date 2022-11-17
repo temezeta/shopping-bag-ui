@@ -2,6 +2,7 @@ import { Link, Tab, Tabs, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
 import PasswordForm from '../../components/password-form/PasswordForm';
@@ -12,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
     changePasswordAsync,
+    removeUserAsync,
     selectCurrentUser,
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -20,6 +22,7 @@ const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
     const [currentTab, setCurrentTab] = useState(0);
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const handleTabChange = (
         event: React.SyntheticEvent,
@@ -37,7 +40,10 @@ const AccountSettings = (): JSX.Element => {
     };
 
     const onDeleteConfirm = async (): Promise<void> => {
-        /* TODO: Add delete account functionality */
+        if (user !== undefined) {
+            await dispatch(removeUserAsync(user.id)).unwrap();
+            navigate('/login');
+        }
     };
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
