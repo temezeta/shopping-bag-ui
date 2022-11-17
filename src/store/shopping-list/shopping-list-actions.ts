@@ -127,3 +127,19 @@ export const setLikeStatus = async (
 
     return (await response.json()) as ItemDto;
 };
+
+export const orderShoppingList = async (
+    listId: number
+): Promise<number | null> => {
+    const response = await ApiClient.put(
+        `shoppinglist/order?shoppingListId=${listId}`,
+        null
+    );
+
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+
+    return listId;
+};
