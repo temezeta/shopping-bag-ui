@@ -1,5 +1,5 @@
 import { ArrowBackIos } from '@mui/icons-material';
-import { Box, Button, IconButton } from '@mui/material';
+import { Box, Button, DialogContentText, IconButton } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 // import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,11 +11,12 @@ import {
 } from '../../store/shopping-list/shopping-list-slice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
 import { Role } from '../../models/user/RoleEnum';
 import { useTranslation } from 'react-i18next';
-import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
+import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 
 const AdminShoppingList = (): JSX.Element => {
     const { t } = useTranslation();
@@ -28,12 +29,17 @@ const AdminShoppingList = (): JSX.Element => {
         void dispatch(getShoppingListByIdAsync({ listId: id }));
     }, []);
     const shoppingList = useAppSelector(selectShoppingListById(id));
+    const [isConfirmOpen, setConfirmOpen] = useState<boolean>(false);
 
-    const orderList = async (
-        shoppingList: ShoppingListDto | undefined
-    ): Promise<void> => {
+    const onOrderClicked = async (): Promise<void> => {
+        setConfirmOpen(true);
+    };
+
+    const onOrderConfirm = async (): Promise<void> => {
         if (shoppingList) {
             await dispatch(orderShoppingListAsync(shoppingList)).unwrap();
+            setConfirmOpen(false);
+            await showSuccessSnackBar(t('list.list-order-successful'));
             navigate('/past-orders');
         }
     };
@@ -59,7 +65,7 @@ const AdminShoppingList = (): JSX.Element => {
                                     <Button
                                         variant="contained"
                                         onClick={async () =>
-                                            await orderList(shoppingList)
+                                            await onOrderClicked()
                                         }
                                     >
                                         {t('actions.order')}
@@ -70,6 +76,16 @@ const AdminShoppingList = (): JSX.Element => {
                     </Grid2>
                 </Grid2>
             </MainLayout>
+            <ConfirmationDialog
+                open={isConfirmOpen}
+                onConfirm={onOrderConfirm}
+                onCancel={() => setConfirmOpen(false)}
+                title={t('actions.order_list')}
+            >
+                <DialogContentText>
+                    {t('dialogs.confirmation')}
+                </DialogContentText>
+            </ConfirmationDialog>
         </>
     );
 };

@@ -45,6 +45,7 @@
         "add_item": "Add item",
         "edit_list": "Edit list",
         "remove_list": "Remove list",
+        "order_list": "Order list",
         "order": "Order",
         "save": "Save",
         "input": "Input",
@@ -71,7 +72,8 @@
         "actions": "Actions",
         "delete-item": "Delete item",
         "edit-item": "Edit item",
-        "list-copy-successful": "List address copied to clipboard"
+        "list-copy-successful": "List address copied to clipboard",
+        "list-order-successful": "Order marked as completed"
     },
     "item": {
         "name": "Item name",
