@@ -12,7 +12,8 @@
         "office": "Office",
         "profile": "Profile",
         "delete_account": "Delete account",
-        "password_change_successful": "Password changed"
+        "password_change_successful": "Password changed",
+        "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required."
     },
     "errors": {
         "required": "This value is required!",

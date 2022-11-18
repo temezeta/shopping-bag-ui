@@ -17,6 +17,7 @@ import {
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -33,8 +34,12 @@ const AccountSettings = (): JSX.Element => {
     const user = useAppSelector(selectCurrentUser);
 
     const userDetailsOnSubmit: SubmitHandler<ModifyUserDto> = async (data) => {
-        user &&
-            (await dispatch(modifyCurrentUserAsync({ userId: user.id, data })));
+        if (user) {
+            await dispatch(
+                modifyCurrentUserAsync({ userId: user.id, data })
+            ).unwrap();
+            await showSuccessSnackBar(t('user.user_modify_successful'));
+        }
     };
 
     const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
