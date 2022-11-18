@@ -4,8 +4,8 @@ import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
-import { changePassword, getCurrentUser } from './user-actions';
-import { UserState } from './user-types';
+import { changePassword, getCurrentUser, modifyUser } from './user-actions';
+import { ModifyUserPayload, UserState } from './user-types';
 
 const initialState: UserState = {};
 
@@ -38,6 +38,17 @@ export const getCurrentUserAsync = createAsyncThunk(
     }
 );
 
+export const modifyCurrentUserAsync = createAsyncThunk(
+    'user/modify',
+    async (data: ModifyUserPayload, { rejectWithValue }) => {
+        const response = await modifyUser(data.userId, data.data);
+        if (!response) {
+            return rejectWithValue('Cannot modify user');
+        }
+        return response;
+    }
+);
+
 // Selectors
 export const selectCurrentUser = (state: RootState): UserDto | undefined =>
     state.user.currentUser;
@@ -64,6 +75,9 @@ export const userSlice = createSlice({
                 state.currentUser = undefined;
             })
             .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
+                state.currentUser = action.payload;
+            })
+            .addCase(modifyCurrentUserAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
             });
     },
