@@ -66,7 +66,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                         </Link>
                         <Typography variant="body1">
                             {t('list.due_date') + ': '}
-                            {formatDate(list.dueDate, 'D.M.YYYY HH:MM')}
+                            {formatDate(list.dueDate, 'D.M.YYYY HH:mm')}
                         </Typography>
                         <Typography variant="body1">
                             {t('list.expected_delivery_date') + ': '}
