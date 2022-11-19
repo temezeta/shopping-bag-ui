@@ -5,31 +5,43 @@ import { useTranslation } from 'react-i18next';
 import styles from './UserForm.module.css';
 import { isValidEmail } from '../../utility/validation-helper';
 import { useEffect } from 'react';
-import { UserDto } from '../../models/user/UserDto';
+import { ModifyUserDto, UserDto } from '../../models/user/UserDto';
 import OfficeSelect from '../office-select/OfficeSelect';
 
 interface UserFormProps {
     initialValues?: UserDto;
-    onSubmit?: SubmitHandler<UserDto>;
+    onSubmit?: SubmitHandler<ModifyUserDto>;
+    canModifyRoles: boolean;
 }
 
 const UserForm = (props: UserFormProps): JSX.Element => {
     const { t } = useTranslation();
-    const { initialValues } = props;
+    const { initialValues, canModifyRoles } = props;
 
-    const defaultValues: Partial<UserDto> = initialValues ?? {
-        firstName: '',
-        lastName: '',
-        email: '',
-        homeOffice: undefined,
-    };
+    const defaultValues: Partial<ModifyUserDto> = initialValues
+        ? {
+              firstName: initialValues.firstName,
+              lastName: initialValues.lastName,
+              email: initialValues.email,
+              officeId: initialValues.homeOffice.id,
+              roleIds: canModifyRoles
+                  ? initialValues.userRoles.map((it) => it.roleId)
+                  : undefined,
+          }
+        : {
+              firstName: '',
+              lastName: '',
+              email: '',
+              officeId: undefined,
+              roleIds: undefined,
+          };
 
     const {
         control,
         handleSubmit,
         reset,
         formState: { isValid, errors },
-    } = useForm<UserDto>({
+    } = useForm<ModifyUserDto>({
         defaultValues,
         mode: 'onChange',
     });
@@ -38,7 +50,7 @@ const UserForm = (props: UserFormProps): JSX.Element => {
         reset(defaultValues);
     }, [initialValues]);
 
-    const onSubmit: SubmitHandler<UserDto> = (data) => {
+    const onSubmit: SubmitHandler<ModifyUserDto> = (data) => {
         props.onSubmit?.(data);
     };
 
@@ -105,13 +117,13 @@ const UserForm = (props: UserFormProps): JSX.Element => {
                     {t('actions.select_office')}
                 </FormLabel>
                 <Controller
-                    name="homeOffice.id"
+                    name="officeId"
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
                         <OfficeSelect
                             {...field}
-                            error={!!errors.homeOffice?.id}
+                            error={!!errors.officeId}
                             aria-labelledby="officeId"
                             fullWidth
                         />

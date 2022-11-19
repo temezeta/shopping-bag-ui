@@ -8,15 +8,18 @@ import MainLayout from '../../components/main-layout/MainLayout';
 import PasswordForm from '../../components/password-form/PasswordForm';
 import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
-import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
+import { ChangePasswordDto, ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
     changePasswordAsync,
+    modifyCurrentUserAsync,
     removeUserAsync,
     selectCurrentUser,
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { isAdmin } from '../../utility/user-helper';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -33,7 +36,14 @@ const AccountSettings = (): JSX.Element => {
 
     const user = useAppSelector(selectCurrentUser);
 
-    const userDetailsOnSubmit: SubmitHandler<UserDto> = async (data) => {};
+    const userDetailsOnSubmit: SubmitHandler<ModifyUserDto> = async (data) => {
+        if (user) {
+            await dispatch(
+                modifyCurrentUserAsync({ userId: user.id, data })
+            ).unwrap();
+            await showSuccessSnackBar(t('user.user_modify_successful'));
+        }
+    };
 
     const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
         unwrapResult(await dispatch(changePasswordAsync(data)));
@@ -81,6 +91,7 @@ const AccountSettings = (): JSX.Element => {
                             <UserForm
                                 onSubmit={userDetailsOnSubmit}
                                 initialValues={user}
+                                canModifyRoles={isAdmin(user)}
                             />
                         </Grid2>
                         <Grid2 xs={12} className="flex-center">

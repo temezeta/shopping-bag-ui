@@ -13,6 +13,7 @@
         "profile": "Profile",
         "delete_account": "Delete account",
         "password_change_successful": "Password changed",
+        "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
         "account_disabled": "Your account has been disabled"
     },
     "errors": {
@@ -47,6 +48,7 @@
         "add_item": "Add item",
         "edit_list": "Edit list",
         "remove_list": "Remove list",
+        "order_list": "Order list",
         "order": "Order",
         "save": "Save",
         "input": "Input",
@@ -73,7 +75,8 @@
         "actions": "Actions",
         "delete-item": "Delete item",
         "edit-item": "Edit item",
-        "list-copy-successful": "List address copied to clipboard"
+        "list-copy-successful": "List address copied to clipboard",
+        "list-order-successful": "Order marked as completed"
     },
     "item": {
         "name": "Item name",

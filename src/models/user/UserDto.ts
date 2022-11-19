@@ -23,3 +23,11 @@ export interface ChangePasswordDto {
     newPassword: string;
     repeatNewPassword: string;
 }
+
+export interface ModifyUserDto {
+    firstName: string;
+    lastName: string;
+    email: string;
+    officeId: number;
+    roleIds?: number[];
+}

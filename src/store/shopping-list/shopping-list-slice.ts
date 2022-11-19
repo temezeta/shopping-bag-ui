@@ -10,6 +10,7 @@ import {
     addItem,
     modifyItem,
     setLikeStatus,
+    orderShoppingList,
 } from './shopping-list-actions';
 import {
     AddItemPayload,
@@ -126,6 +127,17 @@ export const setLikeStatusAsync = createAsyncThunk(
         const response = await setLikeStatus(data.data, data.itemId);
         if (!response) {
             return rejectWithValue('An error ocurred setting like status');
+        }
+        return response;
+    }
+);
+
+export const orderShoppingListAsync = createAsyncThunk(
+    'shoppinglist/order',
+    async (data: ShoppingListDto, { rejectWithValue }) => {
+        const response = await orderShoppingList(data.id);
+        if (!response) {
+            return rejectWithValue('Ordering the list failed');
         }
         return response;
     }
@@ -253,6 +265,10 @@ export const shoppingListSlice = createSlice({
                     (it) => it.id,
                     action.payload
                 );
+            })
+            .addCase(orderShoppingListAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload]) return;
+                state.shoppingLists[action.payload].ordered = true;
             });
     },
 });
