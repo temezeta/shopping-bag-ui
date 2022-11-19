@@ -1,5 +1,10 @@
-import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
+import {
+    UserDto,
+    ChangePasswordDto,
+    ModifyUserDto,
+} from '../../models/user/UserDto';
 import ApiClient from '../client';
+import { showResponseError } from '../ui/ui-slice';
 
 export const getCurrentUser = async (): Promise<UserDto | null> => {
     const response = await ApiClient.get('user/me');
@@ -16,5 +21,18 @@ export const changePassword = async (
     if (!response.ok) {
         return null;
     }
+    return (await response.json()) as UserDto;
+};
+
+export const modifyUser = async (
+    userId: number,
+    data: ModifyUserDto
+): Promise<UserDto | null> => {
+    const response = await ApiClient.put(`user/modify?userId=${userId}`, data);
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+
     return (await response.json()) as UserDto;
 };

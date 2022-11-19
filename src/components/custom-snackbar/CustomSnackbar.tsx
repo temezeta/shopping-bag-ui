@@ -26,6 +26,7 @@ const CustomSnackbar = (): JSX.Element | null => {
                 variant="filled"
                 severity={snackbarInfo.type}
                 id="snackbar-alert"
+                sx={{ whiteSpace: 'pre-line' }}
             >
                 {snackbarInfo.message}
             </Alert>
