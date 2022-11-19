@@ -4,7 +4,12 @@ import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
-import { changePassword, getCurrentUser, modifyUser, removeUser } from './user-actions';
+import {
+    changePassword,
+    getCurrentUser,
+    modifyUser,
+    removeUser,
+} from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
 const initialState: UserState = {};
