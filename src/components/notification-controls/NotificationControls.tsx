@@ -2,7 +2,6 @@ import { FormLabel, Switch } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { useTranslation } from 'react-i18next';
-import styles from './NotificationControls.module.css';
 import NotificationSelect from '../notification-select/NotificationSelect';
 
 interface NotificationControlsProps {
@@ -17,7 +16,7 @@ const NotificationControls = (
         <Grid2 container spacing={1}>
             <Grid2 xs={8}>
                 <div className={'flex-space-between'}>
-                    <FormLabel className={styles.label} id="due_date_enabled">
+                    <FormLabel sx={{ display: 'inline' }} id="due_date_enabled">
                         {t('list.due_date')}
                     </FormLabel>
                     <Switch
@@ -34,7 +33,7 @@ const NotificationControls = (
             </Grid2>
             <Grid2 xs={8}>
                 <div className={'flex-space-between'}>
-                    <FormLabel className={styles.label} id="due_date_enabled">
+                    <FormLabel sx={{ display: 'inline' }} id="due_date_enabled">
                         {t('list.expected_delivery_date')}
                     </FormLabel>
                     <Switch
