@@ -25,6 +25,12 @@
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent."
     },
+    "notifications": {
+        "notifications": "Notifications",
+        "enable_notifications": "Enable notifications",
+        "day": "day",
+        "days": "days"
+    },
     "errors": {
         "required": "This value is required!",
         "invalid_email": "Email invalid. Make sure it belongs to an allowed domain.",

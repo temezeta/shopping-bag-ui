@@ -161,7 +161,6 @@ const UserForm = (props: UserFormProps): JSX.Element => {
                     )}
                 />
             </Grid2>
-            {/* TODO: Add notifications controls */}
             <Grid2 xs={12}>
                 <Button
                     type="submit"
