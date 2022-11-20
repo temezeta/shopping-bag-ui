@@ -4,7 +4,12 @@ import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
-import { changePassword, getCurrentUser, modifyUser } from './user-actions';
+import {
+    changePassword,
+    getCurrentUser,
+    modifyUser,
+    removeUser,
+} from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
 const initialState: UserState = {};
@@ -23,6 +28,26 @@ export const changePasswordAsync = createAsyncThunk(
             return rejectWithValue('Password change failed!');
         }
         await showSuccessSnackBar(t('user.password_change_successful'));
+        return response;
+    }
+);
+
+export const removeUserAsync = createAsyncThunk(
+    'user/remove-user',
+    async (data: number, { rejectWithValue, dispatch }) => {
+        const response = await removeUser(data);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.disable_account_failed'),
+                })
+            );
+            return rejectWithValue('Disabling account failed!');
+        }
+        localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
+        await showSuccessSnackBar(t('user.account_disabled'));
         return response;
     }
 );

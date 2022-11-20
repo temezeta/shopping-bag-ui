@@ -36,3 +36,11 @@ export const modifyUser = async (
 
     return (await response.json()) as UserDto;
 };
+
+export const removeUser = async (userId: number): Promise<boolean> => {
+    const response = await ApiClient.delete(`user?userId=${userId}`, null);
+    if (!response.ok) {
+        return false;
+    }
+    return response.ok;
+};
