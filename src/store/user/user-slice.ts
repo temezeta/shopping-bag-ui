@@ -45,6 +45,8 @@ export const removeUserAsync = createAsyncThunk(
             );
             return rejectWithValue('Disabling account failed!');
         }
+        localStorage.removeItem('authToken');
+        dispatch(RESET_ALL());
         await showSuccessSnackBar(t('user.account_disabled'));
         return response;
     }
