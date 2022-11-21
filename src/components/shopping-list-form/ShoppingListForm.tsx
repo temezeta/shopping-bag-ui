@@ -66,6 +66,18 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         setTabIndex(value);
     };
 
+    const dateValidation = (): boolean => {
+        const dueDate = moment(watch('dueDate'), true);
+        const expectedDeliveryDate = moment(
+            watch('expectedDeliveryDate'),
+            true
+        );
+        if (expectedDeliveryDate.isBefore(dueDate, 'day')) {
+            return false;
+        }
+        return true;
+    };
+
     return (
         <Grid2 container spacing={2}>
             {
@@ -150,6 +162,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <Controller
                             name="dueDate"
                             control={control}
+                            rules={{
+                                validate: dateValidation,
+                            }}
                             render={({ field }) => (
                                 <DateTimePicker
                                     onChange={(date) =>
@@ -179,6 +194,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <Controller
                             name="expectedDeliveryDate"
                             control={control}
+                            rules={{
+                                validate: dateValidation,
+                            }}
                             render={({ field }) => (
                                 <DatePicker
                                     onChange={(date) =>
