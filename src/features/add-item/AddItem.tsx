@@ -8,17 +8,20 @@ import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     addItemAsync,
     setLikeStatusAsync,
 } from '../../store/shopping-list/shopping-list-slice';
+import { isAdmin } from '../../utility/user-helper';
+import { selectCurrentUser } from '../../store/user/user-slice';
 
 const AddItem = (): JSX.Element => {
     const { listId } = useParams();
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const user = useAppSelector(selectCurrentUser);
     const onSubmit: SubmitHandler<AddItemDto> = async (data) => {
         const isLike = data.like;
         const item = unwrapResult(
@@ -31,15 +34,24 @@ const AddItem = (): JSX.Element => {
                 )
             );
         }
-        navigate('/home');
+        handleNavigate();
     };
+
+    const handleNavigate = (): void => {
+        if (isAdmin(user) && listId) {
+            navigate(`/order/${listId}`);
+        } else {
+            navigate('/home');
+        }
+    };
+
     return (
         <>
             <MainLayout>
                 <Grid2 container spacing={2}>
                     <Grid2 xs={12} className="flex-center">
                         <Grid2 xs={2}>
-                            <IconButton onClick={() => navigate('/home')}>
+                            <IconButton onClick={() => handleNavigate()}>
                                 <ArrowBackIosIcon></ArrowBackIosIcon>
                             </IconButton>
                         </Grid2>

@@ -13,10 +13,10 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
 import { useEffect, useState } from 'react';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
-import { Role } from '../../models/user/RoleEnum';
 import { useTranslation } from 'react-i18next';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import { isAdmin } from '../../utility/user-helper';
 
 const AdminShoppingList = (): JSX.Element => {
     const { t } = useTranslation();
@@ -49,7 +49,7 @@ const AdminShoppingList = (): JSX.Element => {
             <MainLayout>
                 <Grid2 container spacing={2}>
                     <Grid2>
-                        <IconButton onClick={() => navigate('/shopping-lists')}>
+                        <IconButton onClick={() => navigate('/home')}>
                             <ArrowBackIos />
                         </IconButton>
                     </Grid2>
@@ -57,9 +57,7 @@ const AdminShoppingList = (): JSX.Element => {
                         {shoppingList !== undefined && (
                             <ShoppingListTab value={id} list={shoppingList} />
                         )}
-                        {user?.userRoles.some(
-                            (userRole) => userRole.roleName === Role.Admin
-                        ) && (
+                        {isAdmin(user) && (
                             <Grid2 justifyContent={'center'}>
                                 <Box textAlign="center">
                                     <Button
