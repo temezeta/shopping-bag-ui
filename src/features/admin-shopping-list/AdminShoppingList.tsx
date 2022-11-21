@@ -59,16 +59,18 @@ const AdminShoppingList = (): JSX.Element => {
                         )}
                         {isAdmin(user) && (
                             <Grid2 justifyContent={'center'}>
-                                <Box textAlign="center">
-                                    <Button
-                                        variant="contained"
-                                        onClick={async () =>
-                                            await onOrderClicked()
-                                        }
-                                    >
-                                        {t('actions.order')}
-                                    </Button>
-                                </Box>
+                                {!shoppingList?.ordered && (
+                                    <Box textAlign="center">
+                                        <Button
+                                            variant="contained"
+                                            onClick={async () =>
+                                                await onOrderClicked()
+                                            }
+                                        >
+                                            {t('actions.order')}
+                                        </Button>
+                                    </Box>
+                                )}
                             </Grid2>
                         )}
                     </Grid2>
