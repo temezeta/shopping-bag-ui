@@ -1,9 +1,14 @@
-import { List } from '@mui/material';
+import { Box, List, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
 import UserItem from '../../components/user-item/UserItem';
 import { UserDto } from '../../models/user/UserDto';
+import { sortByUserRoleAndName } from '../../utility/sort-helper';
+import styles from './UserManagement.module.css';
 
+// TODO: Replace with actual users when endpoint available
 const TEST_USERS: UserDto[] = [
     {
         id: 1,
@@ -60,12 +65,25 @@ const TEST_USERS: UserDto[] = [
 ];
 
 const UserManagement = (): JSX.Element => {
+    const { t } = useTranslation();
+    const [sortedUsers] = useState<UserDto[]>(
+        sortByUserRoleAndName(TEST_USERS)
+    );
+
     return (
         <MainLayout>
             <Grid2 container xs={12}>
                 <Grid2 xs={12}>
+                    <Box className={styles.userManagementHeader}>
+                        <Grid2 container>
+                            <Grid2 xs={6}></Grid2>
+                            <Grid2 xs={5} className="flex-center">
+                                <Typography>{t('user.roles')}</Typography>
+                            </Grid2>
+                        </Grid2>
+                    </Box>
                     <List className="full-width">
-                        {TEST_USERS.map((user, i) => (
+                        {sortedUsers.map((user, i) => (
                             <UserItem user={user} key={i} />
                         ))}
                     </List>
