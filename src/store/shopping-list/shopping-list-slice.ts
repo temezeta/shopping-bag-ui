@@ -11,6 +11,7 @@ import {
     modifyItem,
     setLikeStatus,
     orderShoppingList,
+    setOrderedAmount,
 } from './shopping-list-actions';
 import {
     AddItemPayload,
@@ -18,6 +19,7 @@ import {
     LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
+    SetOrderedAmountPayload,
     ShoppingListMap,
     ShoppingListState,
 } from './shopping-list-types';
@@ -139,6 +141,20 @@ export const orderShoppingListAsync = createAsyncThunk(
         const response = await orderShoppingList(data.id);
         if (!response) {
             return rejectWithValue('Ordering the list failed');
+        }
+        return response;
+    }
+);
+
+export const setOrderedAmountAsync = createAsyncThunk(
+    'item/order-amount',
+    async (data: SetOrderedAmountPayload, { rejectWithValue }) => {
+        const response = await setOrderedAmount(
+            data.amountOrdered,
+            data.itemId
+        );
+        if (!response) {
+            return rejectWithValue('An error ocurred setting ordering amount');
         }
         return response;
     }

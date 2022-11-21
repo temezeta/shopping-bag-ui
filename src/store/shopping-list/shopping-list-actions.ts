@@ -143,3 +143,21 @@ export const orderShoppingList = async (
 
     return listId;
 };
+
+export const setOrderedAmount = async (
+    amountOrdered: number,
+    itemId: number
+): Promise<ItemDto | null> => {
+    const response = await ApiClient.post(
+        `item/${itemId}/order-amount?amountOrdered=${amountOrdered}`,
+        null
+    );
+    // Currently backend is on shoppinglist controller.
+
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+
+    return (await response.json()) as ItemDto;
+};
