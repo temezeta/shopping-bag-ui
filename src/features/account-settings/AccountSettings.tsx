@@ -20,6 +20,7 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import NotificationFormGlobal from '../../components/notification-form-global/NotificationFormGlobal';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -67,9 +68,13 @@ const AccountSettings = (): JSX.Element => {
                             display="flex"
                             justifyContent="center"
                         >
-                            {currentTab === 0
-                                ? t('user.account_settings')
-                                : t('user.password')}
+                            {
+                                {
+                                    0: t('user.account_settings'),
+                                    1: t('user.password'),
+                                    2: t('notifications.notifications'),
+                                }[currentTab]
+                            }
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12} className="flex-center">
@@ -84,6 +89,10 @@ const AccountSettings = (): JSX.Element => {
                         >
                             <Tab label={t('user.profile')} {...a11yProps(0)} />
                             <Tab label={t('user.password')} {...a11yProps(1)} />
+                            <Tab
+                                label={t('notifications.notifications')}
+                                {...a11yProps(2)}
+                            />
                         </Tabs>
                     </Grid2>
                     <TabPanel value={currentTab} index={0}>
@@ -108,6 +117,11 @@ const AccountSettings = (): JSX.Element => {
                     <TabPanel value={currentTab} index={1}>
                         <Grid2 xs={12}>
                             <PasswordForm onSubmit={passwordOnSubmit} />
+                        </Grid2>
+                    </TabPanel>
+                    <TabPanel value={currentTab} index={2}>
+                        <Grid2 xs={12}>
+                            <NotificationFormGlobal />
                         </Grid2>
                     </TabPanel>
                 </Grid2>
