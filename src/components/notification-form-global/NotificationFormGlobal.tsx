@@ -96,14 +96,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
                             name="reminderDaysBeforeDueDate"
                             control={control}
                             rules={{ required: true }}
-                            render={({ field }) => (
-                                <NotificationSelect
-                                    {...field}
-                                    selections={
-                                        defaultValues.reminderDaysBeforeDueDate
-                                    }
-                                />
-                            )}
+                            render={({ field }) => <NotificationSelect />}
                         />
                     </Grid2>
                     <Grid2 xs={8}>
@@ -134,14 +127,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
                             name="reminderDaysBeforeExpectedDate"
                             control={control}
                             rules={{ required: true }}
-                            render={({ field }) => (
-                                <NotificationSelect
-                                    {...field}
-                                    selections={
-                                        defaultValues.reminderDaysBeforeExpectedDate
-                                    }
-                                />
-                            )}
+                            render={({ field }) => <NotificationSelect />}
                         />
                     </Grid2>
                 </Grid2>
