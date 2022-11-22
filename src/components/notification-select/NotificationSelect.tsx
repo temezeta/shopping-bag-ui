@@ -12,13 +12,13 @@ import { useTranslation } from 'react-i18next';
 const options = [1, 2, 3];
 
 interface NotificationControlProps {
-    selections: number[];
+    selections: number[] | undefined;
 }
 
 const NotificationSelect = (props: NotificationControlProps): JSX.Element => {
     const { t } = useTranslation();
     useEffect(() => {
-        setSelection(props.selections);
+        setSelection(props.selections ? props.selections : []);
     }, []);
 
     const getDaySuffix = (selections: number[]): string => {

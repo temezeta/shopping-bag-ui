@@ -21,6 +21,7 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import NotificationFormGlobal from '../../components/notification-form-global/NotificationFormGlobal';
+import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -48,6 +49,12 @@ const AccountSettings = (): JSX.Element => {
 
     const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
         unwrapResult(await dispatch(changePasswordAsync(data)));
+    };
+
+    const reminderSettingsOnSubmit: SubmitHandler<ReminderSettingsDto> = async (
+        data
+    ) => {
+        // TODO
     };
 
     const onDeleteConfirm = async (): Promise<void> => {
@@ -121,7 +128,10 @@ const AccountSettings = (): JSX.Element => {
                     </TabPanel>
                     <TabPanel value={currentTab} index={2}>
                         <Grid2 xs={12}>
-                            <NotificationFormGlobal />
+                            <NotificationFormGlobal
+                                initialValues={user?.reminderSettings}
+                                onSubmit={reminderSettingsOnSubmit}
+                            />
                         </Grid2>
                     </TabPanel>
                 </Grid2>
