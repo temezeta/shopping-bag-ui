@@ -101,7 +101,12 @@ const UserManagement = (): JSX.Element => {
 
     return (
         <MainLayout>
-            <Grid2 container xs={12}>
+            <Grid2 container xs={12} spacing={1}>
+                <Grid2 xs={12} className="flex-center">
+                    <Typography variant="h1">
+                        {t('management.user_management')}
+                    </Typography>
+                </Grid2>
                 <Grid2 xs={12} md={6} className={styles.searchFilter}>
                     <Search
                         value={searchString}

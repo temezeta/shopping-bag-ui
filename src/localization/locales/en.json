@@ -88,7 +88,8 @@
     "management": {
         "management": "Management",
         "offices": "Offices",
-        "users": "Users"
+        "users": "Users",
+        "user_management": "User management"
     },
     "general": {
         "support_markdown": "Styling with Markdown is supported"
