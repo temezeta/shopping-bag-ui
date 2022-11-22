@@ -26,6 +26,11 @@ const UserItem = (props: UserItemProps): JSX.Element => {
                                 {user.email}
                             </Typography>
                         </Grid2>
+                        <Grid2 xs={12}>
+                            <Typography variant="body2">
+                                {user.homeOffice.name}
+                            </Typography>
+                        </Grid2>
                     </Grid2>
                 </Grid2>
                 <Grid2 xs={5} className="flex-center" flexDirection="column">
