@@ -41,7 +41,7 @@ function App(): JSX.Element {
 
     useEffect(() => {
         void dispatch(getAllRolesAsync());
-    }, [user]);
+    });
 
     // Call refresh token every 5 minutes
     useEffect(() => {

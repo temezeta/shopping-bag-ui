@@ -20,6 +20,7 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -55,6 +56,10 @@ const AccountSettings = (): JSX.Element => {
             navigate('/login');
         }
     };
+
+    const onAdminDeleteConfirm = async (): Promise<void> => {
+        /** TODO: Disable user account functionality for admin */
+    };
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 
     return (
@@ -72,20 +77,28 @@ const AccountSettings = (): JSX.Element => {
                                 : t('user.password')}
                         </Typography>
                     </Grid2>
-                    <Grid2 xs={12} className="flex-center">
-                        <Tabs
-                            TabIndicatorProps={{
-                                style: { background: 'transparent' },
-                            }}
-                            variant="scrollable"
-                            scrollButtons="auto"
-                            value={currentTab}
-                            onChange={handleTabChange}
-                        >
-                            <Tab label={t('user.profile')} {...a11yProps(0)} />
-                            <Tab label={t('user.password')} {...a11yProps(1)} />
-                        </Tabs>
-                    </Grid2>
+                    {!isAdmin(user) && (
+                        <Grid2 xs={12} className="flex-center">
+                            <Tabs
+                                TabIndicatorProps={{
+                                    style: { background: 'transparent' },
+                                }}
+                                variant="scrollable"
+                                scrollButtons="auto"
+                                value={currentTab}
+                                onChange={handleTabChange}
+                            >
+                                <Tab
+                                    label={t('user.profile')}
+                                    {...a11yProps(0)}
+                                />
+                                <Tab
+                                    label={t('user.password')}
+                                    {...a11yProps(1)}
+                                />
+                            </Tabs>
+                        </Grid2>
+                    )}
                     <TabPanel value={currentTab} index={0}>
                         <Grid2 xs={12}>
                             <UserForm
@@ -101,7 +114,7 @@ const AccountSettings = (): JSX.Element => {
                                     setDeleteOpen(true);
                                 }}
                             >
-                                {t('user.delete_account')}
+                                {t('user.disable_account')}
                             </Link>
                         </Grid2>
                     </TabPanel>
@@ -112,16 +125,30 @@ const AccountSettings = (): JSX.Element => {
                     </TabPanel>
                 </Grid2>
             </MainLayout>
-            <DeleteAccountDialog
-                title={t('user.delete_account')}
-                onConfirm={onDeleteConfirm}
-                open={isDeleteOpen}
-                onCancel={() => setDeleteOpen(false)}
-            >
-                <DialogContentText>
-                    {t('dialogs.delete_account')}
-                </DialogContentText>
-            </DeleteAccountDialog>
+            {!isAdmin(user) && (
+                <DeleteAccountDialog
+                    title={t('user.disable_account')}
+                    onConfirm={onDeleteConfirm}
+                    open={isDeleteOpen}
+                    onCancel={() => setDeleteOpen(false)}
+                >
+                    <DialogContentText>
+                        {t('dialogs.delete_account')}
+                    </DialogContentText>
+                </DeleteAccountDialog>
+            )}
+            {isAdmin(user) && (
+                <ConfirmationDialog
+                    title={t('user.disable_account')}
+                    onConfirm={onAdminDeleteConfirm}
+                    open={isDeleteOpen}
+                    onCancel={() => setDeleteOpen(false)}
+                >
+                    <DialogContentText>
+                        {t('dialogs.confirmation')}
+                    </DialogContentText>
+                </ConfirmationDialog>
+            )}
         </>
     );
 };

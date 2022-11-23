@@ -11,10 +11,10 @@
         "account_settings": "Account settings",
         "office": "Office",
         "profile": "Profile",
-        "delete_account": "Delete account",
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
-        "account_disabled": "Your account has been disabled"
+        "account_disabled": "Your account has been disabled",
+        "disable_account": "Disable account"
     },
     "errors": {
         "required": "This value is required!",
@@ -61,7 +61,8 @@
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email.",
         "confirmation": "Are you sure you wish to continue?",
         "delete_account": "Deleting your account will remove your information from our database. This cannot be undone.",
-        "type_delete": "To confirm this, type DELETE"
+        "type_delete": "To confirm this, type DELETE",
+        "disable_account": "Disable user account?"
     },
     "list": {
         "due_date": "Due date",

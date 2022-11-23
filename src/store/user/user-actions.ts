@@ -49,7 +49,6 @@ export const removeUser = async (userId: number): Promise<boolean> => {
 export const getAllRoles = async (): Promise<UserRoleDto[]> => {
     const response = await ApiClient.get('userrole/list');
     if (!response.ok) {
-        await showResponseError(response);
         return [];
     }
     return (await response.json()) as UserRoleDto[];
