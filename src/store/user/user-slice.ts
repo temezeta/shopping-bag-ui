@@ -2,17 +2,21 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
+import { UserRoleDto } from '../../models/user/UserRoleDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import {
     changePassword,
+    getAllRoles,
     getCurrentUser,
     modifyUser,
     removeUser,
 } from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
-const initialState: UserState = {};
+const initialState: UserState = {
+    roles: [],
+};
 
 export const changePasswordAsync = createAsyncThunk(
     'user/change-password',
@@ -74,6 +78,17 @@ export const modifyCurrentUserAsync = createAsyncThunk(
     }
 );
 
+export const getAllRolesAsync = createAsyncThunk(
+    'userrole/list',
+    async (_, { rejectWithValue }) => {
+        const response = await getAllRoles();
+        if (!response) {
+            return rejectWithValue('Cannot find roles');
+        }
+        return response;
+    }
+);
+
 // Selectors
 export const selectCurrentUser = (state: RootState): UserDto | undefined =>
     state.user.currentUser;
@@ -81,6 +96,8 @@ export const selectCurrentOffice = (state: RootState): OfficeDto | undefined =>
     state.user.sessionOffice ?? selectHomeOffice(state);
 export const selectHomeOffice = (state: RootState): OfficeDto | undefined =>
     state.user.currentUser?.homeOffice;
+export const selectRoles = (state: RootState): UserRoleDto[] =>
+    state.user.roles;
 
 export const userSlice = createSlice({
     name: 'user',
@@ -104,6 +121,9 @@ export const userSlice = createSlice({
             })
             .addCase(modifyCurrentUserAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
+            })
+            .addCase(getAllRolesAsync.fulfilled, (state, action) => {
+                state.roles = action.payload;
             });
     },
 });

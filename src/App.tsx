@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getAllOfficesAsync } from './store/office/office-slice';
 import { getShoppingListsByOfficeAsync } from './store/shopping-list/shopping-list-slice';
 import {
+    getAllRolesAsync,
     selectCurrentOffice,
     selectCurrentUser,
 } from './store/user/user-slice';
@@ -36,6 +37,10 @@ function App(): JSX.Element {
 
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
+    }, [user]);
+
+    useEffect(() => {
+        void dispatch(getAllRolesAsync());
     }, [user]);
 
     // Call refresh token every 5 minutes

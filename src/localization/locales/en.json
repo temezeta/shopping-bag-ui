@@ -53,7 +53,8 @@
         "save": "Save",
         "input": "Input",
         "preview": "Preview",
-        "delete": "Delete"
+        "delete": "Delete",
+        "role": "Role"
     },
     "dialogs": {
         "verify_account": "Verify your account",

@@ -1,6 +1,6 @@
 import { Link, Tab, Tabs, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
