@@ -13,33 +13,18 @@ import DropdownMenu from '../dropdown-menu/DropdownMenu';
 import { isAdmin } from '../../utility/user-helper';
 import { useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
-import { selectShoppingListById } from '../../store/shopping-list/shopping-list-slice';
 
 const Navbar = (): JSX.Element => {
     const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const user = useAppSelector(selectCurrentUser);
-    const pathArray = location.pathname.split('/');
-    let listOrdered: boolean | undefined;
-
-    if (location.pathname.startsWith('/order')) {
-        const list = useAppSelector(
-            selectShoppingListById(Number(pathArray[2]))
-        );
-        listOrdered = list?.ordered;
-    }
 
     useEffect(() => {
         const path = location.pathname;
-
-        if (
-            path.startsWith('/home') ||
-            path.startsWith('/orders') ||
-            listOrdered === false
-        ) {
+        if (path.startsWith('/home') || path.startsWith('/orders')) {
             setPage(0);
-        } else if (path.startsWith('/past-orders') || listOrdered === true) {
+        } else if (path.startsWith('/past-orders')) {
             setPage(1);
         } else if (isAdmin(user) && path.startsWith('/management')) {
             setPage(2);
