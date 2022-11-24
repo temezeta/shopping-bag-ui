@@ -16,6 +16,7 @@ import OfficeManagement from './features/office-management/OfficeManagement';
 import UserManagement from './features/user-management/UserManagement';
 import NotFound from './features/not-found/NotFound';
 import AccountSettings from './features/account-settings/AccountSettings';
+import AdminEditUser from './features/admin-edit-user/AdminEditUser';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -61,6 +62,10 @@ const AppRouter = (): JSX.Element => {
                 <Route
                     path="management/users"
                     element={<UserManagement />}
+                ></Route>
+                <Route
+                    path="management/edit-user"
+                    element={<AdminEditUser />}
                 ></Route>
             </Route>
             <Route path="*" element={<NotFound />}></Route>

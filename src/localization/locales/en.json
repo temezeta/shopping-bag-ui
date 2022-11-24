@@ -14,7 +14,8 @@
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
         "account_disabled": "Your account has been disabled",
-        "disable_account": "Disable account"
+        "disable_account": "Disable account",
+        "user_management" : "User Management"
     },
     "errors": {
         "required": "This value is required!",
