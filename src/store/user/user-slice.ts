@@ -6,13 +6,16 @@ import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import {
     changePassword,
+    getAllUsers,
     getCurrentUser,
     modifyUser,
     removeUser,
 } from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
-const initialState: UserState = {};
+const initialState: UserState = {
+    users: [],
+};
 
 export const changePasswordAsync = createAsyncThunk(
     'user/change-password',
@@ -74,6 +77,17 @@ export const modifyCurrentUserAsync = createAsyncThunk(
     }
 );
 
+export const getAllUsersAsync = createAsyncThunk(
+    'user/list',
+    async (_, { rejectWithValue }) => {
+        const response = await getAllUsers();
+        if (!response) {
+            return rejectWithValue('Cannot get all users');
+        }
+        return response;
+    }
+);
+
 // Selectors
 export const selectCurrentUser = (state: RootState): UserDto | undefined =>
     state.user.currentUser;
@@ -81,6 +95,7 @@ export const selectCurrentOffice = (state: RootState): OfficeDto | undefined =>
     state.user.sessionOffice ?? selectHomeOffice(state);
 export const selectHomeOffice = (state: RootState): OfficeDto | undefined =>
     state.user.currentUser?.homeOffice;
+export const selectAllUsers = (state: RootState): UserDto[] => state.user.users;
 
 export const userSlice = createSlice({
     name: 'user',
@@ -104,6 +119,9 @@ export const userSlice = createSlice({
             })
             .addCase(modifyCurrentUserAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
+            })
+            .addCase(getAllUsersAsync.fulfilled, (state, action) => {
+                state.users = action.payload;
             });
     },
 });

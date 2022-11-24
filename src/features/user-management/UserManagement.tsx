@@ -7,76 +7,29 @@ import OfficeSelect from '../../components/office-select/OfficeSelect';
 import Search from '../../components/search/Search';
 import UserItem from '../../components/user-item/UserItem';
 import { UserDto } from '../../models/user/UserDto';
-import { useAppSelector } from '../../store/hooks';
-import { selectCurrentOffice } from '../../store/user/user-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+    getAllUsersAsync,
+    selectAllUsers,
+    selectCurrentOffice,
+} from '../../store/user/user-slice';
 import { sortByUserRoleAndName } from '../../utility/sort-helper';
 import styles from './UserManagement.module.css';
 
-// TODO: Replace with actual users when endpoint available
-const TEST_USERS: UserDto[] = [
-    {
-        id: 1,
-        firstName: 'Admin',
-        lastName: 'User',
-        email: 'test1@ethereal.email',
-        userRoles: [
-            {
-                roleId: 1,
-                roleName: 'Admin',
-            },
-        ],
-        homeOffice: {
-            id: 1,
-            name: 'Espoo',
-        },
-    },
-    {
-        id: 2,
-        firstName: 'Test',
-        lastName: 'User',
-        email: 'test2@ethereal.email',
-        userRoles: [
-            {
-                roleId: 1,
-                roleName: 'Admin',
-            },
-            {
-                roleId: 2,
-                roleName: 'User',
-            },
-        ],
-        homeOffice: {
-            id: 1,
-            name: 'Espoo',
-        },
-    },
-    {
-        id: 3,
-        firstName: 'Matti',
-        lastName: 'Myöhäinen',
-        email: 'test3@ethereal.email',
-        userRoles: [
-            {
-                roleId: 2,
-                roleName: 'User',
-            },
-        ],
-        homeOffice: {
-            id: 1,
-            name: 'Espoo',
-        },
-    },
-];
-
 const UserManagement = (): JSX.Element => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     const currentOffice = useAppSelector(selectCurrentOffice);
-    const users = TEST_USERS; // TODO replace with app selector when users available
+    const users = useAppSelector(selectAllUsers);
     const [selectedOffice, setSelectedOffice] = useState<number | undefined>(
         currentOffice?.id
     );
     const [searchString, setSearchString] = useState<string>('');
     const [sortedUsers, setSortedUsers] = useState<UserDto[]>([]);
+
+    useEffect(() => {
+        void dispatch(getAllUsersAsync());
+    }, []);
 
     // Do user filtering
     useEffect(() => {
@@ -91,8 +44,10 @@ const UserManagement = (): JSX.Element => {
             const lowerCaseSearch = searchString.toLowerCase();
             filteredUsers = filteredUsers.filter(
                 (it) =>
-                    it.lastName.toLowerCase().startsWith(lowerCaseSearch) ||
-                    it.firstName.toLowerCase().startsWith(lowerCaseSearch)
+                    `${it.lastName} ${it.firstName}`
+                        .toLowerCase()
+                        .includes(lowerCaseSearch) ||
+                    it.email.toLowerCase().includes(lowerCaseSearch)
             );
         }
 
