@@ -1,10 +1,11 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { useTranslation } from 'react-i18next';
 import OfficeListItem from '../../components/office-list-item/OfficeListItem';
 import { useAppSelector } from '../../store/hooks';
 import { selectOffices } from '../../store/office/office-slice';
+import { Add } from '@mui/icons-material';
 
 const OfficeManagement = (): JSX.Element => {
     const { t } = useTranslation();
@@ -21,6 +22,19 @@ const OfficeManagement = (): JSX.Element => {
                     >
                         {t('management.office_management')}
                     </Typography>
+                </Grid2>
+                <Grid2
+                    xs={12}
+                    className="flex-center"
+                    sx={{ marginTop: '2rem' }}
+                >
+                    <Button
+                        startIcon={<Add />}
+                        variant="contained"
+                        onClick={() => undefined}
+                    >
+                        {t('actions.add_new_office')}
+                    </Button>
                 </Grid2>
                 <Grid2 xs={12} className="flex-center">
                     <Typography

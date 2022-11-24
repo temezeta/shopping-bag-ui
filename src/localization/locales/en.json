@@ -68,6 +68,7 @@
         "delete": "Delete",
         "remove_office": "Remove office",
         "rename_office": "New office name",
+        "add_new_office": "Add new office",
         "submit": "Submit"
     },
     "dialogs": {
