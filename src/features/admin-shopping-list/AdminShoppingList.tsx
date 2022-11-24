@@ -44,12 +44,20 @@ const AdminShoppingList = (): JSX.Element => {
         }
     };
 
+    const handleNavigate = (): void => {
+        if (shoppingList?.ordered) {
+            navigate('/past-orders');
+        } else {
+            navigate('/home');
+        }
+    };
+
     return (
         <>
             <MainLayout>
                 <Grid2 container spacing={2}>
                     <Grid2>
-                        <IconButton onClick={() => navigate('/home')}>
+                        <IconButton onClick={() => handleNavigate()}>
                             <ArrowBackIos />
                         </IconButton>
                     </Grid2>
