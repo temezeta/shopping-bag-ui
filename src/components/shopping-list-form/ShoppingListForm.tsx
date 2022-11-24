@@ -18,6 +18,8 @@ import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShopping
 import { useEffect, useState } from 'react';
 import TabPanel from '../tab-panel/TabPanel';
 import Markdown from '../markdown/Markdown';
+import { setSnackbar } from '../../store/ui/ui-slice';
+import { useAppDispatch } from '../../store/hooks';
 
 interface ShoppingListFormProps {
     initialValues?: ShoppingListDto;
@@ -29,6 +31,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
     const [tabIndex, setTabIndex] = useState<number>(0);
+    const dispatch = useAppDispatch();
 
     const defaultValues: Partial<ModifyShoppingListDto> = initialValues ?? {
         name: '',
@@ -72,7 +75,13 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
             watch('expectedDeliveryDate'),
             true
         );
-        if (expectedDeliveryDate.isBefore(dueDate, 'day')) {
+        if (expectedDeliveryDate.isBefore(dueDate)) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.expected_after_due'),
+                })
+            );
             return false;
         }
         return true;
@@ -204,6 +213,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                             moment(date).toISOString(true)
                                         )
                                     }
+                                    minDate={watch('dueDate')}
                                     value={field.value}
                                     renderInput={(props) => (
                                         <TextField {...props} fullWidth />
