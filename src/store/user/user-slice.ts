@@ -96,6 +96,10 @@ export const selectCurrentOffice = (state: RootState): OfficeDto | undefined =>
 export const selectHomeOffice = (state: RootState): OfficeDto | undefined =>
     state.user.currentUser?.homeOffice;
 export const selectAllUsers = (state: RootState): UserDto[] => state.user.users;
+export const selectUserById =
+    (userId: number) =>
+    (state: RootState): UserDto | undefined =>
+        state.user.users.find((it) => it.id === userId);
 
 export const userSlice = createSlice({
     name: 'user',

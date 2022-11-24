@@ -7,9 +7,8 @@ import OfficeSelect from '../../components/office-select/OfficeSelect';
 import Search from '../../components/search/Search';
 import UserItem from '../../components/user-item/UserItem';
 import { UserDto } from '../../models/user/UserDto';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 import {
-    getAllUsersAsync,
     selectAllUsers,
     selectCurrentOffice,
 } from '../../store/user/user-slice';
@@ -18,7 +17,6 @@ import styles from './UserManagement.module.css';
 
 const UserManagement = (): JSX.Element => {
     const { t } = useTranslation();
-    const dispatch = useAppDispatch();
     const currentOffice = useAppSelector(selectCurrentOffice);
     const users = useAppSelector(selectAllUsers);
     const [selectedOffice, setSelectedOffice] = useState<number | undefined>(
@@ -26,10 +24,6 @@ const UserManagement = (): JSX.Element => {
     );
     const [searchString, setSearchString] = useState<string>('');
     const [sortedUsers, setSortedUsers] = useState<UserDto[]>([]);
-
-    useEffect(() => {
-        void dispatch(getAllUsersAsync());
-    }, []);
 
     // Do user filtering
     useEffect(() => {
