@@ -13,7 +13,7 @@ const RoleSelect = (
     const roles: UserRoleDto[] = useAppSelector(selectRoles);
 
     return (
-        <Select {...props} ref={ref} size="small">
+        <Select {...props} ref={ref} size="small" multiple>
             {roles.map((it) => (
                 <MenuItem value={it.roleId} key={it.roleId}>
                     {it.roleName}
