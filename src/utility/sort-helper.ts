@@ -1,4 +1,6 @@
 import { ItemDto } from '../models/shopping-list/ItemDto';
+import { UserDto } from '../models/user/UserDto';
+import { isAdmin } from './user-helper';
 
 export enum SortType {
     Name,
@@ -36,4 +38,25 @@ export const sortByItemLikes = (
     if (descending) {
         return sortedItems;
     } else return sortedItems.reverse();
+};
+
+const compareRoles = (a: UserDto, b: UserDto): number => {
+    const isAAdmin = isAdmin(a);
+    const isBAdmin = isAdmin(b);
+    if (isAAdmin && !isBAdmin) return -1;
+    if (!isAAdmin && isBAdmin) return 1;
+    return 0;
+};
+
+const compareRolesAndName = (a: UserDto, b: UserDto): number => {
+    const sortByRole = compareRoles(a, b);
+    if (sortByRole !== 0) return sortByRole;
+    const sortByLastName = a.lastName.localeCompare(b.lastName);
+    return sortByLastName !== 0
+        ? sortByLastName
+        : a.firstName.localeCompare(b.firstName);
+};
+
+export const sortByUserRoleAndName = (userList: UserDto[]): UserDto[] => {
+    return [...userList].sort(compareRolesAndName);
 };

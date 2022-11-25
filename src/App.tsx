@@ -7,9 +7,11 @@ import { useAppDispatch, useAppSelector } from './store/hooks';
 import { getAllOfficesAsync } from './store/office/office-slice';
 import { getShoppingListsByOfficeAsync } from './store/shopping-list/shopping-list-slice';
 import {
+    getAllUsersAsync,
     selectCurrentOffice,
     selectCurrentUser,
 } from './store/user/user-slice';
+import { isAdmin } from './utility/user-helper';
 
 function App(): JSX.Element {
     const dispatch = useAppDispatch();
@@ -36,6 +38,10 @@ function App(): JSX.Element {
 
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
+
+        if (isAdmin(user)) {
+            void dispatch(getAllUsersAsync());
+        }
     }, [user]);
 
     // Call refresh token every 5 minutes

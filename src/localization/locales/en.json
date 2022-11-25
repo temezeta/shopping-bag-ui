@@ -14,7 +14,8 @@
         "delete_account": "Delete account",
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
-        "account_disabled": "Your account has been disabled"
+        "account_disabled": "Your account has been disabled",
+        "roles": "Roles"
     },
     "errors": {
         "required": "This value is required!",
@@ -87,7 +88,8 @@
     "management": {
         "management": "Management",
         "offices": "Offices",
-        "users": "Users"
+        "users": "Users",
+        "user_management": "User management"
     },
     "general": {
         "support_markdown": "Styling with Markdown is supported"

@@ -44,3 +44,12 @@ export const removeUser = async (userId: number): Promise<boolean> => {
     }
     return response.ok;
 };
+
+export const getAllUsers = async (): Promise<UserDto[] | null> => {
+    const response = await ApiClient.get('user/list');
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+    return (await response.json()) as UserDto[];
+};
