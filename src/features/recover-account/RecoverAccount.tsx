@@ -1,4 +1,4 @@
-import { Tab, Tabs, Typography } from '@mui/material';
+import { IconButton, Tab, Tabs, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +17,13 @@ import {
     resetPasswordAsync,
 } from '../../store/auth/auth-slice';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import { ArrowBackIos } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const RecoverAccount = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const [currentTab, setCurrentTab] = useState<number>(0);
     const [isRecoveryEmailSent, setRecoveryEmailSent] =
         useState<boolean>(false);
@@ -46,6 +49,7 @@ const RecoverAccount = (): JSX.Element => {
     ) => {
         await dispatch(resetPasswordAsync(data)).unwrap();
         await showSuccessSnackBar(t('user.password_change_successful'));
+        navigate('/login');
     };
 
     const onSubmitResendVerificationEmail: SubmitHandler<
@@ -53,11 +57,17 @@ const RecoverAccount = (): JSX.Element => {
     > = async (data) => {
         await dispatch(resendVerificationEmailAsync(data.email)).unwrap();
         await showSuccessSnackBar(t('user.verification_email_successful'));
+        navigate('/login');
     };
 
     return (
         <LoginLayout>
             <Grid2 container spacing={1}>
+                <Grid2 xs={12}>
+                    <IconButton onClick={() => navigate('/login')}>
+                        <ArrowBackIos />
+                    </IconButton>
+                </Grid2>
                 <Grid2 xs={12} className="flex-center">
                     <Typography variant="h1">
                         {t('user.account_recovery')}
