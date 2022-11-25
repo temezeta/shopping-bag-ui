@@ -17,11 +17,11 @@ const OfficeManagement = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const [isNameDialogOpen, setNameDialogOpen] = useState<boolean>(false);
 
+    const offices = useAppSelector(selectOffices);
+
     useEffect(() => {
         void dispatch(getAllOfficesAsync());
-    });
-
-    const offices = useAppSelector(selectOffices);
+    }, [offices]);
 
     return (
         <>

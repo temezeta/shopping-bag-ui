@@ -53,6 +53,7 @@ const OfficeNameDialog = (props: OfficeNameDialogProps): JSX.Element => {
         );
         if (result) {
             props.closeDialog();
+            setOfficeNameText(result.name ?? '');
             await showSuccessSnackBar(t('actions.office_rename_successful'));
         }
     };
@@ -62,6 +63,7 @@ const OfficeNameDialog = (props: OfficeNameDialogProps): JSX.Element => {
         const result = unwrapResult(await dispatch(addOfficeAsync({ data })));
         if (result) {
             props.closeDialog();
+            setOfficeNameText('');
             await showSuccessSnackBar(t('actions.office_add_successful'));
         }
     };
