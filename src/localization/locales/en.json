@@ -21,6 +21,7 @@
         "recovery_token": "Recovery token",
         "recover_account_help": "To recover a previously disabled account or reset a forgotten password, submit the account email below",
         "resend_verification_help": "If you cannot find a verification email for a user you have created, submit the account email below",
+        "recovery_token_help": "Insert the recovery token you received in an email below together with the new password details.",
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent to email"
     },

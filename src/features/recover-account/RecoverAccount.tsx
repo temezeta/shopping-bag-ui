@@ -96,7 +96,9 @@ const RecoverAccount = (): JSX.Element => {
                 <TabPanel value={currentTab} index={0}>
                     <Grid2 xs={12} sx={{ textAlign: 'center' }}>
                         <Typography variant="body2">
-                            {t('user.recover_account_help')}
+                            {!isRecoveryEmailSent
+                                ? t('user.recover_account_help')
+                                : t('user.recovery_token_help')}
                         </Typography>
                     </Grid2>
                     {!isRecoveryEmailSent && (
