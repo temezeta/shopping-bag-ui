@@ -54,7 +54,9 @@ const RecoverAccount = (): JSX.Element => {
                         <RecoverAccountForm />
                     </Grid2>
                 </TabPanel>
-                <TabPanel value={currentTab} index={1}></TabPanel>
+                <TabPanel value={currentTab} index={1}>
+                    <SendEmailForm />
+                </TabPanel>
             </Grid2>
         </LoginLayout>
     );
