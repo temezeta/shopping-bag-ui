@@ -18,7 +18,11 @@
         "roles": "Roles",
         "account_recovery": "Account recovery",
         "resend_verification": "Resend verification",
-        "recovery_token": "Recovery token"
+        "recovery_token": "Recovery token",
+        "recover_account_help": "To recover a previously disabled account or reset a forgotten password, submit the account email below",
+        "resend_verification_help": "If you cannot find a verification email for a user you have created, submit the account email below",
+        "recovery_email_successful": "Recovery token sent to email.",
+        "verification_email_successful": "Verification email resent to email"
     },
     "errors": {
         "required": "This value is required!",
@@ -33,7 +37,10 @@
         "url_not_valid": "The URL must include https:// or http://",
         "one_value_required": "One of these values is required!",
         "password_change_failed": "Password change failed",
-        "disable_account_failed": "Disabling account failed"
+        "disable_account_failed": "Disabling account failed",
+        "recover_account_failed": "Could not send recovery email",
+        "reset_password_failed": "Could not reset password",
+        "resend_verificationm_failed": "Could not resend verification email.\nAccount might already be verified."
     },
     "actions": {
         "registration": "Registration",

@@ -2,20 +2,57 @@ import { Tab, Tabs, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import SendEmailForm from '../../components/send-email-form/SendEmailForm';
+import SendEmailForm, {
+    EmailInformation,
+} from '../../components/send-email-form/SendEmailForm';
 import LoginLayout from '../../components/login-layout/LoginLayout';
 import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import RecoverAccountForm from '../../components/recover-account-form/RecoverAccountForm';
+import { SubmitHandler } from 'react-hook-form';
+import { ResetPasswordDto } from '../../models/auth/ResetPasswordDto';
+import { useAppDispatch } from '../../store/hooks';
+import {
+    recoverAccountAsync,
+    resendVerificationEmailAsync,
+    resetPasswordAsync,
+} from '../../store/auth/auth-slice';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 
 const RecoverAccount = (): JSX.Element => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
     const [currentTab, setCurrentTab] = useState<number>(0);
+    const [isRecoveryEmailSent, setRecoveryEmailSent] =
+        useState<boolean>(false);
 
     const handleTabChange = (
-        event: React.SyntheticEvent,
+        _: React.SyntheticEvent,
         newValue: number
     ): void => {
         setCurrentTab(newValue);
+        setRecoveryEmailSent(false);
+    };
+
+    const onSubmitResetAccount: SubmitHandler<EmailInformation> = async (
+        data
+    ) => {
+        await dispatch(recoverAccountAsync(data.email)).unwrap();
+        setRecoveryEmailSent(true);
+        await showSuccessSnackBar(t('user.recovery_email_successful'));
+    };
+
+    const onSubmitResetPassword: SubmitHandler<ResetPasswordDto> = async (
+        data
+    ) => {
+        await dispatch(resetPasswordAsync(data)).unwrap();
+        await showSuccessSnackBar(t('user.password_change_successful'));
+    };
+
+    const onSubmitResendVerificationEmail: SubmitHandler<
+        EmailInformation
+    > = async (data) => {
+        await dispatch(resendVerificationEmailAsync(data.email)).unwrap();
+        await showSuccessSnackBar(t('user.verification_email_successful'));
     };
 
     return (
@@ -47,15 +84,35 @@ const RecoverAccount = (): JSX.Element => {
                     </Tabs>
                 </Grid2>
                 <TabPanel value={currentTab} index={0}>
-                    <Grid2 xs={12}>
-                        <SendEmailForm />
+                    <Grid2 xs={12} sx={{ textAlign: 'center' }}>
+                        <Typography variant="body2">
+                            {t('user.recover_account_help')}
+                        </Typography>
                     </Grid2>
-                    <Grid2 xs={12}>
-                        <RecoverAccountForm />
-                    </Grid2>
+                    {!isRecoveryEmailSent && (
+                        <Grid2 xs={12}>
+                            <SendEmailForm onSubmit={onSubmitResetAccount} />
+                        </Grid2>
+                    )}
+                    {isRecoveryEmailSent && (
+                        <Grid2 xs={12}>
+                            <RecoverAccountForm
+                                onSubmit={onSubmitResetPassword}
+                            />
+                        </Grid2>
+                    )}
                 </TabPanel>
                 <TabPanel value={currentTab} index={1}>
-                    <SendEmailForm />
+                    <Grid2 xs={12} sx={{ textAlign: 'center' }}>
+                        <Typography variant="body2">
+                            {t('user.resend_verification_help')}
+                        </Typography>
+                    </Grid2>
+                    <Grid2 xs={12}>
+                        <SendEmailForm
+                            onSubmit={onSubmitResendVerificationEmail}
+                        />
+                    </Grid2>
                 </TabPanel>
             </Grid2>
         </LoginLayout>

@@ -91,10 +91,15 @@ export const logoutAsync = createAsyncThunk(
 
 export const recoverAccountAsync = createAsyncThunk(
     'auth/recover-account',
-    async (email: string, { rejectWithValue }) => {
+    async (email: string, { rejectWithValue, dispatch }) => {
         const response = await recoverAccount(email);
         if (!response) {
-            // TODO snackbar
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.recover_account_failed'),
+                })
+            );
             return rejectWithValue('Recovery email sending failed');
         }
         return response;
@@ -103,10 +108,15 @@ export const recoverAccountAsync = createAsyncThunk(
 
 export const resetPasswordAsync = createAsyncThunk(
     'auth/reset-password',
-    async (data: ResetPasswordDto, { rejectWithValue }) => {
+    async (data: ResetPasswordDto, { rejectWithValue, dispatch }) => {
         const response = await resetPassword(data);
         if (!response) {
-            // TODO snackbar
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.reset_password_failed'),
+                })
+            );
             return rejectWithValue('Could not reset password');
         }
         return response;
@@ -115,10 +125,15 @@ export const resetPasswordAsync = createAsyncThunk(
 
 export const resendVerificationEmailAsync = createAsyncThunk(
     'auth/resend-verification',
-    async (email: string, { rejectWithValue }) => {
+    async (email: string, { rejectWithValue, dispatch }) => {
         const response = await resendVerificationEmail(email);
         if (!response) {
-            // TODO snackbar
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.resend_verificationm_failed'),
+                })
+            );
             return rejectWithValue('Recovery email sending failed');
         }
         return response;
