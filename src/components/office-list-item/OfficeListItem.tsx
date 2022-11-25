@@ -10,7 +10,11 @@ import { OfficeDto } from '../../models/office/OfficeDto';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import RenameOfficeDialog from '../rename-office-popup/RenameOfficeDialog';
+import OfficeNameDialog from '../office-name-popup/OfficeNameDialog';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useAppDispatch } from '../../store/hooks';
+import { deleteOfficeAsync } from '../../store/office/office-slice';
+import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 
 interface OfficeListItemProps {
     office: OfficeDto;
@@ -20,24 +24,23 @@ const OfficeListItem = (props: OfficeListItemProps): JSX.Element => {
     const { office } = props;
     const { t } = useTranslation();
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
-    const [isRenameOpen, setRenameOpen] = useState<boolean>(false);
+    const [isNameDialogOpen, setNameDialogOpen] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
 
     const handleDelete = (): void => {
         setDeleteOpen(true);
     };
 
-    const handleRename = (): void => {
-        setRenameOpen(true);
+    const handleNameDialog = (): void => {
+        setNameDialogOpen(true);
     };
 
     const removeOffice = async (officeId: number): Promise<void> => {
-        console.log(officeId);
-        return undefined;
-    };
-
-    const renameOffice = async (officeId: number): Promise<void> => {
-        console.log(officeId);
-        return undefined;
+        if (officeId) {
+            unwrapResult(await dispatch(deleteOfficeAsync(officeId)));
+            setDeleteOpen(false);
+            await showSuccessSnackBar(t('actions.office_delete_successful'));
+        }
     };
 
     return (
@@ -50,11 +53,7 @@ const OfficeListItem = (props: OfficeListItemProps): JSX.Element => {
                 alignItems="center"
             >
                 <Grid2 container xs={7} justifyContent="flex-start">
-                    <Typography
-                        color="info.main"
-                        variant="h3"
-                        fontWeight="medium"
-                    >
+                    <Typography variant="h3" fontWeight="medium">
                         {office.name}
                     </Typography>
                 </Grid2>
@@ -67,7 +66,7 @@ const OfficeListItem = (props: OfficeListItemProps): JSX.Element => {
                     <IconButton aria-label="delete" onClick={handleDelete}>
                         <Delete />
                     </IconButton>
-                    <IconButton aria-label="rename" onClick={handleRename}>
+                    <IconButton aria-label="rename" onClick={handleNameDialog}>
                         <Edit />
                     </IconButton>
                 </Grid2>
@@ -82,12 +81,13 @@ const OfficeListItem = (props: OfficeListItemProps): JSX.Element => {
                     {t('dialogs.confirmation')}
                 </DialogContentText>
             </ConfirmationDialog>
-            <RenameOfficeDialog
-                open={isRenameOpen}
-                onConfirm={async () => await renameOffice(office.id)}
-                onCancel={() => setRenameOpen(false)}
+            <OfficeNameDialog
+                open={isNameDialogOpen}
+                officeId={office.id}
+                currentName={office.name}
+                closeDialog={() => setNameDialogOpen(false)}
                 title={t('actions.rename_office')}
-            ></RenameOfficeDialog>
+            ></OfficeNameDialog>
         </ListItem>
     );
 };

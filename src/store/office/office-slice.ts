@@ -1,8 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { RESET_ALL, RootState } from '../store';
-import { getAllOffices } from './office-actions';
-import { OfficeState } from './office-types';
+import {
+    addOffice,
+    deleteOffice,
+    editOffice,
+    getAllOffices,
+} from './office-actions';
+import {
+    AddOfficePayload,
+    EditOfficePayload,
+    OfficeState,
+} from './office-types';
 
 const initialState: OfficeState = {
     offices: [],
@@ -19,6 +28,39 @@ export const getAllOfficesAsync = createAsyncThunk(
     }
 );
 
+export const addOfficeAsync = createAsyncThunk(
+    'office/add',
+    async (data: AddOfficePayload, { rejectWithValue }) => {
+        const response = await addOffice(data.data);
+        if (!response) {
+            return rejectWithValue('An error ocurred adding the office');
+        }
+        return response;
+    }
+);
+
+export const editOfficeAsync = createAsyncThunk(
+    'office/edit',
+    async (data: EditOfficePayload, { rejectWithValue }) => {
+        const response = await editOffice(data.data, data.officeId);
+        if (!response) {
+            return rejectWithValue('An error ocurred editing the office');
+        }
+        return response;
+    }
+);
+
+export const deleteOfficeAsync = createAsyncThunk(
+    'office/delete',
+    async (officeId: number, { rejectWithValue }) => {
+        const response = await deleteOffice(officeId);
+        if (!response) {
+            return rejectWithValue('An error ocurred deleting the office');
+        }
+        return officeId;
+    }
+);
+
 // Selectors
 export const selectOffices = (state: RootState): OfficeDto[] =>
     state.offices.offices;
@@ -32,6 +74,19 @@ export const officeSlice = createSlice({
             .addCase(RESET_ALL, () => initialState)
             .addCase(getAllOfficesAsync.fulfilled, (state, action) => {
                 state.offices = action.payload;
+            })
+            .addCase(addOfficeAsync.fulfilled, (state, action) => {
+                state.offices[action.payload.id] = action.payload;
+            })
+            .addCase(editOfficeAsync.fulfilled, (state, action) => {
+                if (!state.offices[action.payload.id]) return;
+                state.offices[action.payload.id].name = action.payload.name;
+            })
+            .addCase(deleteOfficeAsync.fulfilled, (state, action) => {
+                if (!state.offices[action.payload]) return;
+                state.offices = state.offices.filter(
+                    (it) => it.id !== action.payload
+                );
             });
     },
 });
