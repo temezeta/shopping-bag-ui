@@ -15,7 +15,9 @@
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
         "account_disabled": "Your account has been disabled",
-        "roles": "Roles"
+        "roles": "Roles",
+        "account_recovery": "Account recovery",
+        "resend_verification": "Resend verification"
     },
     "errors": {
         "required": "This value is required!",
@@ -54,7 +56,8 @@
         "save": "Save",
         "input": "Input",
         "preview": "Preview",
-        "delete": "Delete"
+        "delete": "Delete",
+        "submit": "Submit"
     },
     "dialogs": {
         "verify_account": "Verify your account",
