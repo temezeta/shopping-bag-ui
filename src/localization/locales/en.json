@@ -17,7 +17,8 @@
         "account_disabled": "Your account has been disabled",
         "roles": "Roles",
         "account_recovery": "Account recovery",
-        "resend_verification": "Resend verification"
+        "resend_verification": "Resend verification",
+        "recovery_token": "Recovery token"
     },
     "errors": {
         "required": "This value is required!",
