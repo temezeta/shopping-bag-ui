@@ -131,7 +131,7 @@ export const resendVerificationEmailAsync = createAsyncThunk(
             dispatch(
                 setSnackbar({
                     type: 'error',
-                    message: t('errors.resend_verificationm_failed'),
+                    message: t('errors.resend_verification_failed'),
                 })
             );
             return rejectWithValue('Recovery email sending failed');
