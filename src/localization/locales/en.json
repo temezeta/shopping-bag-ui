@@ -39,7 +39,7 @@
         "already_have_account": "Already have an account? Log in here.",
         "no_account": "Don't have an account? Sign up here.",
         "login": "Login",
-        "recover_password": "Forgot your password?",
+        "recover_account": "Need to recover account or verification email not found? Click here.",
         "remember_user": "Remember me",
         "ok": "Ok",
         "cancel": "Cancel",

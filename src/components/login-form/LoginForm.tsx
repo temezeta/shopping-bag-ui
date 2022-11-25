@@ -87,10 +87,7 @@ const LoginForm = (props: LoginFormProps): JSX.Element => {
                     />
                 </Grid2>
                 <Grid2 xs={12}>
-                    <Link href="/recover" color="#ff5e89">
-                        {t('actions.recover_password')}
-                        {/* need to create recover pop up */}
-                    </Link>
+                    <Link href="/recover">{t('actions.recover_account')}</Link>
                 </Grid2>
                 <Grid2 xs={12}>
                     <Button
