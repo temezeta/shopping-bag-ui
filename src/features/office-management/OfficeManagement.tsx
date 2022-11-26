@@ -46,24 +46,6 @@ const OfficeManagement = (): JSX.Element => {
                             {t('management.office_management')}
                         </Typography>
                     </Grid2>
-                    <Grid2
-                        xs={12}
-                        md={4}
-                        className="flex-center"
-                        sx={{
-                            marginTop: '1rem',
-                            marginBottom: '1rem',
-                        }}
-                    >
-                        <Button
-                            startIcon={<Add />}
-                            variant="contained"
-                            onClick={() => setNameDialogOpen(true)}
-                            sx={{ marginLeft: { xs: '0rem', md: '-5rem' } }}
-                        >
-                            {t('actions.add_new_office')}
-                        </Button>
-                    </Grid2>
                     <Grid2 xs={12} md={8} className={styles.searchFilter}>
                         <Search
                             value={searchString}
@@ -71,12 +53,24 @@ const OfficeManagement = (): JSX.Element => {
                             fullWidth
                         />
                     </Grid2>
-                    <Grid2 xs={12} className="flex-center">
-                        <Typography
-                            variant="h3"
-                            display="flex"
-                            justifyContent="center"
-                        ></Typography>
+                    <Grid2
+                        xs={12}
+                        md={4}
+                        className="flex-center"
+                        sx={{
+                            marginTop: '1rem',
+                            marginBottom: '1rem',
+                            display: 'flex',
+                            justifyContent: { xs: 'center', md: 'flex-end' },
+                        }}
+                    >
+                        <Button
+                            startIcon={<Add />}
+                            variant="contained"
+                            onClick={() => setNameDialogOpen(true)}
+                        >
+                            {t('actions.add_new_office')}
+                        </Button>
                     </Grid2>
                     <Grid2 xs={12}>
                         {filteredOffices.map((office, i) => (

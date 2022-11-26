@@ -86,9 +86,6 @@ export const officeSlice = createSlice({
                 state.offices[index] = action.payload;
             })
             .addCase(deleteOfficeAsync.fulfilled, (state, action) => {
-                if (!state.offices.find((it) => it.id === action.payload)) {
-                    return;
-                }
                 state.offices = state.offices.filter(
                     (it) => it.id !== action.payload
                 );
