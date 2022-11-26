@@ -66,6 +66,12 @@
         "input": "Input",
         "preview": "Preview",
         "delete": "Delete",
+        "remove_office": "Remove office",
+        "rename_office": "Rename office",
+        "add_new_office": "Add new office",
+        "office_rename_successful": "Office renamed",
+        "office_delete_successful": "Office deleted",
+        "office_add_successful": "New office added",
         "submit": "Submit"
     },
     "dialogs": {
@@ -101,6 +107,7 @@
         "management": "Management",
         "offices": "Offices",
         "users": "Users",
+        "office_management": "Office management",
         "user_management": "User management"
     },
     "general": {
