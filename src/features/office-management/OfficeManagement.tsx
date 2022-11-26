@@ -5,14 +5,33 @@ import { useTranslation } from 'react-i18next';
 import OfficeListItem from '../../components/office-list-item/OfficeListItem';
 import { useAppSelector } from '../../store/hooks';
 import { Add } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OfficeNameDialog from '../../components/office-name-popup/OfficeNameDialog';
 import { selectOffices } from '../../store/office/office-slice';
+import styles from './OfficeManagement.module.css';
+import { OfficeDto } from '../../models/office/OfficeDto';
+import Search from '../../components/search/Search';
 
 const OfficeManagement = (): JSX.Element => {
     const offices = useAppSelector(selectOffices);
     const { t } = useTranslation();
     const [isNameDialogOpen, setNameDialogOpen] = useState<boolean>(false);
+
+    const [searchString, setSearchString] = useState<string>('');
+    const [filteredOffices, setFilteredOffices] = useState<OfficeDto[]>([]);
+
+    useEffect(() => {
+        let filteredOffices = [...offices];
+
+        if (searchString) {
+            const lowerCaseSearch = searchString.toLowerCase();
+            filteredOffices = filteredOffices.filter((it) =>
+                `${it.name}`.toLowerCase().includes(lowerCaseSearch)
+            );
+        }
+
+        setFilteredOffices(filteredOffices);
+    }, [searchString, offices]);
 
     return (
         <>
@@ -29,16 +48,28 @@ const OfficeManagement = (): JSX.Element => {
                     </Grid2>
                     <Grid2
                         xs={12}
+                        md={4}
                         className="flex-center"
-                        sx={{ marginTop: '2rem' }}
+                        sx={{
+                            marginTop: '1rem',
+                            marginBottom: '1rem',
+                        }}
                     >
                         <Button
                             startIcon={<Add />}
                             variant="contained"
                             onClick={() => setNameDialogOpen(true)}
+                            sx={{ marginLeft: { xs: '0rem', md: '-5rem' } }}
                         >
                             {t('actions.add_new_office')}
                         </Button>
+                    </Grid2>
+                    <Grid2 xs={12} md={8} className={styles.searchFilter}>
+                        <Search
+                            value={searchString}
+                            onChange={(e) => setSearchString(e.target.value)}
+                            fullWidth
+                        />
                     </Grid2>
                     <Grid2 xs={12} className="flex-center">
                         <Typography
@@ -48,7 +79,7 @@ const OfficeManagement = (): JSX.Element => {
                         ></Typography>
                     </Grid2>
                     <Grid2 xs={12}>
-                        {offices.map((office, i) => (
+                        {filteredOffices.map((office, i) => (
                             <OfficeListItem office={office} key={i} />
                         ))}
                     </Grid2>
