@@ -146,13 +146,30 @@ export const orderShoppingList = async (
 
 export const setOrderedAmount = async (
     amountOrdered: number,
-    itemId: number
+    itemId: number,
+    listId: number
 ): Promise<ItemDto | null> => {
     const response = await ApiClient.post(
-        `item/${itemId}/order-amount?amountOrdered=${amountOrdered}`,
+        `listId/${listId}/item/${itemId}/order-amount?amountOrdered=${amountOrdered}`,
         null
     );
-    // Currently backend is on shoppinglist controller.
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+
+    return (await response.json()) as ItemDto;
+};
+
+export const setCheckStatus = async (
+    data: boolean,
+    itemId: number,
+    listId: number
+): Promise<ItemDto | null> => {
+    const response = await ApiClient.post(
+        `listId/${listId}/item/${itemId}/check?uncheck=${String(!data)}`,
+        null
+    );
 
     if (!response.ok) {
         await showResponseError(response);

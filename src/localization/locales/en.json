@@ -108,7 +108,9 @@
         "delete-item": "Delete item",
         "edit-item": "Edit item",
         "list-copy-successful": "List address copied to clipboard",
-        "list-order-successful": "Order marked as completed"
+        "list-order-successful": "Order marked as completed",
+        "quantity": "Quantity",
+        "check": "Check"
     },
     "item": {
         "name": "Item name",

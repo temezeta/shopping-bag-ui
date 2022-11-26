@@ -30,6 +30,9 @@ import {
     SortOptions,
 } from '../../utility/sort-helper';
 import Markdown from '../markdown/Markdown';
+import { isAdmin } from '../../utility/user-helper';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { useAppSelector } from '../../store/hooks';
 import moment from 'moment';
 
 interface ShoppingListTabProps {
@@ -41,6 +44,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
+    const user = useAppSelector(selectCurrentUser);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Name,
         sortDescending: true,
@@ -157,7 +161,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
-                            <Grid2 xs={8}>
+                            <Grid2 xs={7}>
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
@@ -177,6 +181,26 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.likes')}
                                 ></SortButton>
                             </Grid2>
+                            {isAdmin(user) && (
+                                <>
+                                    <Grid2>
+                                        <Typography
+                                            display="flex"
+                                            justifyContent="center"
+                                        >
+                                            {t('list.quantity')}
+                                        </Typography>
+                                    </Grid2>
+                                    <Grid2>
+                                        <Typography
+                                            display="flex"
+                                            justifyContent="center"
+                                        >
+                                            {t('list.check')}
+                                        </Typography>
+                                    </Grid2>
+                                </>
+                            )}
                         </Grid2>
                     </Box>
                     <List className="full-width">

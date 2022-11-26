@@ -4,15 +4,18 @@ import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import styles from './ShoppingListItem.module.css';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, FocusEventHandler } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
+    setCheckStatusAsync,
     setLikeStatusAsync,
     setOrderedAmountAsync,
 } from '../../store/shopping-list/shopping-list-slice';
 import { selectCurrentUser } from '../../store/user/user-slice';
 import { hasUserLikedItem, isAdmin } from '../../utility/user-helper';
-
+import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useParams } from 'react-router-dom';
 interface ShoppingListItemProps {
     item: ItemDto;
 }
@@ -21,7 +24,9 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const { item } = props;
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
-    const quantity = item.usersWhoLiked.length;
+    const quantity = item.amountOrdered;
+    const { listId } = useParams();
+    const listID = Number(listId);
 
     const handleItemLike = async (
         event: ChangeEvent<HTMLInputElement>,
@@ -37,29 +42,43 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
             event.target.disabled = false;
         }
     };
-    const handleAsync = async (
-        event: ChangeEvent<HTMLInputElement>,
+    const handleQuantityChange = async (
+        event: FocusEventHandler<HTMLInputElement>,
         quantity: number
+    ): Promise<void> => {
+        if (quantity >= 0) {
+            quantity = Math.round(quantity);
+            try {
+                await dispatch(
+                    setOrderedAmountAsync({
+                        amountOrdered: quantity,
+                        itemId: item.id,
+                        listId: listID,
+                    })
+                );
+            } finally {
+                console.log(event);
+            }
+        }
+    };
+    const handleItemCheck = async (
+        event: ChangeEvent<HTMLInputElement>,
+        checked: boolean
     ): Promise<void> => {
         // Disable the button until dispatch resolve to avoid duplicate clicks
         event.target.disabled = true;
         try {
             await dispatch(
-                setOrderedAmountAsync({
-                    amountOrdered: quantity,
+                setCheckStatusAsync({
+                    data: checked,
                     itemId: item.id,
+                    listId: listID,
                 })
             );
-            // change cuantity
-            // TODO waiting for backend.
         } finally {
             event.target.disabled = false;
         }
     };
-    const handleChange =
-        (quantity: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            void handleAsync(event, quantity);
-        };
 
     return (
         <ListItem divider={true}>
@@ -100,11 +119,11 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         color="info"
                         onChange={handleItemLike}
                     ></Checkbox>
-                    {!isAdmin(user) && (
-                        <Typography variant="body1">
-                            {item.usersWhoLiked.length}
-                        </Typography>
-                    )}
+                    <Typography variant="body1">
+                        {item.usersWhoLiked.length}
+                    </Typography>
+                </Grid2>
+                <Grid2>
                     {isAdmin(user) && (
                         <TextField
                             id="outlined-number"
@@ -113,9 +132,18 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            onChange={handleChange(quantity)} // onChange={handleChange('weight')}
+                            onBlur={() => handleQuantityChange} // not sure
                         />
                     )}
+                </Grid2>
+                <Grid2>
+                    <Checkbox
+                        icon={<RadioButtonUncheckedOutlinedIcon />}
+                        checkedIcon={<CheckCircleOutlineIcon />}
+                        checked={item.isChecked}
+                        color="info"
+                        onChange={handleItemCheck}
+                    ></Checkbox>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
                     <ShoppingListItemActions item={item} />

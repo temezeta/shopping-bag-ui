@@ -12,9 +12,11 @@ import {
     setLikeStatus,
     orderShoppingList,
     setOrderedAmount,
+    setCheckStatus,
 } from './shopping-list-actions';
 import {
     AddItemPayload,
+    CheckStatusPayload,
     GetListByIdPayload,
     LikeStatusPayload,
     ModifyItemPayload,
@@ -151,10 +153,26 @@ export const setOrderedAmountAsync = createAsyncThunk(
     async (data: SetOrderedAmountPayload, { rejectWithValue }) => {
         const response = await setOrderedAmount(
             data.amountOrdered,
-            data.itemId
+            data.itemId,
+            data.listId
         );
         if (!response) {
             return rejectWithValue('An error ocurred setting ordering amount');
+        }
+        return response;
+    }
+);
+
+export const setCheckStatusAsync = createAsyncThunk(
+    'item/mark-checked',
+    async (data: CheckStatusPayload, { rejectWithValue }) => {
+        const response = await setCheckStatus(
+            data.data,
+            data.itemId,
+            data.listId
+        );
+        if (!response) {
+            return rejectWithValue('An error ocurred setting check status');
         }
         return response;
     }

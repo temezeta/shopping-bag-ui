@@ -33,12 +33,19 @@ export interface LikeStatusPayload {
     itemId: number;
 }
 
-export interface SetOrderedAmountPayload {
-    amountOrdered: number;
-    itemId: number;
-}
-
 export interface GetListByIdPayload {
     listId: number;
     isEditing?: boolean;
+}
+
+export interface SetOrderedAmountPayload {
+    amountOrdered: number;
+    itemId: number;
+    listId: number;
+}
+
+export interface CheckStatusPayload {
+    data: boolean;
+    itemId: number;
+    listId: number;
 }
