@@ -145,7 +145,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
                                     columnSortType={SortType.Name}
-                                    columnName={t('list.item_details')}
+                                    columnName={t('list.item')}
                                 ></SortButton>
                             </Grid2>
                             <Grid2
