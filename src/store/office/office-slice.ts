@@ -76,14 +76,19 @@ export const officeSlice = createSlice({
                 state.offices = action.payload;
             })
             .addCase(addOfficeAsync.fulfilled, (state, action) => {
-                state.offices[action.payload.id] = action.payload;
+                state.offices.push(action.payload);
             })
             .addCase(editOfficeAsync.fulfilled, (state, action) => {
-                if (!state.offices[action.payload.id]) return;
-                state.offices[action.payload.id].name = action.payload.name;
+                const index = state.offices.findIndex(
+                    (it) => it.id === action.payload.id
+                );
+                if (index === -1) return;
+                state.offices[index] = action.payload;
             })
             .addCase(deleteOfficeAsync.fulfilled, (state, action) => {
-                if (!state.offices[action.payload]) return;
+                if (!state.offices.find((it) => it.id === action.payload)) {
+                    return;
+                }
                 state.offices = state.offices.filter(
                     (it) => it.id !== action.payload
                 );

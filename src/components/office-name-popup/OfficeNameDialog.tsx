@@ -7,7 +7,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import {
     addOfficeAsync,
@@ -32,6 +32,11 @@ const OfficeNameDialog = (props: OfficeNameDialogProps): JSX.Element => {
     const [officeNameText, setOfficeNameText] = useState(
         props.currentName ?? ''
     );
+
+    useEffect(() => {
+        setOfficeNameText(props.currentName ?? '');
+    }, [props.currentName]);
+
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
     const handleChange = (event: any): void => {
@@ -86,15 +91,15 @@ const OfficeNameDialog = (props: OfficeNameDialogProps): JSX.Element => {
         <Dialog
             open={props.open}
             onClose={cancelAction}
-            aria-labelledby="rename-office-dialog-title"
+            aria-labelledby="office-name-dialog-title"
         >
             <DialogTitle id="dialog-title" sx={{ textAlign: 'center' }}>
                 {props.title}
             </DialogTitle>
             <DialogContent>
                 <TextField
-                    type="rename"
-                    aria-labelledby="type-rename"
+                    type="office-name"
+                    aria-labelledby="type-office-name"
                     size="small"
                     value={officeNameText}
                     onChange={handleChange}

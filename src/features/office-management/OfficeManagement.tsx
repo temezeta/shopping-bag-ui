@@ -3,25 +3,16 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import MainLayout from '../../components/main-layout/MainLayout';
 import { useTranslation } from 'react-i18next';
 import OfficeListItem from '../../components/office-list-item/OfficeListItem';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-    getAllOfficesAsync,
-    selectOffices,
-} from '../../store/office/office-slice';
+import { useAppSelector } from '../../store/hooks';
 import { Add } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import OfficeNameDialog from '../../components/office-name-popup/OfficeNameDialog';
+import { selectOffices } from '../../store/office/office-slice';
 
 const OfficeManagement = (): JSX.Element => {
-    const { t } = useTranslation();
-    const dispatch = useAppDispatch();
-    const [isNameDialogOpen, setNameDialogOpen] = useState<boolean>(false);
-
     const offices = useAppSelector(selectOffices);
-
-    useEffect(() => {
-        void dispatch(getAllOfficesAsync());
-    }, [offices]);
+    const { t } = useTranslation();
+    const [isNameDialogOpen, setNameDialogOpen] = useState<boolean>(false);
 
     return (
         <>
