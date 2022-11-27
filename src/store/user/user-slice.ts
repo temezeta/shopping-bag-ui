@@ -50,9 +50,7 @@ export const changeGlobalRemindersAsync = createAsyncThunk(
             );
             return rejectWithValue('Global reminders change failed!');
         }
-        await showSuccessSnackBar(
-            t('user.global_reminders_change_successful')
-        );
+        await showSuccessSnackBar(t('user.global_reminders_change_successful'));
         return response;
     }
 );
