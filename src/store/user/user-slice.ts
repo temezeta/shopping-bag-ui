@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
+import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import {
+    changeGlobalReminders,
     changePassword,
     getAllUsers,
     getCurrentUser,
@@ -31,6 +33,24 @@ export const changePasswordAsync = createAsyncThunk(
             return rejectWithValue('Password change failed!');
         }
         await showSuccessSnackBar(t('user.password_change_successful'));
+        return response;
+    }
+);
+
+export const changeGlobalRemindersAsync = createAsyncThunk(
+    'user/change-global-reminders',
+    async (data: ReminderSettingsDto, { rejectWithValue, dispatch }) => {
+        const response = await changeGlobalReminders(data);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.global_reminders_change_failed'),
+                })
+            );
+            return rejectWithValue('Global reminders change failed!');
+        }
+        await showSuccessSnackBar(t('user.global_reminders_change_successful'));
         return response;
     }
 );
@@ -126,6 +146,9 @@ export const userSlice = createSlice({
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;
+            })
+            .addCase(changeGlobalRemindersAsync.fulfilled, (state, action) => {
+                state.currentUser = action.payload;
             });
     },
 });
