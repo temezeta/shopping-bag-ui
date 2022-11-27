@@ -148,6 +148,9 @@ export const userSlice = createSlice({
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;
+            })
+            .addCase(changeGlobalRemindersAsync.fulfilled, (state, action) => {
+                state.currentUser = action.payload;
             });
     },
 });

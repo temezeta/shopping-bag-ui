@@ -2,16 +2,16 @@ import { Button, FormLabel, Switch } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { useTranslation } from 'react-i18next';
-import NotificationSelect from '../notification-select/NotificationSelect';
+import ReminderSelect from '../reminder-select/ReminderSelect';
 import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
-interface NotificationFormProps {
+interface ReminderFormProps {
     initialValues?: ReminderSettingsDto;
     onSubmit?: SubmitHandler<ReminderSettingsDto>;
 }
 
-const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
+const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
 
@@ -50,7 +50,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
 
     return (
         <form
-            id="Global-Notifications-Settings-Form"
+            id="Global-Reminder-Settings-Form"
             className={'full-width'}
             onSubmit={handleSubmit(onSubmit)}
         >
@@ -112,7 +112,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
                             name="reminderDaysBeforeDueDate"
                             control={control}
                             render={({ field }) => (
-                                <NotificationSelect {...field} fullWidth />
+                                <ReminderSelect {...field} fullWidth />
                             )}
                         />
                     </Grid2>
@@ -148,7 +148,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
                             name="reminderDaysBeforeExpectedDate"
                             control={control}
                             render={({ field }) => (
-                                <NotificationSelect {...field} fullWidth />
+                                <ReminderSelect {...field} fullWidth />
                             )}
                         />
                     </Grid2>
@@ -163,4 +163,4 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
     );
 };
 
-export default NotificationFormGlobal;
+export default ReminderFormGlobal;

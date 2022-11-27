@@ -21,7 +21,7 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
-import NotificationFormGlobal from '../../components/notification-form-global/NotificationFormGlobal';
+import ReminderFormGlobal from '../../components/reminder-form-global/ReminderFormGlobal';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 
 const AccountSettings = (): JSX.Element => {
@@ -129,7 +129,7 @@ const AccountSettings = (): JSX.Element => {
                     </TabPanel>
                     <TabPanel value={currentTab} index={2}>
                         <Grid2 xs={12}>
-                            <NotificationFormGlobal
+                            <ReminderFormGlobal
                                 initialValues={user?.reminderSettings}
                                 onSubmit={reminderSettingsOnSubmit}
                             />

@@ -10,10 +10,10 @@ import { useTranslation } from 'react-i18next';
 
 const options = [1, 2, 3];
 
-type NotificationSelectProps = SelectProps<number[]>;
+type ReminderSelectProps = SelectProps<number[]>;
 
-const NotificationSelect = (
-    props: NotificationSelectProps,
+const ReminderSelect = (
+    props: ReminderSelectProps,
     ref: ForwardedRef<unknown>
 ): JSX.Element => {
     const { t } = useTranslation();
@@ -35,7 +35,8 @@ const NotificationSelect = (
             multiple
             size="small"
             renderValue={(selected) =>
-                selected.join(', ') + getDaySuffix(selected)
+                selected.sort((a, b) => a - b).join(', ') +
+                getDaySuffix(selected)
             }
         >
             {options.map((option) => (
@@ -50,4 +51,4 @@ const NotificationSelect = (
     );
 };
 
-export default forwardRef(NotificationSelect);
+export default forwardRef(ReminderSelect);
