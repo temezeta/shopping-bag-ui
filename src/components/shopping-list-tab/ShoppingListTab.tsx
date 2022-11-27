@@ -116,7 +116,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 onClick={() =>
                                     navigate(`/order/${list.id}/add-item`)
                                 }
-                                disabled={isDueDatePassed}
+                                disabled={isDueDatePassed || list.ordered}
                                 fullWidth
                             >
                                 {t('actions.add_new_item')}
