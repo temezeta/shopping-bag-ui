@@ -23,7 +23,8 @@
         "resend_verification_help": "If you cannot find a verification email for a user you have created, submit the account email below",
         "recovery_token_help": "Insert the recovery token you received in an email below together with the new password details.",
         "recovery_email_successful": "Recovery token sent to email.",
-        "verification_email_successful": "Verification email resent."
+        "verification_email_successful": "Verification email resent.",
+        "global_reminders_change_successful": "Global reminders changed"
     },
     "notifications": {
         "notifications": "Notifications",
@@ -47,7 +48,8 @@
         "disable_account_failed": "Disabling account failed",
         "recover_account_failed": "Could not send recovery email",
         "reset_password_failed": "Could not reset password",
-        "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified."
+        "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
+        "global_reminders_change_failed": "Global reminders change failed"
     },
     "actions": {
         "registration": "Registration",

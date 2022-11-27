@@ -12,6 +12,7 @@ import { ChangePasswordDto, ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
+    changeGlobalRemindersAsync,
     changePasswordAsync,
     modifyCurrentUserAsync,
     removeUserAsync,
@@ -54,7 +55,7 @@ const AccountSettings = (): JSX.Element => {
     const reminderSettingsOnSubmit: SubmitHandler<ReminderSettingsDto> = async (
         data
     ) => {
-        // TODO
+        await dispatch(changeGlobalRemindersAsync(data)).unwrap();
     };
 
     const onDeleteConfirm = async (): Promise<void> => {
