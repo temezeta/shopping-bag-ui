@@ -1,4 +1,4 @@
-import { Button, FormLabel, Switch } from '@mui/material';
+import { Button, FormLabel, Select, Switch } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { useTranslation } from 'react-i18next';
@@ -34,7 +34,7 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
               reminderDaysBeforeExpectedDate: [],
           };
 
-    const { control, handleSubmit, reset, watch } =
+    const { control, handleSubmit, watch, reset } =
         useForm<ReminderSettingsDto>({
             defaultValues,
             mode: 'onChange',
@@ -68,9 +68,9 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                         <Switch
                             {...field}
                             checked={!field.value}
-                            onChange={(_, isChecked) =>
-                                field.onChange(!isChecked)
-                            }
+                            onChange={(_, isChecked) => {
+                                field.onChange(!isChecked);
+                            }}
                             inputProps={{
                                 'aria-labelledby': 'all_reminders_enabled',
                             }}
@@ -108,13 +108,17 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                         </div>
                     </Grid2>
                     <Grid2 xs={4}>
-                        <Controller
-                            name="reminderDaysBeforeDueDate"
-                            control={control}
-                            render={({ field }) => (
-                                <ReminderSelect {...field} fullWidth />
-                            )}
-                        />
+                        {!watch('dueDateRemindersDisabled') ? (
+                            <Controller
+                                name="reminderDaysBeforeDueDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <ReminderSelect {...field} fullWidth />
+                                )}
+                            />
+                        ) : (
+                            <Select disabled={true} fullWidth size={'small'} />
+                        )}
                     </Grid2>
                     <Grid2 xs={8}>
                         <div className={'flex-space-between'}>
@@ -144,13 +148,17 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                         </div>
                     </Grid2>
                     <Grid2 xs={4}>
-                        <Controller
-                            name="reminderDaysBeforeExpectedDate"
-                            control={control}
-                            render={({ field }) => (
-                                <ReminderSelect {...field} fullWidth />
-                            )}
-                        />
+                        {!watch('expectedRemindersDisabled') ? (
+                            <Controller
+                                name="reminderDaysBeforeExpectedDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <ReminderSelect {...field} fullWidth />
+                                )}
+                            />
+                        ) : (
+                            <Select disabled={true} fullWidth size={'small'} />
+                        )}
                     </Grid2>
                 </Grid2>
             )}
