@@ -1,4 +1,4 @@
-import { Button, FormLabel, Select, Switch } from '@mui/material';
+import { Button, FormLabel, Switch } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { useTranslation } from 'react-i18next';
@@ -108,17 +108,17 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                         </div>
                     </Grid2>
                     <Grid2 xs={4}>
-                        {!watch('dueDateRemindersDisabled') ? (
-                            <Controller
-                                name="reminderDaysBeforeDueDate"
-                                control={control}
-                                render={({ field }) => (
-                                    <ReminderSelect {...field} fullWidth />
-                                )}
-                            />
-                        ) : (
-                            <Select disabled={true} fullWidth size={'small'} />
-                        )}
+                        <Controller
+                            name="reminderDaysBeforeDueDate"
+                            control={control}
+                            render={({ field }) => (
+                                <ReminderSelect
+                                    {...field}
+                                    fullWidth
+                                    disabled={watch('dueDateRemindersDisabled')}
+                                />
+                            )}
+                        />
                     </Grid2>
                     <Grid2 xs={8}>
                         <div className={'flex-space-between'}>
@@ -148,17 +148,19 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                         </div>
                     </Grid2>
                     <Grid2 xs={4}>
-                        {!watch('expectedRemindersDisabled') ? (
-                            <Controller
-                                name="reminderDaysBeforeExpectedDate"
-                                control={control}
-                                render={({ field }) => (
-                                    <ReminderSelect {...field} fullWidth />
-                                )}
-                            />
-                        ) : (
-                            <Select disabled={true} fullWidth size={'small'} />
-                        )}
+                        <Controller
+                            name="reminderDaysBeforeExpectedDate"
+                            control={control}
+                            render={({ field }) => (
+                                <ReminderSelect
+                                    {...field}
+                                    fullWidth
+                                    disabled={watch(
+                                        'expectedRemindersDisabled'
+                                    )}
+                                />
+                            )}
+                        />
                     </Grid2>
                 </Grid2>
             )}
