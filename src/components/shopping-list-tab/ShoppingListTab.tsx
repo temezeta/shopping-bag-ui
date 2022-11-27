@@ -42,8 +42,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const [sortOptions, setSortOptions] = useState<SortOptions>({
-        sortType: SortType.Likes,
-        sortDescending: false,
+        sortType: SortType.Name,
+        sortDescending: true,
     });
     const [sortedItems, setSortedItems] = useState<ItemDto[]>(
         sortByItemLikes(list.items, sortOptions.sortDescending)
