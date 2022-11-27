@@ -151,7 +151,7 @@ export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
         .filter(
             (it) =>
                 !it.ordered &&
-                selectCurrentOffice(state)?.id === it.listDeliveryOffice.id
+                selectCurrentOffice(state)?.id === it.listDeliveryOffice?.id
         )
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 // Returns inactive lists, with latest created first
@@ -160,7 +160,7 @@ export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
         .filter(
             (it) =>
                 it.ordered &&
-                selectCurrentOffice(state)?.id === it.listDeliveryOffice.id
+                selectCurrentOffice(state)?.id === it.listDeliveryOffice?.id
         )
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 
