@@ -70,9 +70,10 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                         <Typography
                             variant="body1"
                             sx={{
-                                color: isDueDatePassed
-                                    ? 'error.main'
-                                    : 'inherit',
+                                color:
+                                    isDueDatePassed && !list.ordered
+                                        ? 'error.main'
+                                        : 'inherit',
                             }}
                         >
                             {t('list.due_date') + ': '}
