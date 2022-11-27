@@ -91,12 +91,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             >
                                 <Link />
                             </IconButton>
-                            <Typography
-                                variant="h1"
-                                display="flex"
-                                justifyContent="center"
-                            >
-                                {list.name}
+                            <Typography variant="h1">{list.name}</Typography>
+                        </Grid2>
+                        <Grid2 xs={12} className="flex-center">
+                            <Typography variant="h2">
+                                {list.listDeliveryOffice.name}
                             </Typography>
                         </Grid2>
                         <Grid2 xs={12}>

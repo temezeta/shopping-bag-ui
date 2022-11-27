@@ -1,3 +1,4 @@
+import { OfficeDto } from '../office/OfficeDto';
 import { ItemDto } from './ItemDto';
 
 export interface ShoppingListDto {
@@ -9,5 +10,6 @@ export interface ShoppingListDto {
     startDate?: string;
     dueDate?: string;
     expectedDeliveryDate?: string;
+    listDeliveryOffice: OfficeDto;
     items: ItemDto[];
 }
