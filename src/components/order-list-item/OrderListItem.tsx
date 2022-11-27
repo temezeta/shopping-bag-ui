@@ -27,6 +27,9 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const { list } = props;
     const navigate = useNavigate();
+
+    const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -64,9 +67,16 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                                 {list.name}
                             </Typography>
                         </Link>
-                        <Typography variant="body1">
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                color: isDueDatePassed
+                                    ? 'error.main'
+                                    : 'inherit',
+                            }}
+                        >
                             {t('list.due_date') + ': '}
-                            {formatDate(list.dueDate, 'D.M.YYYY HH:mm')}
+                            {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
                         </Typography>
                         <Typography variant="body1">
                             {t('list.expected_delivery_date') + ': '}

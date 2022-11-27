@@ -7,7 +7,6 @@ export interface ShoppingListDto {
     comment?: string;
     ordered: boolean;
     createdDate: string;
-    startDate?: string;
     dueDate?: string;
     expectedDeliveryDate?: string;
     listDeliveryOffice: OfficeDto;

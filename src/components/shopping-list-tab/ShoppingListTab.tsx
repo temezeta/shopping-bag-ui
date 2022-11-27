@@ -30,6 +30,7 @@ import {
     SortOptions,
 } from '../../utility/sort-helper';
 import Markdown from '../markdown/Markdown';
+import moment from 'moment';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -74,6 +75,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         }
     }, [sortOptions, list]);
 
+    const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
+
     return (
         <div
             role="tabpanel"
@@ -113,16 +116,29 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 onClick={() =>
                                     navigate(`/order/${list.id}/add-item`)
                                 }
+                                disabled={isDueDatePassed}
                                 fullWidth
                             >
                                 {t('actions.add_new_item')}
                             </Button>
                         </Grid2>
                         <Grid2 md={6} xs={10} order={{ xs: 1, md: 2 }}>
-                            {t('list.due_date')} {formatDate(list.dueDate)}
-                            <br />
-                            {t('list.expected_delivery_date')}{' '}
-                            {formatDate(list.expectedDeliveryDate)}
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color:
+                                        isDueDatePassed && !list.ordered
+                                            ? 'error.main'
+                                            : 'inherit',
+                                }}
+                            >
+                                {t('list.due_date') + ': '}
+                                {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
+                            </Typography>
+                            <Typography variant="body2">
+                                {t('list.expected_delivery_date') + ': '}
+                                {formatDate(list.expectedDeliveryDate)}
+                            </Typography>
                         </Grid2>
                         <Grid2
                             md={1}
