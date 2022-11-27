@@ -3,7 +3,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { useTranslation } from 'react-i18next';
 import NotificationSelect from '../notification-select/NotificationSelect';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 interface NotificationFormProps {
@@ -17,6 +17,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
 
     const defaultValues: Partial<ReminderSettingsDto> = initialValues
         ? {
+              allRemindersDisabled: initialValues.allRemindersDisabled,
               dueDateRemindersDisabled: initialValues.dueDateRemindersDisabled,
               expectedRemindersDisabled:
                   initialValues.expectedRemindersDisabled,
@@ -26,6 +27,7 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
                   initialValues.reminderDaysBeforeExpectedDate,
           }
         : {
+              allRemindersDisabled: false,
               dueDateRemindersDisabled: false,
               expectedRemindersDisabled: false,
               reminderDaysBeforeDueDate: [],
@@ -45,14 +47,6 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
         props.onSubmit?.(data);
     };
 
-    // TODO: TEMP Global master switch settings ---->
-    const [enableNotifications = true, setEnableNotifications] =
-        useState<boolean>();
-    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-        setEnableNotifications(event.target.checked);
-    };
-    // <---- TEMP
-
     return (
         <form
             id="Global-Notifications-Settings-Form"
@@ -60,78 +54,102 @@ const NotificationFormGlobal = (props: NotificationFormProps): JSX.Element => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <Grid2 xs={12} className="flex-space-between">
-                <FormLabel sx={{ display: 'inline' }}>
+                <FormLabel
+                    id="all_reminders_enabled"
+                    sx={{ display: 'inline' }}
+                >
                     {t('notifications.enable_notifications')}
                 </FormLabel>
-                {/* TODO change to Controller */}
-                <Switch defaultChecked={true} onChange={handleChange} />
+                <Controller
+                    name="allRemindersDisabled"
+                    control={control}
+                    render={({ field }) => (
+                        <Switch
+                            {...field}
+                            checked={!field.value}
+                            onChange={(_, isChecked) =>
+                                field.onChange(!isChecked)
+                            }
+                            inputProps={{
+                                'aria-labelledby': 'all_reminders_enabled',
+                            }}
+                        />
+                    )}
+                />
             </Grid2>
-            {enableNotifications && (
-                <Grid2 container spacing={1}>
-                    <Grid2 xs={8}>
-                        <div className={'flex-space-between'}>
-                            <FormLabel
-                                sx={{ display: 'inline' }}
-                                id="due_date_enabled"
-                            >
-                                {t('list.due_date')}
-                            </FormLabel>
-                            <Controller
-                                name="dueDateRemindersDisabled"
-                                control={control}
-                                render={({ field }) => (
-                                    <Switch
-                                        {...field}
-                                        inputProps={{
-                                            'aria-labelledby':
-                                                'due_date_enabled',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </Grid2>
-                    <Grid2 xs={4}>
+            <Grid2 container spacing={1}>
+                <Grid2 xs={8}>
+                    <div className={'flex-space-between'}>
+                        <FormLabel
+                            sx={{ display: 'inline' }}
+                            id="due_date_enabled"
+                        >
+                            {t('list.due_date')}
+                        </FormLabel>
                         <Controller
-                            name="reminderDaysBeforeDueDate"
+                            name="dueDateRemindersDisabled"
                             control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => <NotificationSelect />}
+                            render={({ field }) => (
+                                <Switch
+                                    {...field}
+                                    checked={!field.value}
+                                    onChange={(_, isChecked) =>
+                                        field.onChange(!isChecked)
+                                    }
+                                    inputProps={{
+                                        'aria-labelledby': 'due_date_enabled',
+                                    }}
+                                />
+                            )}
                         />
-                    </Grid2>
-                    <Grid2 xs={8}>
-                        <div className={'flex-space-between'}>
-                            <FormLabel
-                                sx={{ display: 'inline' }}
-                                id="expected_date_enabled"
-                            >
-                                {t('list.expected_delivery_date')}
-                            </FormLabel>
-                            <Controller
-                                name="expectedRemindersDisabled"
-                                control={control}
-                                render={({ field }) => (
-                                    <Switch
-                                        {...field}
-                                        inputProps={{
-                                            'aria-labelledby':
-                                                'expected_date_enabled',
-                                        }}
-                                    />
-                                )}
-                            />
-                        </div>
-                    </Grid2>
-                    <Grid2 xs={4}>
-                        <Controller
-                            name="reminderDaysBeforeExpectedDate"
-                            control={control}
-                            rules={{ required: true }}
-                            render={({ field }) => <NotificationSelect />}
-                        />
-                    </Grid2>
+                    </div>
                 </Grid2>
-            )}
+                <Grid2 xs={4}>
+                    <Controller
+                        name="reminderDaysBeforeDueDate"
+                        control={control}
+                        render={({ field }) => (
+                            <NotificationSelect {...field} fullWidth />
+                        )}
+                    />
+                </Grid2>
+                <Grid2 xs={8}>
+                    <div className={'flex-space-between'}>
+                        <FormLabel
+                            sx={{ display: 'inline' }}
+                            id="expected_date_enabled"
+                        >
+                            {t('list.expected_delivery_date')}
+                        </FormLabel>
+                        <Controller
+                            name="expectedRemindersDisabled"
+                            control={control}
+                            render={({ field }) => (
+                                <Switch
+                                    {...field}
+                                    checked={!field.value}
+                                    onChange={(_, isChecked) =>
+                                        field.onChange(!isChecked)
+                                    }
+                                    inputProps={{
+                                        'aria-labelledby':
+                                            'expected_date_enabled',
+                                    }}
+                                />
+                            )}
+                        />
+                    </div>
+                </Grid2>
+                <Grid2 xs={4}>
+                    <Controller
+                        name="reminderDaysBeforeExpectedDate"
+                        control={control}
+                        render={({ field }) => (
+                            <NotificationSelect {...field} fullWidth />
+                        )}
+                    />
+                </Grid2>
+            </Grid2>
             <Grid2 xs={12}>
                 <Button type="submit" variant="contained" fullWidth>
                     {t('actions.save')}
