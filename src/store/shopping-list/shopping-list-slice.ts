@@ -151,11 +151,7 @@ export const orderShoppingListAsync = createAsyncThunk(
 export const setOrderedAmountAsync = createAsyncThunk(
     'item/order-amount',
     async (data: SetOrderedAmountPayload, { rejectWithValue }) => {
-        const response = await setOrderedAmount(
-            data.amountOrdered,
-            data.itemId,
-            data.listId
-        );
+        const response = await setOrderedAmount(data.listId, data.data);
         if (!response) {
             return rejectWithValue('An error ocurred setting ordering amount');
         }
@@ -166,11 +162,7 @@ export const setOrderedAmountAsync = createAsyncThunk(
 export const setCheckStatusAsync = createAsyncThunk(
     'item/mark-checked',
     async (data: CheckStatusPayload, { rejectWithValue }) => {
-        const response = await setCheckStatus(
-            data.data,
-            data.itemId,
-            data.listId
-        );
+        const response = await setCheckStatus(data.listId, data.data);
         if (!response) {
             return rejectWithValue('An error ocurred setting check status');
         }
@@ -363,6 +355,14 @@ export const shoppingListSlice = createSlice({
                 if (state.editShoppingList?.id === action.payload) {
                     state.editShoppingList.ordered = true;
                 }
+            })
+            .addCase(setOrderedAmountAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.id]) return;
+                state.shoppingLists[action.payload.id] = action.payload;
+            })
+            .addCase(setCheckStatusAsync.fulfilled, (state, action) => {
+                if (!state.shoppingLists[action.payload.id]) return;
+                state.shoppingLists[action.payload.id] = action.payload;
             });
     },
 });

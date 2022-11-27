@@ -6,6 +6,8 @@ import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { ModifyItemDto } from '../../models/shopping-list/ModifyItemDto';
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
 import { showResponseError } from '../ui/ui-slice';
+import { OrderedAmountDto } from '../../models/shopping-list/OrderedAmountDto';
+import { CheckedItemDto } from '../../models/shopping-list/CheckedItemDto';
 
 export const getShoppingListsByOfficeId = async (
     officeId: number
@@ -145,30 +147,28 @@ export const orderShoppingList = async (
 };
 
 export const setOrderedAmount = async (
-    amountOrdered: number,
-    itemId: number,
-    listId: number
-): Promise<ItemDto | null> => {
-    const response = await ApiClient.post(
-        `listId/${listId}/item/${itemId}/order-amount?amountOrdered=${amountOrdered}`,
-        null
+    listId: number,
+    data: OrderedAmountDto
+): Promise<ShoppingListDto | null> => {
+    const response = await ApiClient.put(
+        `shoppinglist/${listId}/order-amount`,
+        data
     );
     if (!response.ok) {
         await showResponseError(response);
         return null;
     }
 
-    return (await response.json()) as ItemDto;
+    return (await response.json()) as ShoppingListDto;
 };
 
 export const setCheckStatus = async (
-    data: boolean,
-    itemId: number,
-    listId: number
-): Promise<ItemDto | null> => {
-    const response = await ApiClient.post(
-        `listId/${listId}/item/${itemId}/check?uncheck=${String(!data)}`,
-        null
+    listId: number,
+    data: CheckedItemDto
+): Promise<ShoppingListDto | null> => {
+    const response = await ApiClient.put(
+        `shoppinglist/${listId}/mark-checked`,
+        data
     );
 
     if (!response.ok) {
@@ -176,5 +176,5 @@ export const setCheckStatus = async (
         return null;
     }
 
-    return (await response.json()) as ItemDto;
+    return (await response.json()) as ShoppingListDto;
 };
