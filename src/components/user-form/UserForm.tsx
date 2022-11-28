@@ -7,9 +7,6 @@ import { isValidEmail } from '../../utility/validation-helper';
 import React, { useEffect } from 'react';
 import { ModifyUserDto, UserDto } from '../../models/user/UserDto';
 import OfficeSelect from '../office-select/OfficeSelect';
-import { isAdmin } from '../../utility/user-helper';
-import { useAppSelector } from '../../store/hooks';
-import { selectCurrentUser } from '../../store/user/user-slice';
 import RoleSelect from '../role-select/RoleSelect';
 
 interface UserFormProps {
@@ -21,8 +18,6 @@ interface UserFormProps {
 const UserForm = (props: UserFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues, canModifyRoles } = props;
-
-    const user = useAppSelector(selectCurrentUser);
 
     const defaultValues: Partial<ModifyUserDto> = initialValues
         ? {
@@ -168,7 +163,7 @@ const UserForm = (props: UserFormProps): JSX.Element => {
                 />
             </Grid2>
 
-            {isAdmin(user) && (
+            {props.canModifyRoles && (
                 <Grid2 xs={12}>
                     <FormLabel className={styles.label} id="roleIds">
                         {t('actions.role')}
