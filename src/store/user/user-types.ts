@@ -5,6 +5,7 @@ import { UserRoleDto } from '../../models/user/UserRoleDto';
 export interface UserState {
     currentUser?: UserDto;
     sessionOffice?: OfficeDto;
+    users: UserDto[];
     roles: UserRoleDto[];
 }
 

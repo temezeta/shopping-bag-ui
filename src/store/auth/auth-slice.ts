@@ -3,9 +3,18 @@ import { t } from 'i18next';
 import { LoginDto } from '../../models/auth/LoginDto';
 import { RefreshTokenDto } from '../../models/auth/RefreshTokenDto';
 import { RegisterDto } from '../../models/auth/RegisterDto';
+import { ResetPasswordDto } from '../../models/auth/ResetPasswordDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar } from '../ui/ui-slice';
-import { login, logout, refreshToken, register } from './auth-actions';
+import {
+    login,
+    logout,
+    recoverAccount,
+    refreshToken,
+    register,
+    resendVerificationEmail,
+    resetPassword,
+} from './auth-actions';
 import { AuthState } from './auth-types';
 
 const initialState: AuthState = {
@@ -76,6 +85,57 @@ export const logoutAsync = createAsyncThunk(
         }
         localStorage.removeItem('authToken');
         dispatch(RESET_ALL());
+        return response;
+    }
+);
+
+export const recoverAccountAsync = createAsyncThunk(
+    'auth/recover-account',
+    async (email: string, { rejectWithValue, dispatch }) => {
+        const response = await recoverAccount(email);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.recover_account_failed'),
+                })
+            );
+            return rejectWithValue('Recovery email sending failed');
+        }
+        return response;
+    }
+);
+
+export const resetPasswordAsync = createAsyncThunk(
+    'auth/reset-password',
+    async (data: ResetPasswordDto, { rejectWithValue, dispatch }) => {
+        const response = await resetPassword(data);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.reset_password_failed'),
+                })
+            );
+            return rejectWithValue('Could not reset password');
+        }
+        return response;
+    }
+);
+
+export const resendVerificationEmailAsync = createAsyncThunk(
+    'auth/resend-verification',
+    async (email: string, { rejectWithValue, dispatch }) => {
+        const response = await resendVerificationEmail(email);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.resend_verification_failed'),
+                })
+            );
+            return rejectWithValue('Recovery email sending failed');
+        }
         return response;
     }
 );

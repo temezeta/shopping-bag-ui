@@ -1,3 +1,4 @@
+import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import {
     UserDto,
     ChangePasswordDto,
@@ -25,6 +26,16 @@ export const changePassword = async (
     return (await response.json()) as UserDto;
 };
 
+export const changeGlobalReminders = async (
+    data: ReminderSettingsDto
+): Promise<UserDto | null> => {
+    const response = await ApiClient.post('reminder', data);
+    if (!response.ok) {
+        return null;
+    }
+    return (await response.json()) as UserDto;
+};
+
 export const modifyUser = async (
     userId: number,
     data: ModifyUserDto
@@ -44,6 +55,15 @@ export const removeUser = async (userId: number): Promise<boolean> => {
         return false;
     }
     return response.ok;
+};
+
+export const getAllUsers = async (): Promise<UserDto[] | null> => {
+    const response = await ApiClient.get('user/list');
+    if (!response.ok) {
+        await showResponseError(response);
+        return null;
+    }
+    return (await response.json()) as UserDto[];
 };
 
 export const getAllRoles = async (): Promise<UserRoleDto[]> => {
