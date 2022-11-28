@@ -26,6 +26,7 @@ import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDt
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { updateOrAdd } from '../../utility/array-helper';
 import { sortByDate } from '../../utility/date-helper';
+import { selectCurrentOffice } from '../user/user-slice';
 
 const initialState: ShoppingListState = {
     shoppingLists: {},
@@ -147,12 +148,20 @@ export const orderShoppingListAsync = createAsyncThunk(
 // Returns active lists, with latest created first
 export const selectActiveLists = (state: RootState): ShoppingListDto[] =>
     Object.values(state.shoppinglist.shoppingLists)
-        .filter((it) => !it.ordered)
+        .filter(
+            (it) =>
+                !it.ordered &&
+                selectCurrentOffice(state)?.id === it.listDeliveryOffice?.id
+        )
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 // Returns inactive lists, with latest created first
 export const selectInactiveLists = (state: RootState): ShoppingListDto[] =>
     Object.values(state.shoppinglist.shoppingLists)
-        .filter((it) => it.ordered)
+        .filter(
+            (it) =>
+                it.ordered &&
+                selectCurrentOffice(state)?.id === it.listDeliveryOffice?.id
+        )
         .sort((a, b) => sortByDate(b.createdDate, a.createdDate));
 
 export const selectShoppingListById =

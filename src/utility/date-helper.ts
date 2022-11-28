@@ -2,7 +2,7 @@ import moment from 'moment';
 
 export const formatDate = (
     input?: moment.MomentInput,
-    format = 'D.M.YYYY',
+    format = 'DD.MM.YYYY',
     strict = true,
     missingValueMarker = '-'
 ): string => {
