@@ -15,8 +15,7 @@ import { selectCurrentUser } from '../../store/user/user-slice';
 import { hasUserLikedItem, isAdmin } from '../../utility/user-helper';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import { OrderedAmountDto } from '../../models/shopping-list/OrderedAmountDto';
-import { CheckedItemDto } from '../../models/shopping-list/CheckedItemDto';
+
 interface ShoppingListItemProps {
     item: ItemDto;
 }
@@ -42,18 +41,16 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
             event.target.disabled = false;
         }
     };
-    const handleQuantityChange = async (
-        event: any,
-        OrderedAmount: OrderedAmountDto
-    ): Promise<void> => {
+    const handleQuantityChange = async (event: any): Promise<void> => {
         const value = event.target.value;
         if (value >= 0) {
-            OrderedAmount.amountOrdered = Math.round(value);
-            OrderedAmount.itemId = item.id;
             try {
                 await dispatch(
                     setOrderedAmountAsync({
-                        data: OrderedAmount,
+                        data: {
+                            itemId: item.id,
+                            amountOrdered: Math.round(value),
+                        },
                         listId: listID,
                     })
                 );
@@ -64,17 +61,17 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     };
     const handleItemCheck = async (
         event: ChangeEvent<HTMLInputElement>,
-        checked: boolean,
-        CheckItem: CheckedItemDto // not sure
+        checked: boolean
     ): Promise<void> => {
         // Disable the button until dispatch resolve to avoid duplicate clicks
         event.target.disabled = true;
         try {
-            CheckItem.isChecked = checked;
-            CheckItem.itemId = item.id;
             await dispatch(
                 setCheckStatusAsync({
-                    data: CheckItem,
+                    data: {
+                        itemId: item.id,
+                        isChecked: checked,
+                    },
                     listId: listID,
                 })
             );
@@ -135,7 +132,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
-                            onBlur={() => handleQuantityChange} // not sure
+                            onBlur={handleQuantityChange} // not sure
                         />
                     )}
                 </Grid2>
@@ -145,7 +142,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         checkedIcon={<CheckCircleOutlineIcon />}
                         checked={item.isChecked}
                         color="info"
-                        onChange={() => handleItemCheck} // not sure
+                        onChange={handleItemCheck} // not sure
                     ></Checkbox>
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
