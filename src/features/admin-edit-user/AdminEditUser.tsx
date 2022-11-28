@@ -2,7 +2,7 @@ import { Link, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
 import TabPanel from '../../components/tab-panel/TabPanel';
@@ -11,9 +11,9 @@ import { ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
-    modifyCurrentUserAsync,
+    modifyUserAsync,
     removeUserAsync,
-    selectCurrentUser,
+    selectUserById,
 } from '../../store/user/user-slice';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
@@ -24,14 +24,14 @@ const AdminEditUser = (): JSX.Element => {
     const [currentTab] = useState(0);
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const { userId } = useParams();
+    const id = Number(userId);
 
-    const user = useAppSelector(selectCurrentUser);
+    const user = useAppSelector(selectUserById(id));
 
     const userDetailsOnSubmit: SubmitHandler<ModifyUserDto> = async (data) => {
         if (user) {
-            await dispatch(
-                modifyCurrentUserAsync({ userId: user.id, data })
-            ).unwrap();
+            await dispatch(modifyUserAsync({ userId: user.id, data })).unwrap();
             await showSuccessSnackBar(t('user.user_modify_successful'));
         }
     };

@@ -100,6 +100,17 @@ export const modifyCurrentUserAsync = createAsyncThunk(
     }
 );
 
+export const modifyUserAsync = createAsyncThunk(
+    'user/adminmodify',
+    async (data: ModifyUserPayload, { rejectWithValue }) => {
+        const response = await modifyUser(data.userId, data.data);
+        if (!response) {
+            return rejectWithValue('Cannot modify user');
+        }
+        return response;
+    }
+);
+
 export const getAllUsersAsync = createAsyncThunk(
     'user/list',
     async (_, { rejectWithValue }) => {
@@ -159,6 +170,12 @@ export const userSlice = createSlice({
             })
             .addCase(modifyCurrentUserAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
+            })
+            .addCase(modifyUserAsync.fulfilled, (state, action) => {
+                const index = state.users.findIndex(
+                    (x) => x.id === action.payload.id
+                );
+                state.users[index] = action.payload;
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;

@@ -138,7 +138,7 @@ const AccountSettings = (): JSX.Element => {
                 </Grid2>
             </MainLayout>
             <DeleteAccountDialog
-                title={t('user.delete_account')}
+                title={t('user.disable_account')}
                 onConfirm={onDeleteConfirm}
                 open={isDeleteOpen}
                 onCancel={() => setDeleteOpen(false)}
