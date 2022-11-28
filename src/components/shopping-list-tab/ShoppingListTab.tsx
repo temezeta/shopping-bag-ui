@@ -4,14 +4,7 @@ import {
     NotificationsActive,
     NotificationsNone,
 } from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    Checkbox,
-    IconButton,
-    List,
-    Typography,
-} from '@mui/material';
+import { Box, Button, IconButton, List, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -34,6 +27,8 @@ import { isAdmin } from '../../utility/user-helper';
 import { selectCurrentUser } from '../../store/user/user-slice';
 import { useAppSelector } from '../../store/hooks';
 import moment from 'moment';
+import FormDialog from '../form-dialog/FormDialog';
+import ReminderFormList from '../reminder-form-list/ReminderFormList';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -59,6 +54,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
             `${protocol}//${host}/order/${list.id}`
         );
         await showSuccessSnackBar(t('list.list-copy-successful'));
+    };
+    const [isRemindersOpen, setRemindersOpen] = useState<boolean>(false);
+
+    const remindersOnClick = (): void => {
+        setRemindersOpen(true);
     };
 
     useEffect(() => {
@@ -150,12 +150,19 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             order={{ xs: 3, md: 4 }}
                             className="flex-center"
                         >
-                            {/** TODO: Notification functionality */}
                             {moment(list.expectedDeliveryDate) > moment() && (
-                                <Checkbox
-                                    icon={<NotificationsNone />}
-                                    checkedIcon={<NotificationsActive />}
-                                ></Checkbox>
+                                <IconButton
+                                    aria-label={t(
+                                        'notifications.edit_notifications'
+                                    )}
+                                    onClick={remindersOnClick}
+                                >
+                                    {true ? (
+                                        <NotificationsActive />
+                                    ) : (
+                                        <NotificationsNone />
+                                    )}
+                                </IconButton>
                             )}
                         </Grid2>
                     </Grid2>
@@ -212,6 +219,13 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </List>
                 </div>
             )}
+            <FormDialog
+                open={isRemindersOpen}
+                onCancel={() => setRemindersOpen(false)}
+                title={t('notifications.notifications')}
+            >
+                <ReminderFormList />
+            </FormDialog>
         </div>
     );
 };

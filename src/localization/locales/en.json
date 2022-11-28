@@ -32,7 +32,8 @@
         "notifications": "Notifications",
         "enable_notifications": "Enable notifications",
         "day": "day",
-        "days": "days"
+        "days": "days",
+        "edit_notifications": "Edit notifications"
     },
     "errors": {
         "required": "This value is required!",
