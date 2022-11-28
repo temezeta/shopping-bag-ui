@@ -19,7 +19,7 @@ import { ModifyUserPayload, UserState } from './user-types';
 
 const initialState: UserState = {
     users: [],
-    roles: []
+    roles: [],
 };
 
 export const changePasswordAsync = createAsyncThunk(

@@ -13,8 +13,6 @@
         "profile": "Profile",
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
-        "account_disabled": "Your account has been disabled",
-
         "roles": "Roles",
         "account_recovery": "Account recovery",
         "resend_verification": "Resend verification",
@@ -24,7 +22,7 @@
         "recovery_token_help": "Insert the recovery token you received in an email below together with the new password details.",
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent.",
-        "global_reminders_change_successful": "Global reminders changed"
+        "global_reminders_change_successful": "Global reminders changed",
         "account_disabled": "Your account has been disabled",
         "disable_account": "Disable account",
         "user_management" : "User Management"
@@ -83,8 +81,7 @@
         "office_rename_successful": "Office renamed",
         "office_delete_successful": "Office deleted",
         "office_add_successful": "New office added",
-        "submit": "Submit"
-        "delete": "Delete",
+        "submit": "Submit",
         "role": "Role"
     },
     "dialogs": {
