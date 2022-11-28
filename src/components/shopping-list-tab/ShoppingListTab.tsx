@@ -1,9 +1,4 @@
-import {
-    Add,
-    Link,
-    NotificationsActive,
-    NotificationsNone,
-} from '@mui/icons-material';
+import { Add, Link, NotificationsNone } from '@mui/icons-material';
 import { Box, Button, IconButton, List, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
@@ -157,11 +152,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     )}
                                     onClick={remindersOnClick}
                                 >
-                                    {true ? (
-                                        <NotificationsActive />
-                                    ) : (
-                                        <NotificationsNone />
-                                    )}
+                                    {/* TODO: switch icon if active reminders or reminders off */}
+                                    <NotificationsNone />
                                 </IconButton>
                             )}
                         </Grid2>
@@ -224,7 +216,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                 onCancel={() => setRemindersOpen(false)}
                 title={t('notifications.notifications')}
             >
-                <ReminderFormList />
+                <ReminderFormList listId={props.list.id} />
             </FormDialog>
         </div>
     );

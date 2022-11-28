@@ -9,6 +9,7 @@ import styles from './ReminderFormList.module.css';
 
 interface ReminderFormProps {
     initialValues?: ListReminderSettingsDto;
+    listId: number;
     onSubmit?: SubmitHandler<ListReminderSettingsDto>;
 }
 
@@ -18,6 +19,7 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
 
     const defaultValues: Partial<ListReminderSettingsDto> = initialValues
         ? {
+              shoppingListId: props.listId,
               dueDateRemindersDisabled: initialValues.dueDateRemindersDisabled,
               expectedRemindersDisabled:
                   initialValues.expectedRemindersDisabled,
@@ -27,6 +29,7 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
                   initialValues.reminderDaysBeforeExpectedDate,
           }
         : {
+              shoppingListId: props.listId,
               dueDateRemindersDisabled: false,
               expectedRemindersDisabled: false,
               reminderDaysBeforeDueDate: [],
