@@ -42,12 +42,9 @@ function App(): JSX.Element {
 
         if (isAdmin(user)) {
             void dispatch(getAllUsersAsync());
+            void dispatch(getAllRolesAsync());
         }
     }, [user]);
-
-    useEffect(() => {
-        void dispatch(getAllRolesAsync());
-    });
 
     // Call refresh token every 5 minutes
     useEffect(() => {

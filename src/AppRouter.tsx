@@ -66,7 +66,7 @@ const AppRouter = (): JSX.Element => {
                     element={<UserManagement />}
                 ></Route>
                 <Route
-                    path="management/edit-user"
+                    path="user/:userId/edit"
                     element={<AdminEditUser />}
                 ></Route>
             </Route>
