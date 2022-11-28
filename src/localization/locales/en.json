@@ -14,7 +14,23 @@
         "delete_account": "Delete account",
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
-        "account_disabled": "Your account has been disabled"
+        "account_disabled": "Your account has been disabled",
+        "roles": "Roles",
+        "account_recovery": "Account recovery",
+        "resend_verification": "Resend verification",
+        "recovery_token": "Recovery token",
+        "recover_account_help": "To recover a previously disabled account or reset a forgotten password, submit the account email below",
+        "resend_verification_help": "If you cannot find a verification email for a user you have created, submit the account email below",
+        "recovery_token_help": "Insert the recovery token you received in an email below together with the new password details.",
+        "recovery_email_successful": "Recovery token sent to email.",
+        "verification_email_successful": "Verification email resent.",
+        "global_reminders_change_successful": "Global reminders changed"
+    },
+    "notifications": {
+        "notifications": "Notifications",
+        "enable_notifications": "Enable notifications",
+        "day": "day",
+        "days": "days"
     },
     "errors": {
         "required": "This value is required!",
@@ -29,6 +45,11 @@
         "url_not_valid": "The URL must include https:// or http://",
         "one_value_required": "One of these values is required!",
         "password_change_failed": "Password change failed",
+        "disable_account_failed": "Disabling account failed"
+        "recover_account_failed": "Could not send recovery email",
+        "reset_password_failed": "Could not reset password",
+        "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
+        "global_reminders_change_failed": "Global reminders change failed"
         "disable_account_failed": "Disabling account failed",
         "expected_after_due" : "Expected delivery date must be after due date!"
     },
@@ -39,7 +60,7 @@
         "already_have_account": "Already have an account? Log in here.",
         "no_account": "Don't have an account? Sign up here.",
         "login": "Login",
-        "recover_password": "Forgot your password?",
+        "recover_account": "Problems in registering or logging in? Click here.",
         "remember_user": "Remember me",
         "ok": "Ok",
         "cancel": "Cancel",
@@ -54,7 +75,14 @@
         "save": "Save",
         "input": "Input",
         "preview": "Preview",
-        "delete": "Delete"
+        "delete": "Delete",
+        "remove_office": "Remove office",
+        "rename_office": "Rename office",
+        "add_new_office": "Add new office",
+        "office_rename_successful": "Office renamed",
+        "office_delete_successful": "Office deleted",
+        "office_add_successful": "New office added",
+        "submit": "Submit"
     },
     "dialogs": {
         "verify_account": "Verify your account",
@@ -70,7 +98,7 @@
         "past_orders": "Past orders",
         "comment": "Comment",
         "list_name": "List name",
-        "item_details": "Item details",
+        "item": "Item",
         "likes": "Likes",
         "store": "Store",
         "actions": "Actions",
@@ -88,7 +116,9 @@
     "management": {
         "management": "Management",
         "offices": "Offices",
-        "users": "Users"
+        "users": "Users",
+        "office_management": "Office management",
+        "user_management": "User management"
     },
     "general": {
         "support_markdown": "Styling with Markdown is supported"

@@ -16,6 +16,7 @@ import OfficeManagement from './features/office-management/OfficeManagement';
 import UserManagement from './features/user-management/UserManagement';
 import NotFound from './features/not-found/NotFound';
 import AccountSettings from './features/account-settings/AccountSettings';
+import RecoverAccount from './features/recover-account/RecoverAccount';
 
 const AppRouter = (): JSX.Element => {
     return (
@@ -25,6 +26,7 @@ const AppRouter = (): JSX.Element => {
             <Route path="" element={<Navigate to="session" />}></Route>
             <Route path="register" element={<Register />}></Route>
             <Route path="login" element={<Login />}></Route>
+            <Route path="recover" element={<RecoverAccount />}></Route>
             {/** Protected routes */}
             <Route element={<AuthGuard />}>
                 <Route path="home" element={<Home />}></Route>

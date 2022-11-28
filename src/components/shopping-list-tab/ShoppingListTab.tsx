@@ -42,8 +42,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const [sortOptions, setSortOptions] = useState<SortOptions>({
-        sortType: SortType.Likes,
-        sortDescending: false,
+        sortType: SortType.Name,
+        sortDescending: true,
     });
     const [sortedItems, setSortedItems] = useState<ItemDto[]>(
         sortByItemLikes(list.items, sortOptions.sortDescending)
@@ -75,6 +75,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
         }
     }, [sortOptions, list]);
 
+    const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
+
     return (
         <div
             role="tabpanel"
@@ -92,12 +94,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             >
                                 <Link />
                             </IconButton>
-                            <Typography
-                                variant="h1"
-                                display="flex"
-                                justifyContent="center"
-                            >
-                                {list.name}
+                            <Typography variant="h1">{list.name}</Typography>
+                        </Grid2>
+                        <Grid2 xs={12} className="flex-center">
+                            <Typography variant="h2">
+                                {list.listDeliveryOffice.name}
                             </Typography>
                         </Grid2>
                         <Grid2 xs={12}>
@@ -115,16 +116,29 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 onClick={() =>
                                     navigate(`/order/${list.id}/add-item`)
                                 }
+                                disabled={isDueDatePassed || list.ordered}
                                 fullWidth
                             >
                                 {t('actions.add_new_item')}
                             </Button>
                         </Grid2>
                         <Grid2 md={6} xs={10} order={{ xs: 1, md: 2 }}>
-                            {t('list.due_date')} {formatDate(list.dueDate)}
-                            <br />
-                            {t('list.expected_delivery_date')}{' '}
-                            {formatDate(list.expectedDeliveryDate)}
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color:
+                                        isDueDatePassed && !list.ordered
+                                            ? 'error.main'
+                                            : 'inherit',
+                                }}
+                            >
+                                {t('list.due_date') + ': '}
+                                {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
+                            </Typography>
+                            <Typography variant="body2">
+                                {t('list.expected_delivery_date') + ': '}
+                                {formatDate(list.expectedDeliveryDate)}
+                            </Typography>
                         </Grid2>
                         <Grid2
                             md={1}
@@ -148,7 +162,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
                                     columnSortType={SortType.Name}
-                                    columnName={t('list.item_details')}
+                                    columnName={t('list.item')}
                                 ></SortButton>
                             </Grid2>
                             <Grid2

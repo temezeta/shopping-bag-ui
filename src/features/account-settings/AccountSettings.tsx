@@ -12,6 +12,7 @@ import { ChangePasswordDto, ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
+    changeGlobalRemindersAsync,
     changePasswordAsync,
     modifyCurrentUserAsync,
     removeUserAsync,
@@ -20,6 +21,8 @@ import {
 import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
+import ReminderFormGlobal from '../../components/reminder-form-global/ReminderFormGlobal';
+import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -49,6 +52,12 @@ const AccountSettings = (): JSX.Element => {
         unwrapResult(await dispatch(changePasswordAsync(data)));
     };
 
+    const reminderSettingsOnSubmit: SubmitHandler<ReminderSettingsDto> = async (
+        data
+    ) => {
+        await dispatch(changeGlobalRemindersAsync(data)).unwrap();
+    };
+
     const onDeleteConfirm = async (): Promise<void> => {
         if (user !== undefined) {
             await dispatch(removeUserAsync(user.id)).unwrap();
@@ -67,9 +76,13 @@ const AccountSettings = (): JSX.Element => {
                             display="flex"
                             justifyContent="center"
                         >
-                            {currentTab === 0
-                                ? t('user.account_settings')
-                                : t('user.password')}
+                            {
+                                {
+                                    0: t('user.account_settings'),
+                                    1: t('user.password'),
+                                    2: t('notifications.notifications'),
+                                }[currentTab]
+                            }
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12} className="flex-center">
@@ -84,6 +97,10 @@ const AccountSettings = (): JSX.Element => {
                         >
                             <Tab label={t('user.profile')} {...a11yProps(0)} />
                             <Tab label={t('user.password')} {...a11yProps(1)} />
+                            <Tab
+                                label={t('notifications.notifications')}
+                                {...a11yProps(2)}
+                            />
                         </Tabs>
                     </Grid2>
                     <TabPanel value={currentTab} index={0}>
@@ -108,6 +125,14 @@ const AccountSettings = (): JSX.Element => {
                     <TabPanel value={currentTab} index={1}>
                         <Grid2 xs={12}>
                             <PasswordForm onSubmit={passwordOnSubmit} />
+                        </Grid2>
+                    </TabPanel>
+                    <TabPanel value={currentTab} index={2}>
+                        <Grid2 xs={12}>
+                            <ReminderFormGlobal
+                                initialValues={user?.reminderSettings}
+                                onSubmit={reminderSettingsOnSubmit}
+                            />
                         </Grid2>
                     </TabPanel>
                 </Grid2>

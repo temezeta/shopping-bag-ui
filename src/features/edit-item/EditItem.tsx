@@ -15,12 +15,15 @@ import {
     selectEditItemById,
     clearEditShoppingList,
 } from '../../store/shopping-list/shopping-list-slice';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { isAdmin } from '../../utility/user-helper';
 
 const EditItem = (): JSX.Element => {
     const { itemId, listId } = useParams();
     const dispatch = useAppDispatch();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const user = useAppSelector(selectCurrentUser);
 
     useEffect(() => {
         void dispatch(
@@ -49,6 +52,14 @@ const EditItem = (): JSX.Element => {
                     itemId: Number(itemId),
                 })
             );
+            handleNavigate();
+        }
+    };
+
+    const handleNavigate = (): void => {
+        if (isAdmin(user) && listId) {
+            navigate(`/order/${listId}`);
+        } else {
             navigate('/home');
         }
     };
@@ -58,7 +69,7 @@ const EditItem = (): JSX.Element => {
             <MainLayout>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
-                        <IconButton onClick={() => navigate('/home')}>
+                        <IconButton onClick={() => handleNavigate()}>
                             <ArrowBackIos />
                         </IconButton>
                         <Typography

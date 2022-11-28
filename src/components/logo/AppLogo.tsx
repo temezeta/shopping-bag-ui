@@ -22,19 +22,24 @@ const AppLogo = (): JSX.Element => {
             </Box>
             <Box display={{ xs: 'inline', sm: 'none' }}>
                 <div>
-                    <Typography
-                        component="span"
-                        variant="body2"
-                        fontWeight="bold"
-                    >
-                        Huld
-                    </Typography>
+                    <SvgIcon
+                        component={HuldLogo}
+                        inheritViewBox
+                        sx={{
+                            fontSize: '50px',
+                            height: 'fit-content',
+                            marginLeft: '-5px',
+                        }}
+                    />
                 </div>
                 <div>
                     <Typography
                         component="span"
                         variant="body2"
                         fontWeight="bold"
+                        sx={{
+                            marginLeft: '4px',
+                        }}
                     >
                         Shopping bag
                     </Typography>
