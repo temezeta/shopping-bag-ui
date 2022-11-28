@@ -5,19 +5,16 @@ import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
-import PasswordForm from '../../components/password-form/PasswordForm';
 import TabPanel from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
-import { ChangePasswordDto, ModifyUserDto } from '../../models/user/UserDto';
+import { ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
-    changePasswordAsync,
     modifyCurrentUserAsync,
     removeUserAsync,
     selectCurrentUser,
 } from '../../store/user/user-slice';
-import { unwrapResult } from '@reduxjs/toolkit';
 import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
@@ -37,10 +34,6 @@ const AdminEditUser = (): JSX.Element => {
             ).unwrap();
             await showSuccessSnackBar(t('user.user_modify_successful'));
         }
-    };
-
-    const passwordOnSubmit: SubmitHandler<ChangePasswordDto> = async (data) => {
-        unwrapResult(await dispatch(changePasswordAsync(data)));
     };
 
     const onDeleteConfirm = async (): Promise<void> => {
@@ -65,9 +58,7 @@ const AdminEditUser = (): JSX.Element => {
                             display="flex"
                             justifyContent="center"
                         >
-                            {currentTab === 0
-                                ? t('user.user_management')
-                                : t('user.password')}
+                            {t('management.user_management')}
                         </Typography>
                     </Grid2>
                     <TabPanel value={currentTab} index={0}>
@@ -75,7 +66,7 @@ const AdminEditUser = (): JSX.Element => {
                             <UserForm
                                 onSubmit={userDetailsOnSubmit}
                                 initialValues={user}
-                                canModifyRoles={isAdmin(user)}
+                                canModifyRoles={true}
                             />
                         </Grid2>
                         <Grid2 xs={12} className="flex-center">
@@ -87,11 +78,6 @@ const AdminEditUser = (): JSX.Element => {
                             >
                                 {t('user.disable_account')}
                             </Link>
-                        </Grid2>
-                    </TabPanel>
-                    <TabPanel value={currentTab} index={1}>
-                        <Grid2 xs={12}>
-                            <PasswordForm onSubmit={passwordOnSubmit} />
                         </Grid2>
                     </TabPanel>
                 </Grid2>
