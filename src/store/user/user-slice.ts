@@ -175,7 +175,9 @@ export const userSlice = createSlice({
                 const index = state.users.findIndex(
                     (x) => x.id === action.payload.id
                 );
-                state.users[index] = action.payload;
+                if (index !== -1) {
+                    state.users[index] = action.payload;
+                }
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;

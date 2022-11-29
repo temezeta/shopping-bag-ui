@@ -55,11 +55,13 @@ const AdminEditUser = (): JSX.Element => {
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12}>
-                        <UserForm
-                            onSubmit={userDetailsOnSubmit}
-                            initialValues={user}
-                            canModifyRoles={true}
-                        />
+                        {user && (
+                            <UserForm
+                                onSubmit={userDetailsOnSubmit}
+                                initialValues={user}
+                                canModifyRoles={true}
+                            />
+                        )}
                     </Grid2>
                     <Grid2 xs={12} className="flex-center">
                         <Link
