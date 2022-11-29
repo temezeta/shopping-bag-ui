@@ -45,12 +45,11 @@
         "url_not_valid": "The URL must include https:// or http://",
         "one_value_required": "One of these values is required!",
         "password_change_failed": "Password change failed",
-        "disable_account_failed": "Disabling account failed"
+        "disable_account_failed": "Disabling account failed",
         "recover_account_failed": "Could not send recovery email",
         "reset_password_failed": "Could not reset password",
         "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
-        "global_reminders_change_failed": "Global reminders change failed"
-        "disable_account_failed": "Disabling account failed",
+        "global_reminders_change_failed": "Global reminders change failed",
         "expected_after_due" : "Expected delivery date must be after due date!"
     },
     "actions": {

@@ -18,8 +18,6 @@ import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShopping
 import { useEffect, useState } from 'react';
 import TabPanel from '../tab-panel/TabPanel';
 import Markdown from '../markdown/Markdown';
-import { setSnackbar } from '../../store/ui/ui-slice';
-import { useAppDispatch } from '../../store/hooks';
 
 interface ShoppingListFormProps {
     initialValues?: ShoppingListDto;
@@ -31,7 +29,6 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
     const [tabIndex, setTabIndex] = useState<number>(0);
-    const dispatch = useAppDispatch();
 
     const defaultValues: Partial<ModifyShoppingListDto> = initialValues ?? {
         name: '',
@@ -76,12 +73,6 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
             true
         );
         if (expectedDeliveryDate.isBefore(dueDate)) {
-            dispatch(
-                setSnackbar({
-                    type: 'error',
-                    message: t('errors.expected_after_due'),
-                })
-            );
             return false;
         }
         return true;
@@ -204,7 +195,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                             name="expectedDeliveryDate"
                             control={control}
                             rules={{
-                                validate: dateValidation,
+                                validate: {
+                                    dateValidation,
+                                },
                             }}
                             render={({ field }) => (
                                 <DatePicker
@@ -213,10 +206,16 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                             moment(date).toISOString(true)
                                         )
                                     }
-                                    minDate={watch('dueDate')}
+                                    minDate={moment(watch('dueDate'))}
                                     value={field.value}
-                                    renderInput={(props) => (
-                                        <TextField {...props} fullWidth />
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            sx={{ width: '100%' }}
+                                            helperText={t(
+                                                'errors.expected_after_due'
+                                            )}
+                                        />
                                     )}
                                     disablePast={true}
                                     inputFormat="DD.MM.yyyy"
