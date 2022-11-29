@@ -11,10 +11,8 @@
         "account_settings": "Account settings",
         "office": "Office",
         "profile": "Profile",
-        "delete_account": "Delete account",
         "password_change_successful": "Password changed",
         "user_modify_successful": "User information changed succesfully.\nIf email was changed, reverification and login is required.",
-        "account_disabled": "Your account has been disabled",
         "roles": "Roles",
         "account_recovery": "Account recovery",
         "resend_verification": "Resend verification",
@@ -24,7 +22,10 @@
         "recovery_token_help": "Insert the recovery token you received in an email below together with the new password details.",
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent.",
-        "global_reminders_change_successful": "Global reminders changed"
+        "global_reminders_change_successful": "Global reminders changed",
+        "account_disabled": "Your account has been disabled",
+        "disable_account": "Disable account",
+        "user_management" : "User Management"
     },
     "notifications": {
         "notifications": "Notifications",
@@ -82,14 +83,16 @@
         "office_rename_successful": "Office renamed",
         "office_delete_successful": "Office deleted",
         "office_add_successful": "New office added",
-        "submit": "Submit"
+        "submit": "Submit",
+        "role": "Role"
     },
     "dialogs": {
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email.",
         "confirmation": "Are you sure you wish to continue?",
         "delete_account": "Deleting your account will remove your information from our database. This cannot be undone.",
-        "type_delete": "To confirm this, type DELETE"
+        "type_delete": "To confirm this, type DELETE",
+        "disable_account": "Disable user account?"
     },
     "list": {
         "due_date": "Due date",

@@ -3,12 +3,14 @@ import { t } from 'i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
+import { UserRoleDto } from '../../models/user/UserRoleDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import {
     changeGlobalReminders,
     changePassword,
     getAllUsers,
+    getAllRoles,
     getCurrentUser,
     modifyUser,
     removeUser,
@@ -17,6 +19,7 @@ import { ModifyUserPayload, UserState } from './user-types';
 
 const initialState: UserState = {
     users: [],
+    roles: [],
 };
 
 export const changePasswordAsync = createAsyncThunk(
@@ -97,12 +100,34 @@ export const modifyCurrentUserAsync = createAsyncThunk(
     }
 );
 
+export const modifyUserAsync = createAsyncThunk(
+    'user/adminmodify',
+    async (data: ModifyUserPayload, { rejectWithValue }) => {
+        const response = await modifyUser(data.userId, data.data);
+        if (!response) {
+            return rejectWithValue('Cannot modify user');
+        }
+        return response;
+    }
+);
+
 export const getAllUsersAsync = createAsyncThunk(
     'user/list',
     async (_, { rejectWithValue }) => {
         const response = await getAllUsers();
         if (!response) {
             return rejectWithValue('Cannot get all users');
+        }
+        return response;
+    }
+);
+
+export const getAllRolesAsync = createAsyncThunk(
+    'userrole/list',
+    async (_, { rejectWithValue }) => {
+        const response = await getAllRoles();
+        if (!response) {
+            return rejectWithValue('Cannot find roles');
         }
         return response;
     }
@@ -120,6 +145,8 @@ export const selectUserById =
     (userId: number) =>
     (state: RootState): UserDto | undefined =>
         state.user.users.find((it) => it.id === userId);
+export const selectRoles = (state: RootState): UserRoleDto[] =>
+    state.user.roles;
 
 export const userSlice = createSlice({
     name: 'user',
@@ -144,11 +171,22 @@ export const userSlice = createSlice({
             .addCase(modifyCurrentUserAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
             })
+            .addCase(modifyUserAsync.fulfilled, (state, action) => {
+                const index = state.users.findIndex(
+                    (x) => x.id === action.payload.id
+                );
+                if (index !== -1) {
+                    state.users[index] = action.payload;
+                }
+            })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;
             })
             .addCase(changeGlobalRemindersAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
+            })
+            .addCase(getAllRolesAsync.fulfilled, (state, action) => {
+                state.roles = action.payload;
             });
     },
 });

@@ -4,6 +4,7 @@ import {
     ChangePasswordDto,
     ModifyUserDto,
 } from '../../models/user/UserDto';
+import { UserRoleDto } from '../../models/user/UserRoleDto';
 import ApiClient from '../client';
 import { showResponseError } from '../ui/ui-slice';
 
@@ -63,4 +64,12 @@ export const getAllUsers = async (): Promise<UserDto[] | null> => {
         return null;
     }
     return (await response.json()) as UserDto[];
+};
+
+export const getAllRoles = async (): Promise<UserRoleDto[]> => {
+    const response = await ApiClient.get('userrole/list');
+    if (!response.ok) {
+        return [];
+    }
+    return (await response.json()) as UserRoleDto[];
 };

@@ -4,9 +4,10 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import styles from './UserForm.module.css';
 import { isValidEmail } from '../../utility/validation-helper';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { ModifyUserDto, UserDto } from '../../models/user/UserDto';
 import OfficeSelect from '../office-select/OfficeSelect';
+import RoleSelect from '../role-select/RoleSelect';
 
 interface UserFormProps {
     initialValues?: UserDto;
@@ -161,6 +162,27 @@ const UserForm = (props: UserFormProps): JSX.Element => {
                     )}
                 />
             </Grid2>
+
+            {props.canModifyRoles && (
+                <Grid2 xs={12}>
+                    <FormLabel className={styles.label} id="roleIds">
+                        {t('actions.role')}
+                    </FormLabel>
+                    <Controller
+                        name="roleIds"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field }) => (
+                            <RoleSelect
+                                {...field}
+                                error={!!errors.roleIds}
+                                aria-labelledby="roleIds"
+                                fullWidth
+                            />
+                        )}
+                    />
+                </Grid2>
+            )}
             <Grid2 xs={12}>
                 <Button
                     type="submit"

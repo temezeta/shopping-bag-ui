@@ -8,6 +8,7 @@ import { getAllOfficesAsync } from './store/office/office-slice';
 import { getShoppingListsByOfficeAsync } from './store/shopping-list/shopping-list-slice';
 import {
     getAllUsersAsync,
+    getAllRolesAsync,
     selectCurrentOffice,
     selectCurrentUser,
 } from './store/user/user-slice';
@@ -41,6 +42,7 @@ function App(): JSX.Element {
 
         if (isAdmin(user)) {
             void dispatch(getAllUsersAsync());
+            void dispatch(getAllRolesAsync());
         }
     }, [user]);
 
