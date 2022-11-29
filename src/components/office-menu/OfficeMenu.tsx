@@ -19,6 +19,17 @@ const OfficeMenu = (): JSX.Element => {
     const { t } = useTranslation();
     const homeIcon = <Home style={{ color: '#fff' }} />;
 
+    const getMenuTitle = (): JSX.Element => {
+        return (
+            <span className="flex-center">
+                {homeOffice?.id === currentOffice?.id && <Home />}
+                <span className={styles.menuItem}>
+                    {currentOffice?.name ?? t('user.office')}
+                </span>
+            </span>
+        );
+    };
+
     const getOfficeItem = (office: OfficeDto): JSX.Element => {
         return (
             <span className="flex-center">
@@ -42,7 +53,7 @@ const OfficeMenu = (): JSX.Element => {
 
     return (
         <DropdownMenu
-            title={currentOffice?.name ?? t('user.office')}
+            title={getMenuTitle()}
             items={offices.map((it) => ({
                 title: getOfficeItem(it),
                 onClick: () => setOffice(it),
