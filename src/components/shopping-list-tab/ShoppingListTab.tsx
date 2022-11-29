@@ -147,10 +147,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             className="flex-center"
                         >
                             {/** TODO: Notification functionality */}
-                            <Checkbox
-                                icon={<NotificationsNone />}
-                                checkedIcon={<NotificationsActive />}
-                            ></Checkbox>
+                            {moment(list.expectedDeliveryDate) > moment() && (
+                                <Checkbox
+                                    icon={<NotificationsNone />}
+                                    checkedIcon={<NotificationsActive />}
+                                ></Checkbox>
+                            )}
                         </Grid2>
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>

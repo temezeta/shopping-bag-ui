@@ -66,6 +66,18 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         setTabIndex(value);
     };
 
+    const dateValidation = (): boolean => {
+        const dueDate = moment(watch('dueDate'), true);
+        const expectedDeliveryDate = moment(
+            watch('expectedDeliveryDate'),
+            true
+        );
+        if (expectedDeliveryDate.isBefore(dueDate)) {
+            return false;
+        }
+        return true;
+    };
+
     return (
         <Grid2 container spacing={2}>
             {
@@ -150,6 +162,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <Controller
                             name="dueDate"
                             control={control}
+                            rules={{
+                                validate: dateValidation,
+                            }}
                             render={({ field }) => (
                                 <DateTimePicker
                                     onChange={(date) =>
@@ -179,6 +194,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <Controller
                             name="expectedDeliveryDate"
                             control={control}
+                            rules={{
+                                validate: dateValidation,
+                            }}
                             render={({ field }) => (
                                 <DatePicker
                                     onChange={(date) =>
@@ -186,9 +204,16 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                             moment(date).toISOString(true)
                                         )
                                     }
+                                    minDate={moment(watch('dueDate'))}
                                     value={field.value}
                                     renderInput={(props) => (
-                                        <TextField {...props} fullWidth />
+                                        <TextField
+                                            {...props}
+                                            sx={{ width: '100%' }}
+                                            helperText={t(
+                                                'errors.expected_after_due'
+                                            )}
+                                        />
                                     )}
                                     disablePast={true}
                                     inputFormat="DD.MM.yyyy"
