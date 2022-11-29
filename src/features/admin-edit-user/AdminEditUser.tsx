@@ -2,28 +2,19 @@ import { Link, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
-import TabPanel from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
 import { ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
-import {
-    modifyUserAsync,
-    removeUserAsync,
-    selectUserById,
-} from '../../store/user/user-slice';
-import { isAdmin } from '../../utility/user-helper';
+import { modifyUserAsync, selectUserById } from '../../store/user/user-slice';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 
 const AdminEditUser = (): JSX.Element => {
     const { t } = useTranslation();
-    const [currentTab] = useState(0);
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
     const { userId } = useParams();
     const id = Number(userId);
 
@@ -33,13 +24,6 @@ const AdminEditUser = (): JSX.Element => {
         if (user) {
             await dispatch(modifyUserAsync({ userId: user.id, data })).unwrap();
             await showSuccessSnackBar(t('user.user_modify_successful'));
-        }
-    };
-
-    const onDeleteConfirm = async (): Promise<void> => {
-        if (user !== undefined) {
-            await dispatch(removeUserAsync(user.id)).unwrap();
-            navigate('/login');
         }
     };
 
@@ -61,39 +45,25 @@ const AdminEditUser = (): JSX.Element => {
                             {t('management.user_management')}
                         </Typography>
                     </Grid2>
-                    <TabPanel value={currentTab} index={0}>
-                        <Grid2 xs={12}>
-                            <UserForm
-                                onSubmit={userDetailsOnSubmit}
-                                initialValues={user}
-                                canModifyRoles={true}
-                            />
-                        </Grid2>
-                        <Grid2 xs={12} className="flex-center">
-                            <Link
-                                component="button"
-                                onClick={() => {
-                                    setDeleteOpen(true);
-                                }}
-                            >
-                                {t('user.disable_account')}
-                            </Link>
-                        </Grid2>
-                    </TabPanel>
+                    <Grid2 xs={12}>
+                        <UserForm
+                            onSubmit={userDetailsOnSubmit}
+                            initialValues={user}
+                            canModifyRoles={true}
+                        />
+                    </Grid2>
+                    <Grid2 xs={12} className="flex-center">
+                        <Link
+                            component="button"
+                            onClick={() => {
+                                setDeleteOpen(true);
+                            }}
+                        >
+                            {t('user.disable_account')}
+                        </Link>
+                    </Grid2>
                 </Grid2>
             </MainLayout>
-            {!isAdmin(user) && (
-                <DeleteAccountDialog
-                    title={t('user.disable_account')}
-                    onConfirm={onDeleteConfirm}
-                    open={isDeleteOpen}
-                    onCancel={() => setDeleteOpen(false)}
-                >
-                    <DialogContentText>
-                        {t('dialogs.delete_account')}
-                    </DialogContentText>
-                </DeleteAccountDialog>
-            )}
             <ConfirmationDialog
                 title={t('user.disable_account')}
                 onConfirm={onAdminDeleteConfirm}
