@@ -12,7 +12,7 @@ export interface DropdownMenuItem {
 }
 
 interface DropdownMenuProps {
-    title: string;
+    title: React.ReactNode;
     items: DropdownMenuItem[];
     icon?: JSX.Element;
     isTab?: boolean;
@@ -68,7 +68,7 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
     };
 
     const getButtonComponent = (): JSX.Element => {
-        const { isTab, ...rest } = props;
+        const { isTab, title, ...rest } = props;
         if (isTab) {
             return (
                 <Tab
@@ -76,7 +76,7 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
                     icon={<KeyboardArrowDown fontSize="small" />}
                     iconPosition="end"
                     onClick={handleClick}
-                    label={props.title}
+                    label={title}
                     {...rest}
                 />
             );

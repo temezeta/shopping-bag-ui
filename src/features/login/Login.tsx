@@ -10,21 +10,20 @@ import { unwrapResult } from '@reduxjs/toolkit';
 import { loginAsync } from '../../store/auth/auth-slice';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentUserAsync } from '../../store/user/user-slice';
+import { useQuery } from '../../utility/navigation-hooks';
 
 const Login = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const query = useQuery();
 
     const onSubmit: SubmitHandler<LoginDto> = async (data) => {
-        try {
-            unwrapResult(await dispatch(loginAsync(data)));
-            unwrapResult(await dispatch(getCurrentUserAsync()));
-            // Login success && user found => navigate to home
-            navigate('/home');
-        } catch {
-            // setErrOpen(true);
-        }
+        unwrapResult(await dispatch(loginAsync(data)));
+        unwrapResult(await dispatch(getCurrentUserAsync()));
+        // Login success && user found => navigate to home
+        const redirect = query.get('redirect');
+        navigate(redirect ?? '/home');
     };
 
     return (
