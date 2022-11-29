@@ -195,9 +195,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                             name="expectedDeliveryDate"
                             control={control}
                             rules={{
-                                validate: {
-                                    dateValidation,
-                                },
+                                validate: dateValidation,
                             }}
                             render={({ field }) => (
                                 <DatePicker
@@ -208,9 +206,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                     }
                                     minDate={moment(watch('dueDate'))}
                                     value={field.value}
-                                    renderInput={(params) => (
+                                    renderInput={(props) => (
                                         <TextField
-                                            {...params}
+                                            {...props}
                                             sx={{ width: '100%' }}
                                             helperText={t(
                                                 'errors.expected_after_due'
