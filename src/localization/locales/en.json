@@ -49,9 +49,8 @@
         "recover_account_failed": "Could not send recovery email",
         "reset_password_failed": "Could not reset password",
         "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
-        "global_reminders_change_failed": "Global reminders change failed"
-        "order_not_found": "The order could not be found"
         "global_reminders_change_failed": "Global reminders change failed",
+        "order_not_found": "The order could not be found",
         "expected_after_due" : "Expected delivery date must be after due date!"
     },
     "actions": {
