@@ -6,16 +6,18 @@ import ReminderSelect from '../reminder-select/ReminderSelect';
 import { useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import styles from './ReminderFormList.module.css';
+import { useAppDispatch } from '../../store/hooks';
+import { changeListRemindersAsync } from '../../store/user/user-slice';
 
 interface ReminderFormProps {
-    initialValues?: ListReminderSettingsDto;
+    initialValues?: ListReminderSettingsDto | undefined;
     listId: number;
-    onSubmit?: SubmitHandler<ListReminderSettingsDto>;
 }
 
 const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
     const { t } = useTranslation();
     const { initialValues } = props;
+    const dispatch = useAppDispatch();
 
     const defaultValues: Partial<ListReminderSettingsDto> = initialValues
         ? {
@@ -46,8 +48,8 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
         reset(defaultValues);
     }, [initialValues]);
 
-    const onSubmit: SubmitHandler<ListReminderSettingsDto> = (data) => {
-        props.onSubmit?.(data);
+    const onSubmit: SubmitHandler<ListReminderSettingsDto> = async (data) => {
+        await dispatch(changeListRemindersAsync(data)).unwrap();
     };
 
     return (

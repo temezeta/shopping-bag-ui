@@ -1,13 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { t } from 'i18next';
 import { OfficeDto } from '../../models/office/OfficeDto';
-import { ReminderSettingsDto } from '../../models/user/ReminderDto';
+import {
+    ListReminderSettingsDto,
+    ReminderSettingsDto,
+} from '../../models/user/ReminderDto';
 import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { UserRoleDto } from '../../models/user/UserRoleDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
 import {
     changeGlobalReminders,
+    changeListReminders,
     changePassword,
     getAllUsers,
     getAllRoles,
@@ -54,6 +58,24 @@ export const changeGlobalRemindersAsync = createAsyncThunk(
             return rejectWithValue('Global reminders change failed!');
         }
         await showSuccessSnackBar(t('user.global_reminders_change_successful'));
+        return response;
+    }
+);
+
+export const changeListRemindersAsync = createAsyncThunk(
+    'user/change-list-reminders',
+    async (data: ListReminderSettingsDto, { rejectWithValue, dispatch }) => {
+        const response = await changeListReminders(data.shoppingListId, data);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.list_reminders_change_failed'),
+                })
+            );
+            return rejectWithValue('List reminders change failed!');
+        }
+        await showSuccessSnackBar(t('user.list_reminders_change_successful'));
         return response;
     }
 );
@@ -206,6 +228,9 @@ export const userSlice = createSlice({
                 state.users = action.payload;
             })
             .addCase(changeGlobalRemindersAsync.fulfilled, (state, action) => {
+                state.currentUser = action.payload;
+            })
+            .addCase(changeListRemindersAsync.fulfilled, (state, action) => {
                 state.currentUser = action.payload;
             })
             .addCase(getAllRolesAsync.fulfilled, (state, action) => {

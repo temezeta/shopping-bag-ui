@@ -23,6 +23,7 @@
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent.",
         "global_reminders_change_successful": "Global reminders changed",
+        "list_reminders_change_successful": "List reminders changed",
         "account_disabled_admin": "Account disabled",
         "account_disabled": "Your account has been disabled",
         "disable_account": "Disable account",
@@ -33,7 +34,8 @@
         "enable_notifications": "Enable notifications",
         "day": "day",
         "days": "days",
-        "edit_notifications": "Edit notifications"
+        "edit_notifications": "Edit notifications",
+        "notifications_off_tooltip": "Enable notifications in Account Settings to activate list reminders"
     },
     "errors": {
         "required": "This value is required!",
@@ -53,6 +55,7 @@
         "reset_password_failed": "Could not reset password",
         "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
         "global_reminders_change_failed": "Global reminders change failed",
+        "list_reminders_change_failed": "List reminders change failed",
         "order_not_found": "The order could not be found",
         "expected_after_due": "Expected delivery date must be after due date!"
     },

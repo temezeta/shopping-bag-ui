@@ -1,5 +1,18 @@
-import { Add, Link, NotificationsNone } from '@mui/icons-material';
-import { Box, Button, IconButton, List, Typography } from '@mui/material';
+import {
+    Add,
+    Link,
+    Notifications,
+    NotificationsNone,
+    NotificationsOff,
+} from '@mui/icons-material';
+import {
+    Box,
+    Button,
+    IconButton,
+    List,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -24,6 +37,7 @@ import { useAppSelector } from '../../store/hooks';
 import moment from 'moment';
 import FormDialog from '../form-dialog/FormDialog';
 import ReminderFormList from '../reminder-form-list/ReminderFormList';
+import { ListReminderSettingsDto } from '../../models/user/ReminderDto';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -35,6 +49,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const user = useAppSelector(selectCurrentUser);
+    const listReminders: ListReminderSettingsDto | undefined =
+        user?.listReminderSettings.find((e) => e.shoppingListId === list.id);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Name,
         sortDescending: true,
@@ -146,15 +162,32 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             className="flex-center"
                         >
                             {moment(list.expectedDeliveryDate) > moment() && (
-                                <IconButton
-                                    aria-label={t(
-                                        'notifications.edit_notifications'
-                                    )}
-                                    onClick={remindersOnClick}
-                                >
-                                    {/* TODO: switch icon if active reminders or reminders off */}
-                                    <NotificationsNone />
-                                </IconButton>
+                                {user?.reminderSettings.allRemindersDisabled ? (
+                                    <Tooltip
+                                        title={t(
+                                            'notifications.notifications_off_tooltip'
+                                        )}
+                                    >
+                                        <NotificationsOff />
+                                    </Tooltip>
+                                ) : (
+                                    <IconButton
+                                        aria-label={t(
+                                            'notifications.edit_notifications'
+                                        )}
+                                        onClick={remindersOnClick}
+                                    >
+                                        {listReminders &&
+                                        (listReminders.reminderDaysBeforeDueDate
+                                            .length > 0 ||
+                                            listReminders
+                                                .reminderDaysBeforeExpectedDate
+                                                .length > 0) ? (
+                                            <Notifications />
+                                        ) : (
+                                            <NotificationsNone />
+                                        )}
+                                    </IconButton>
                             )}
                         </Grid2>
                     </Grid2>
@@ -216,7 +249,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                 onCancel={() => setRemindersOpen(false)}
                 title={t('notifications.notifications')}
             >
-                <ReminderFormList listId={props.list.id} />
+                <ReminderFormList
+                    listId={props.list.id}
+                    initialValues={listReminders}
+                />
             </FormDialog>
         </div>
     );

@@ -1,4 +1,7 @@
-import { ReminderSettingsDto } from '../../models/user/ReminderDto';
+import {
+    ListReminderSettingsDto,
+    ReminderSettingsDto,
+} from '../../models/user/ReminderDto';
 import {
     UserDto,
     ChangePasswordDto,
@@ -30,6 +33,20 @@ export const changeGlobalReminders = async (
     data: ReminderSettingsDto
 ): Promise<UserDto | null> => {
     const response = await ApiClient.post('reminder', data);
+    if (!response.ok) {
+        return null;
+    }
+    return (await response.json()) as UserDto;
+};
+
+export const changeListReminders = async (
+    listId: number,
+    data: ListReminderSettingsDto
+): Promise<UserDto | null> => {
+    const response = await ApiClient.post(
+        `reminder/list?listId=${listId}`,
+        data
+    );
     if (!response.ok) {
         return null;
     }
