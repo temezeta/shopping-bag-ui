@@ -8,20 +8,14 @@ import Search from '../../components/search/Search';
 import UserItem from '../../components/user-item/UserItem';
 import { UserDto } from '../../models/user/UserDto';
 import { useAppSelector } from '../../store/hooks';
-import {
-    selectAllUsers,
-    selectCurrentOffice,
-} from '../../store/user/user-slice';
+import { selectAllUsers } from '../../store/user/user-slice';
 import { sortByUserRoleAndName } from '../../utility/sort-helper';
 import styles from './UserManagement.module.css';
 
 const UserManagement = (): JSX.Element => {
     const { t } = useTranslation();
     const users = useAppSelector(selectAllUsers);
-    const currentOffice = useAppSelector(selectCurrentOffice);
-    const [selectedOffices, setSelectedOffices] = useState<number[]>(
-        currentOffice ? [currentOffice.id] : []
-    );
+    const [selectedOffices, setSelectedOffices] = useState<number[]>([]);
     const [searchString, setSearchString] = useState<string>('');
     const [sortedUsers, setSortedUsers] = useState<UserDto[]>([]);
 
