@@ -49,7 +49,7 @@ const UserManagement = (): JSX.Element => {
     }, [searchString, selectedOffices, users]);
 
     return (
-        <MainLayout>
+        <MainLayout width="60em">
             <Grid2 container xs={12} spacing={1}>
                 <Grid2 xs={12} className="flex-center">
                     <Typography variant="h1">

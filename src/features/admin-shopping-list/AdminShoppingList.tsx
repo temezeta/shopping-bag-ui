@@ -67,7 +67,7 @@ const AdminShoppingList = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout>
+            <MainLayout width="65em">
                 {shoppingList ? (
                     <Grid2 container spacing={2}>
                         <Grid2>
