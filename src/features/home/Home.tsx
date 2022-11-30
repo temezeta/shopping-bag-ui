@@ -50,7 +50,7 @@ const Home = (): JSX.Element => {
     };
 
     return (
-        <MainLayout>
+        <MainLayout width="65em">
             <Grid2 container spacing={1}>
                 <Grid2
                     xs={12}

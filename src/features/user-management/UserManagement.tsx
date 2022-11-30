@@ -8,29 +8,23 @@ import Search from '../../components/search/Search';
 import UserItem from '../../components/user-item/UserItem';
 import { UserDto } from '../../models/user/UserDto';
 import { useAppSelector } from '../../store/hooks';
-import {
-    selectAllUsers,
-    selectCurrentOffice,
-} from '../../store/user/user-slice';
+import { selectAllUsers } from '../../store/user/user-slice';
 import { sortByUserRoleAndName } from '../../utility/sort-helper';
 import styles from './UserManagement.module.css';
 
 const UserManagement = (): JSX.Element => {
     const { t } = useTranslation();
-    const currentOffice = useAppSelector(selectCurrentOffice);
     const users = useAppSelector(selectAllUsers);
-    const [selectedOffice, setSelectedOffice] = useState<number | undefined>(
-        currentOffice?.id
-    );
+    const [selectedOffices, setSelectedOffices] = useState<number[]>([]);
     const [searchString, setSearchString] = useState<string>('');
     const [sortedUsers, setSortedUsers] = useState<UserDto[]>([]);
 
     // Do user filtering
     useEffect(() => {
         let filteredUsers = [...users];
-        if (selectedOffice) {
-            filteredUsers = filteredUsers.filter(
-                (it) => it.homeOffice.id === selectedOffice
+        if (selectedOffices.length) {
+            filteredUsers = filteredUsers.filter((it) =>
+                selectedOffices.includes(it.homeOffice.id)
             );
         }
 
@@ -46,10 +40,10 @@ const UserManagement = (): JSX.Element => {
         }
 
         setSortedUsers(sortByUserRoleAndName(filteredUsers));
-    }, [searchString, selectedOffice, users]);
+    }, [searchString, selectedOffices, users]);
 
     return (
-        <MainLayout>
+        <MainLayout width="60em">
             <Grid2 container xs={12} spacing={1}>
                 <Grid2 xs={12} className="flex-center">
                     <Typography variant="h1">
@@ -65,10 +59,11 @@ const UserManagement = (): JSX.Element => {
                 </Grid2>
                 <Grid2 xs={12} md={6} className={styles.searchFilter}>
                     <OfficeSelect
-                        value={selectedOffice}
+                        value={selectedOffices}
                         onChange={(e) =>
-                            setSelectedOffice(e.target.value as number)
+                            setSelectedOffices(e.target.value as number[])
                         }
+                        multiple
                         fullWidth
                     />
                 </Grid2>

@@ -13,8 +13,8 @@ const PastOrders = (): JSX.Element => {
     const inactiveShoppingLists = useAppSelector(selectInactiveLists);
 
     return (
-        <MainLayout>
-            <Grid2 container spacing={1}>
+        <MainLayout width="60em">
+            <Grid2 container spacing={1} className="full-width">
                 <Grid2 xs={12} className="flex-center">
                     <Typography
                         variant="h1"
