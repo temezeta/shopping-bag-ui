@@ -23,6 +23,7 @@
         "recovery_email_successful": "Recovery token sent to email.",
         "verification_email_successful": "Verification email resent.",
         "global_reminders_change_successful": "Global reminders changed",
+        "account_disabled_admin": "Account disabled",
         "account_disabled": "Your account has been disabled",
         "disable_account": "Disable account",
         "user_management" : "User Management"

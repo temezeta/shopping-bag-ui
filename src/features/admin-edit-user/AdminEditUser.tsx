@@ -9,7 +9,11 @@ import MainLayout from '../../components/main-layout/MainLayout';
 import UserForm from '../../components/user-form/UserForm';
 import { ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { modifyUserAsync, selectUserById } from '../../store/user/user-slice';
+import {
+    modifyUserAsync,
+    disableAccountAdminAsync,
+    selectUserById,
+} from '../../store/user/user-slice';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 
@@ -30,7 +34,10 @@ const AdminEditUser = (): JSX.Element => {
     };
 
     const onAdminDeleteConfirm = async (): Promise<void> => {
-        /** TODO: Disable user account functionality for admin */
+        if (user !== undefined) {
+            await dispatch(disableAccountAdminAsync(user.id)).unwrap();
+            navigate('/management/users');
+        }
     };
     const [isDeleteOpen, setDeleteOpen] = useState<boolean>(false);
 

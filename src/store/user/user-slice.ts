@@ -78,6 +78,24 @@ export const removeUserAsync = createAsyncThunk(
     }
 );
 
+export const disableAccountAdminAsync = createAsyncThunk(
+    'user/disable-user-admin',
+    async (userId: number, { rejectWithValue, dispatch }) => {
+        const response = await removeUser(userId);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.disable_account_failed'),
+                })
+            );
+            return rejectWithValue('Disabling account failed!');
+        }
+        await showSuccessSnackBar(t('user.account_disabled_admin'));
+        return userId;
+    }
+);
+
 export const getCurrentUserAsync = createAsyncThunk(
     'user/me',
     async (_, { rejectWithValue }) => {
@@ -178,6 +196,11 @@ export const userSlice = createSlice({
                 if (index !== -1) {
                     state.users[index] = action.payload;
                 }
+            })
+            .addCase(disableAccountAdminAsync.fulfilled, (state, action) => {
+                state.users = state.users.filter(
+                    (it) => it.id !== action.payload
+                );
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;
