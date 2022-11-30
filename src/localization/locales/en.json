@@ -91,9 +91,8 @@
         "verify_account": "Verify your account",
         "email_verification": "We have sent a verification link to {{email}}. Follow instructions provided in the email.",
         "confirmation": "Are you sure you wish to continue?",
-        "delete_account": "Deleting your account will remove your information from our database. This cannot be undone.",
-        "type_delete": "To confirm this, type DELETE",
-        "disable_account": "Disable user account?"
+        "disable_account": "Are you sure you want to disable your account? Your account can be recovered later with email.",
+        "disable_account_admin": "Are you sure you want to disable selected account?"
     },
     "list": {
         "due_date": "Due date",

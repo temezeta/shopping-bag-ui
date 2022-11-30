@@ -89,7 +89,7 @@ const AdminEditUser = (): JSX.Element => {
                 onCancel={() => setDeleteOpen(false)}
             >
                 <DialogContentText>
-                    {t('dialogs.confirmation')}
+                    {t('dialogs.disable_account_admin')}
                 </DialogContentText>
             </ConfirmationDialog>
         </>
