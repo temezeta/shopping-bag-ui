@@ -18,10 +18,11 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 interface ShoppingListItemProps {
     item: ItemDto;
+    pastOrder: boolean;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
-    const { item } = props;
+    const { item, pastOrder } = props;
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
     const quantity = item.amountOrdered;
@@ -88,7 +89,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Grid2 xs={8}>
+                <Grid2 xs={6}>
                     <Box>
                         {item.url ? (
                             <a
@@ -123,7 +124,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         {item.usersWhoLiked.length}
                     </Typography>
                 </Grid2>
-                <Grid2>
+                <Grid2 xs={2}>
                     {isAdmin(user) && (
                         <TextField
                             id="outlined-number"
@@ -136,14 +137,16 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         />
                     )}
                 </Grid2>
-                <Grid2>
-                    <Checkbox
-                        icon={<RadioButtonUncheckedOutlinedIcon />}
-                        checkedIcon={<CheckCircleOutlineIcon />}
-                        checked={item.isChecked}
-                        color="info"
-                        onChange={handleItemCheck} // not sure
-                    ></Checkbox>
+                <Grid2 xs={2}>
+                    {isAdmin(user) && !pastOrder && (
+                        <Checkbox
+                            icon={<RadioButtonUncheckedOutlinedIcon />}
+                            checkedIcon={<CheckCircleOutlineIcon />}
+                            checked={item.isChecked}
+                            color="info"
+                            onChange={handleItemCheck} // not sure
+                        ></Checkbox>
+                    )}
                 </Grid2>
                 <Grid2 xs={2} className={'flex-center'}>
                     <ShoppingListItemActions item={item} />

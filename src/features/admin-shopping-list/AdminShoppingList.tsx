@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 // import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useHistory } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import {
     clearEditShoppingList,
@@ -26,6 +26,9 @@ import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import { isAdmin } from '../../utility/user-helper';
 
 const AdminShoppingList = (): JSX.Element => {
+    const history = useHistory();
+    const pastUrl = history.goBack().toString();
+    const ispastOrder = pastUrl === 'https://localhost:3000/past-orders';
     const { t } = useTranslation();
     const { listId } = useParams();
     const id = Number(listId);
@@ -76,7 +79,11 @@ const AdminShoppingList = (): JSX.Element => {
                             </IconButton>
                         </Grid2>
                         <Grid2 xs={12}>
-                            <ShoppingListTab value={id} list={shoppingList} />
+                            <ShoppingListTab
+                                value={id}
+                                list={shoppingList}
+                                pastOrder={ispastOrder}
+                            />
                             {isAdmin(user) && (
                                 <Grid2 justifyContent={'center'}>
                                     {!shoppingList.ordered && (

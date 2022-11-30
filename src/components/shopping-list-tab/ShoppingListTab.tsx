@@ -38,12 +38,13 @@ import moment from 'moment';
 interface ShoppingListTabProps {
     list: ShoppingListDto;
     value: number;
+    pastOrder: boolean;
 }
 
 const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { value, list } = props;
+    const { value, list, pastOrder } = props;
     const user = useAppSelector(selectCurrentUser);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Name,
@@ -181,7 +182,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.likes')}
                                 ></SortButton>
                             </Grid2>
-                            {isAdmin(user) && (
+                            {isAdmin(user) && !pastOrder && (
                                 <>
                                     <Grid2>
                                         <Typography
@@ -205,7 +206,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Box>
                     <List className="full-width">
                         {sortedItems.map((it, i) => (
-                            <ShoppingListItem item={it} key={i} />
+                            <ShoppingListItem
+                                item={it}
+                                key={i}
+                                pastOrder={pastOrder}
+                            />
                         ))}
                     </List>
                 </div>
