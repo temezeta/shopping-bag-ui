@@ -10,11 +10,18 @@ const SessionGuard = (): JSX.Element => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const getRedirect = (): string | undefined => {
+        const from = location.state?.from as Location | undefined;
+        if (from) {
+            return from.pathname + from.search;
+        }
+        return undefined;
+    };
+
     useEffect(() => {
         const restoreUserSession = async (): Promise<void> => {
             const expiredToken = localStorage.getItem('authToken');
-            const from = location.state?.from as Location | undefined;
-            const previousPath = (from?.pathname ?? '') + (from?.search ?? '');
+            const redirect = getRedirect();
             let isSuccess = false;
             if (expiredToken) {
                 try {
@@ -23,14 +30,12 @@ const SessionGuard = (): JSX.Element => {
                     );
                     unwrapResult(await dispatch(getCurrentUserAsync()));
                     isSuccess = true;
-                    navigate(previousPath ?? '/home');
+                    navigate(redirect ?? '/home');
                 } catch {}
             }
 
             if (!isSuccess) {
-                navigate(
-                    previousPath ? `/login?redirect=${previousPath}` : `/login`
-                );
+                navigate(redirect ? `/login?redirect=${redirect}` : `/login`);
             }
         };
 
