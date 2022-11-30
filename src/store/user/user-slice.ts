@@ -13,7 +13,7 @@ import {
     getAllRoles,
     getCurrentUser,
     modifyUser,
-    removeUser,
+    disableUser,
 } from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
@@ -58,10 +58,10 @@ export const changeGlobalRemindersAsync = createAsyncThunk(
     }
 );
 
-export const removeUserAsync = createAsyncThunk(
+export const disableUserAsync = createAsyncThunk(
     'user/remove-user',
     async (data: number, { rejectWithValue, dispatch }) => {
-        const response = await removeUser(data);
+        const response = await disableUser(data);
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -81,7 +81,7 @@ export const removeUserAsync = createAsyncThunk(
 export const disableAccountAdminAsync = createAsyncThunk(
     'user/disable-user-admin',
     async (userId: number, { rejectWithValue, dispatch }) => {
-        const response = await removeUser(userId);
+        const response = await disableUser(userId);
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -91,7 +91,7 @@ export const disableAccountAdminAsync = createAsyncThunk(
             );
             return rejectWithValue('Disabling account failed!');
         }
-        await showSuccessSnackBar(t('user.account_disabled_admin'));
+        await showSuccessSnackBar(t('user.account_disabled'));
         return userId;
     }
 );

@@ -14,7 +14,7 @@ import {
     changeGlobalRemindersAsync,
     changePasswordAsync,
     modifyCurrentUserAsync,
-    removeUserAsync,
+    disableUserAsync,
     selectCurrentUser,
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -60,7 +60,7 @@ const AccountSettings = (): JSX.Element => {
 
     const onDeleteConfirm = async (): Promise<void> => {
         if (user !== undefined) {
-            await dispatch(removeUserAsync(user.id)).unwrap();
+            await dispatch(disableUserAsync(user.id)).unwrap();
             navigate('/login');
         }
     };
