@@ -14,7 +14,7 @@ const PastOrders = (): JSX.Element => {
 
     return (
         <MainLayout width="60em">
-            <Grid2 container spacing={1}>
+            <Grid2 container spacing={1} className="full-width">
                 <Grid2 xs={12} className="flex-center">
                     <Typography
                         variant="h1"
