@@ -266,6 +266,15 @@ export const shoppingListSlice = createSlice({
                     state.shoppingLists[
                         action.payload.shoppingListId
                     ].items.filter((it) => it.id !== action.payload.id);
+
+                if (
+                    state.editShoppingList?.id === action.payload.shoppingListId
+                ) {
+                    state.editShoppingList.items =
+                        state.editShoppingList.items.filter(
+                            (it) => it.id !== action.payload.id
+                        );
+                }
             })
             .addCase(setLikeStatusAsync.fulfilled, (state, action) => {
                 if (!state.shoppingLists[action.payload.shoppingListId]) return;
@@ -274,10 +283,22 @@ export const shoppingListSlice = createSlice({
                     (it) => it.id,
                     action.payload
                 );
+                if (
+                    state.editShoppingList?.id === action.payload.shoppingListId
+                ) {
+                    updateOrAdd(
+                        state.editShoppingList.items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
             })
             .addCase(orderShoppingListAsync.fulfilled, (state, action) => {
                 if (!state.shoppingLists[action.payload]) return;
                 state.shoppingLists[action.payload].ordered = true;
+                if (state.editShoppingList?.id === action.payload) {
+                    state.editShoppingList.ordered = true;
+                }
             });
     },
 });
