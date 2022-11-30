@@ -96,6 +96,7 @@
     },
     "list": {
         "due_date": "Due date",
+        "ordered_date": "Order date",
         "expected_delivery_date": "Expected delivery date",
         "active_orders": "Active orders",
         "past_orders": "Past orders",
