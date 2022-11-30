@@ -91,7 +91,7 @@ export const disableAccountAdminAsync = createAsyncThunk(
             );
             return rejectWithValue('Disabling account failed!');
         }
-        await showSuccessSnackBar(t('user.account_disabled'));
+        await showSuccessSnackBar(t('user.account_disabled_admin'));
         return userId;
     }
 );
