@@ -245,27 +245,52 @@ export const shoppingListSlice = createSlice({
                 }
             })
             .addCase(addItemAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.shoppingListId]) return;
-                updateOrAdd(
-                    state.shoppingLists[action.payload.shoppingListId].items,
-                    (it) => it.id,
-                    action.payload
-                );
+                if (state.shoppingLists[action.payload.shoppingListId]) {
+                    updateOrAdd(
+                        state.shoppingLists[action.payload.shoppingListId]
+                            .items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
+
+                if (
+                    state.editShoppingList?.id === action.payload.shoppingListId
+                ) {
+                    updateOrAdd(
+                        state.editShoppingList.items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
             })
             .addCase(modifyItemAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.shoppingListId]) return;
-                updateOrAdd(
-                    state.shoppingLists[action.payload.shoppingListId].items,
-                    (it) => it.id,
-                    action.payload
-                );
+                if (state.shoppingLists[action.payload.shoppingListId]) {
+                    updateOrAdd(
+                        state.shoppingLists[action.payload.shoppingListId]
+                            .items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
+
+                if (
+                    state.editShoppingList?.id === action.payload.shoppingListId
+                ) {
+                    updateOrAdd(
+                        state.editShoppingList.items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
             })
             .addCase(removeItemAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.shoppingListId]) return;
-                state.shoppingLists[action.payload.shoppingListId].items =
-                    state.shoppingLists[
-                        action.payload.shoppingListId
-                    ].items.filter((it) => it.id !== action.payload.id);
+                if (state.shoppingLists[action.payload.shoppingListId]) {
+                    state.shoppingLists[action.payload.shoppingListId].items =
+                        state.shoppingLists[
+                            action.payload.shoppingListId
+                        ].items.filter((it) => it.id !== action.payload.id);
+                }
 
                 if (
                     state.editShoppingList?.id === action.payload.shoppingListId
@@ -277,12 +302,15 @@ export const shoppingListSlice = createSlice({
                 }
             })
             .addCase(setLikeStatusAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.shoppingListId]) return;
-                updateOrAdd(
-                    state.shoppingLists[action.payload.shoppingListId].items,
-                    (it) => it.id,
-                    action.payload
-                );
+                if (state.shoppingLists[action.payload.shoppingListId]) {
+                    updateOrAdd(
+                        state.shoppingLists[action.payload.shoppingListId]
+                            .items,
+                        (it) => it.id,
+                        action.payload
+                    );
+                }
+
                 if (
                     state.editShoppingList?.id === action.payload.shoppingListId
                 ) {
@@ -294,8 +322,10 @@ export const shoppingListSlice = createSlice({
                 }
             })
             .addCase(orderShoppingListAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload]) return;
-                state.shoppingLists[action.payload].ordered = true;
+                if (state.shoppingLists[action.payload]) {
+                    state.shoppingLists[action.payload].ordered = true;
+                }
+
                 if (state.editShoppingList?.id === action.payload) {
                     state.editShoppingList.ordered = true;
                 }
