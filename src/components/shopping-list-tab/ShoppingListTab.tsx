@@ -1,18 +1,5 @@
-import {
-    Add,
-    Link,
-    Notifications,
-    NotificationsNone,
-    NotificationsOff,
-} from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    IconButton,
-    List,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Add, Link } from '@mui/icons-material';
+import { Box, Button, IconButton, List, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -35,9 +22,7 @@ import { isAdmin } from '../../utility/user-helper';
 import { selectCurrentUser } from '../../store/user/user-slice';
 import { useAppSelector } from '../../store/hooks';
 import moment from 'moment';
-import FormDialog from '../form-dialog/FormDialog';
-import ReminderFormList from '../reminder-form-list/ReminderFormList';
-import { ListReminderSettingsDto } from '../../models/user/ReminderDto';
+import RemindersIconButton from '../reminders-icon-button/RemindersIconButton';
 
 interface ShoppingListTabProps {
     list: ShoppingListDto;
@@ -49,8 +34,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const navigate = useNavigate();
     const { value, list } = props;
     const user = useAppSelector(selectCurrentUser);
-    const listReminders: ListReminderSettingsDto | undefined =
-        user?.listReminderSettings.find((e) => e.shoppingListId === list.id);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Name,
         sortDescending: true,
@@ -65,11 +48,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
             `${protocol}//${host}/order/${list.id}`
         );
         await showSuccessSnackBar(t('list.list-copy-successful'));
-    };
-    const [isRemindersOpen, setRemindersOpen] = useState<boolean>(false);
-
-    const remindersOnClick = (): void => {
-        setRemindersOpen(true);
     };
 
     useEffect(() => {
@@ -161,30 +139,9 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             order={{ xs: 3, md: 4 }}
                             className="flex-center"
                         >
-                            {moment(list.expectedDeliveryDate) > moment() &&
-                                (user?.reminderSettings.allRemindersDisabled ? (
-                                    <Tooltip
-                                        title={t(
-                                            'notifications.notifications_off_tooltip'
-                                        )}
-                                    >
-                                        <NotificationsOff />
-                                    </Tooltip>
-                                ) : (
-                                    <IconButton
-                                        aria-label={t(
-                                            'notifications.edit_notifications'
-                                        )}
-                                        onClick={remindersOnClick}
-                                    >
-                                        {listReminders?.dueDateRemindersDisabled &&
-                                        listReminders.expectedRemindersDisabled ? (
-                                            <NotificationsNone />
-                                        ) : (
-                                            <Notifications />
-                                        )}
-                                    </IconButton>
-                                ))}
+                            {moment(list.expectedDeliveryDate) > moment() && (
+                                <RemindersIconButton listId={props.list.id} />
+                            )}
                         </Grid2>
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
@@ -240,16 +197,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </List>
                 </div>
             )}
-            <FormDialog
-                open={isRemindersOpen}
-                onCancel={() => setRemindersOpen(false)}
-                title={t('notifications.notifications')}
-            >
-                <ReminderFormList
-                    listId={props.list.id}
-                    initialValues={listReminders}
-                />
-            </FormDialog>
         </div>
     );
 };

@@ -1,17 +1,6 @@
 import Grid2 from '@mui/material/Unstable_Grid2';
-import {
-    Box,
-    Checkbox,
-    IconButton,
-    Link,
-    ListItem,
-    Typography,
-} from '@mui/material';
-import {
-    Edit,
-    NotificationsActive,
-    NotificationsNone,
-} from '@mui/icons-material';
+import { IconButton, Link, ListItem, Typography } from '@mui/material';
+import { Edit } from '@mui/icons-material';
 import styles from './OrderListItem.module.css';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
@@ -21,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../store/hooks';
 import { selectCurrentUser } from '../../store/user/user-slice';
 import { isAdmin } from '../../utility/user-helper';
+import RemindersIconButton from '../reminders-icon-button/RemindersIconButton';
 
 interface OrderListItemProps {
     list: ShoppingListDto;
@@ -45,14 +35,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
                     {moment(list.expectedDeliveryDate, true).isAfter(
                         new Date()
-                    ) && (
-                        <Box>
-                            <Checkbox
-                                icon={<NotificationsNone />}
-                                checkedIcon={<NotificationsActive />}
-                            ></Checkbox>
-                        </Box>
-                    )}
+                    ) && <RemindersIconButton listId={props.list.id} />}
                 </Grid2>
                 <Grid2
                     container
