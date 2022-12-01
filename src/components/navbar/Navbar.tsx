@@ -22,7 +22,7 @@ const Navbar = (): JSX.Element => {
 
     useEffect(() => {
         const path = location.pathname;
-        if (path.startsWith('/home') || path.startsWith('/orders')) {
+        if (path.startsWith('/home') || path.endsWith('/orders')) {
             setPage(0);
         } else if (path.startsWith('/past-orders')) {
             setPage(1);
