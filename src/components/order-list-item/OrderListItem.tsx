@@ -18,6 +18,9 @@ import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import { formatDate } from '../../utility/date-helper';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../store/hooks';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { isAdmin } from '../../utility/user-helper';
 
 interface OrderListItemProps {
     list: ShoppingListDto;
@@ -27,6 +30,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
     const { t } = useTranslation();
     const { list } = props;
     const navigate = useNavigate();
+    const user = useAppSelector(selectCurrentUser);
 
     const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
 
@@ -97,7 +101,7 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                     className={styles.utilityButtons}
                     columnSpacing={7}
                 >
-                    {!list.ordered && (
+                    {isAdmin(user) && (
                         <IconButton
                             onClick={() => navigate(`/orders/${list.id}/edit`)}
                         >
