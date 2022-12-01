@@ -1,6 +1,6 @@
 import { Link, Tab, Tabs, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,12 +10,11 @@ import TabPanel, { a11yProps } from '../../components/tab-panel/TabPanel';
 import UserForm from '../../components/user-form/UserForm';
 import { ChangePasswordDto, ModifyUserDto } from '../../models/user/UserDto';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import DeleteAccountDialog from '../../components/delete-account-popup/DeleteAccountDialog';
 import {
     changeGlobalRemindersAsync,
     changePasswordAsync,
     modifyCurrentUserAsync,
-    removeUserAsync,
+    disableUserAsync,
     selectCurrentUser,
 } from '../../store/user/user-slice';
 import { unwrapResult } from '@reduxjs/toolkit';
@@ -23,6 +22,7 @@ import { isAdmin } from '../../utility/user-helper';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
 import ReminderFormGlobal from '../../components/reminder-form-global/ReminderFormGlobal';
 import { ReminderSettingsDto } from '../../models/user/ReminderDto';
+import ConfirmationDialog from '../../components/confirmation-popup/ConfirmationDialog';
 
 const AccountSettings = (): JSX.Element => {
     const { t } = useTranslation();
@@ -60,7 +60,7 @@ const AccountSettings = (): JSX.Element => {
 
     const onDeleteConfirm = async (): Promise<void> => {
         if (user !== undefined) {
-            await dispatch(removeUserAsync(user.id)).unwrap();
+            await dispatch(disableUserAsync(user.id)).unwrap();
             navigate('/login');
         }
     };
@@ -137,16 +137,16 @@ const AccountSettings = (): JSX.Element => {
                     </TabPanel>
                 </Grid2>
             </MainLayout>
-            <DeleteAccountDialog
+            <ConfirmationDialog
                 title={t('user.disable_account')}
                 onConfirm={onDeleteConfirm}
                 open={isDeleteOpen}
                 onCancel={() => setDeleteOpen(false)}
             >
                 <DialogContentText>
-                    {t('dialogs.delete_account')}
+                    {t('dialogs.disable_account')}
                 </DialogContentText>
-            </DeleteAccountDialog>
+            </ConfirmationDialog>
         </>
     );
 };

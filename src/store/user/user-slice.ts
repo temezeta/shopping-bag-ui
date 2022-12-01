@@ -13,7 +13,7 @@ import {
     getAllRoles,
     getCurrentUser,
     modifyUser,
-    removeUser,
+    disableUser,
 } from './user-actions';
 import { ModifyUserPayload, UserState } from './user-types';
 
@@ -58,10 +58,10 @@ export const changeGlobalRemindersAsync = createAsyncThunk(
     }
 );
 
-export const removeUserAsync = createAsyncThunk(
+export const disableUserAsync = createAsyncThunk(
     'user/remove-user',
     async (data: number, { rejectWithValue, dispatch }) => {
-        const response = await removeUser(data);
+        const response = await disableUser(data);
         if (!response) {
             dispatch(
                 setSnackbar({
@@ -75,6 +75,24 @@ export const removeUserAsync = createAsyncThunk(
         dispatch(RESET_ALL());
         await showSuccessSnackBar(t('user.account_disabled'));
         return response;
+    }
+);
+
+export const disableAccountAdminAsync = createAsyncThunk(
+    'user/disable-user-admin',
+    async (userId: number, { rejectWithValue, dispatch }) => {
+        const response = await disableUser(userId);
+        if (!response) {
+            dispatch(
+                setSnackbar({
+                    type: 'error',
+                    message: t('errors.disable_account_failed'),
+                })
+            );
+            return rejectWithValue('Disabling account failed!');
+        }
+        await showSuccessSnackBar(t('user.account_disabled_admin'));
+        return userId;
     }
 );
 
@@ -178,6 +196,11 @@ export const userSlice = createSlice({
                 if (index !== -1) {
                     state.users[index] = action.payload;
                 }
+            })
+            .addCase(disableAccountAdminAsync.fulfilled, (state, action) => {
+                state.users = state.users.filter(
+                    (it) => it.id !== action.payload
+                );
             })
             .addCase(getAllUsersAsync.fulfilled, (state, action) => {
                 state.users = action.payload;
