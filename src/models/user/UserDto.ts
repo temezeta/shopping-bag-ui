@@ -1,5 +1,5 @@
 import { OfficeDto } from '../office/OfficeDto';
-import { ReminderSettingsDto } from './ReminderDto';
+import { ListReminderSettingsDto, ReminderSettingsDto } from './ReminderDto';
 import { UserRoleDto } from './UserRoleDto';
 
 export interface UserDto {
@@ -10,6 +10,7 @@ export interface UserDto {
     userRoles: UserRoleDto[];
     homeOffice: OfficeDto;
     reminderSettings: ReminderSettingsDto;
+    listReminderSettings: ListReminderSettingsDto[];
 }
 
 export interface RedactedUserDto {
