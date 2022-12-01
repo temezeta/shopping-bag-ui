@@ -1,4 +1,11 @@
-import { Box, Checkbox, ListItem, TextField, Typography } from '@mui/material';
+import {
+    Box,
+    Checkbox,
+    ListItem,
+    TextField,
+    Tooltip,
+    Typography,
+} from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
@@ -14,6 +21,7 @@ import { selectCurrentUser } from '../../store/user/user-slice';
 import { hasUserLikedItem, isAdmin } from '../../utility/user-helper';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useTranslation } from 'react-i18next';
 
 interface ShoppingListItemProps {
     item: ItemDto;
@@ -22,6 +30,7 @@ interface ShoppingListItemProps {
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const { item, pastOrder } = props;
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
     const [amount, setAmount] = useState<string | number>(item.amountOrdered);
@@ -95,6 +104,22 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
         setAmount(item.amountOrdered);
     }, [item]);
 
+    const getLikeAmount = (): JSX.Element => {
+        return isAdmin(user) ? (
+            <Tooltip
+                title={`${t('item.item_creator')}: ${
+                    item.itemAdder.firstName
+                } ${item.itemAdder.lastName}`}
+            >
+                <Typography variant="body1">
+                    {item.usersWhoLiked.length}
+                </Typography>
+            </Tooltip>
+        ) : (
+            <Typography variant="body1">{item.usersWhoLiked.length}</Typography>
+        );
+    };
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -146,9 +171,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             onChange={handleItemLike}
                         ></Checkbox>
                     )}
-                    <Typography variant="body1">
-                        {item.usersWhoLiked.length}
-                    </Typography>
+                    {getLikeAmount()}
                 </Grid2>
                 <Grid2 xs={3} md={2} className="flex-center">
                     {isAdmin(user) && (
