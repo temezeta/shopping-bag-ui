@@ -26,7 +26,7 @@
         "account_disabled_admin": "Account disabled",
         "account_disabled": "Your account has been disabled",
         "disable_account": "Disable account",
-        "user_management" : "User Management"
+        "user_management": "User Management"
     },
     "notifications": {
         "notifications": "Notifications",
@@ -53,7 +53,7 @@
         "resend_verification_failed": "Could not resend verification email.\nAccount might already be verified.",
         "global_reminders_change_failed": "Global reminders change failed",
         "order_not_found": "The order could not be found",
-        "expected_after_due" : "Expected delivery date must be after due date!"
+        "expected_after_due": "Expected delivery date must be after due date!"
     },
     "actions": {
         "registration": "Registration",
@@ -109,13 +109,16 @@
         "delete-item": "Delete item",
         "edit-item": "Edit item",
         "list-copy-successful": "List address copied to clipboard",
-        "list-order-successful": "Order marked as completed"
+        "list-order-successful": "Order marked as completed",
+        "quantity": "Quantity",
+        "check": "Check"
     },
     "item": {
         "name": "Item name",
         "shopName": "Store",
         "url": "Link to item",
-        "comment": "Add comment"
+        "comment": "Add comment",
+        "item_creator": "Item created by"
     },
     "management": {
         "management": "Management",

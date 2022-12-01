@@ -1,6 +1,8 @@
 import { AddItemDto } from '../../models/shopping-list/AddItemDto';
+import { CheckedItemDto } from '../../models/shopping-list/CheckedItemDto';
 import { ModifyItemDto } from '../../models/shopping-list/ModifyItemDto';
 import { ModifyShoppingListDto } from '../../models/shopping-list/ModifyShoppingListDto';
+import { OrderedAmountDto } from '../../models/shopping-list/OrderedAmountDto';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 
 export interface ShoppingListMap {
@@ -36,4 +38,14 @@ export interface LikeStatusPayload {
 export interface GetListByIdPayload {
     listId: number;
     isEditing?: boolean;
+}
+
+export interface SetOrderedAmountPayload {
+    data: OrderedAmountDto;
+    listId: number;
+}
+
+export interface CheckStatusPayload {
+    data: CheckedItemDto;
+    listId: number;
 }

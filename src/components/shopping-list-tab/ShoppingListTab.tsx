@@ -30,6 +30,9 @@ import {
     SortOptions,
 } from '../../utility/sort-helper';
 import Markdown from '../markdown/Markdown';
+import { isAdmin } from '../../utility/user-helper';
+import { selectCurrentUser } from '../../store/user/user-slice';
+import { useAppSelector } from '../../store/hooks';
 import moment from 'moment';
 
 interface ShoppingListTabProps {
@@ -41,6 +44,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { value, list } = props;
+    const user = useAppSelector(selectCurrentUser);
     const [sortOptions, setSortOptions] = useState<SortOptions>({
         sortType: SortType.Name,
         sortDescending: true,
@@ -157,7 +161,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
-                            <Grid2 xs={8}>
+                            <Grid2 xs={6} md={2}>
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
@@ -166,7 +170,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 ></SortButton>
                             </Grid2>
                             <Grid2
-                                xs={2}
+                                xs={0}
+                                md={2}
+                                className="flex-center"
+                                display={{ xs: 'none', md: 'flex' }}
+                            >
+                                <Typography>{t('list.store')}</Typography>
+                            </Grid2>
+                            <Grid2
+                                xs={3}
+                                md={2}
                                 className={'flex-center'}
                                 paddingLeft={4}
                             >
@@ -177,11 +190,24 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.likes')}
                                 ></SortButton>
                             </Grid2>
+                            <Grid2 xs={3} md={2} className="flex-center">
+                                {(isAdmin(user) || list.ordered) && (
+                                    <Typography>
+                                        {t('list.quantity')}
+                                    </Typography>
+                                )}
+                            </Grid2>
+                            <Grid2 xs={0} md={2}></Grid2>
+                            <Grid2 xs={0} md={2}></Grid2>
                         </Grid2>
                     </Box>
                     <List className="full-width">
                         {sortedItems.map((it, i) => (
-                            <ShoppingListItem item={it} key={i} />
+                            <ShoppingListItem
+                                item={it}
+                                key={i}
+                                pastOrder={list.ordered}
+                            />
                         ))}
                     </List>
                 </div>

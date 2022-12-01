@@ -11,13 +11,17 @@ import {
     modifyItem,
     setLikeStatus,
     orderShoppingList,
+    setOrderedAmount,
+    setCheckStatus,
 } from './shopping-list-actions';
 import {
     AddItemPayload,
+    CheckStatusPayload,
     GetListByIdPayload,
     LikeStatusPayload,
     ModifyItemPayload,
     ModifyPayload,
+    SetOrderedAmountPayload,
     ShoppingListMap,
     ShoppingListState,
 } from './shopping-list-types';
@@ -139,6 +143,28 @@ export const orderShoppingListAsync = createAsyncThunk(
         const response = await orderShoppingList(data.id);
         if (!response) {
             return rejectWithValue('Ordering the list failed');
+        }
+        return response;
+    }
+);
+
+export const setOrderedAmountAsync = createAsyncThunk(
+    'item/order-amount',
+    async (data: SetOrderedAmountPayload, { rejectWithValue }) => {
+        const response = await setOrderedAmount(data.listId, data.data);
+        if (!response) {
+            return rejectWithValue('An error ocurred setting ordering amount');
+        }
+        return response;
+    }
+);
+
+export const setCheckStatusAsync = createAsyncThunk(
+    'item/mark-checked',
+    async (data: CheckStatusPayload, { rejectWithValue }) => {
+        const response = await setCheckStatus(data.listId, data.data);
+        if (!response) {
+            return rejectWithValue('An error ocurred setting check status');
         }
         return response;
     }
@@ -333,6 +359,24 @@ export const shoppingListSlice = createSlice({
                 if (state.editShoppingList?.id === action.payload) {
                     state.editShoppingList.ordered = true;
                     state.editShoppingList.orderedDate = currentDate;
+                }
+            })
+            .addCase(setOrderedAmountAsync.fulfilled, (state, action) => {
+                if (state.shoppingLists[action.payload.id]) {
+                    state.shoppingLists[action.payload.id] = action.payload;
+                }
+
+                if (state.editShoppingList?.id === action.payload.id) {
+                    state.editShoppingList = action.payload;
+                }
+            })
+            .addCase(setCheckStatusAsync.fulfilled, (state, action) => {
+                if (state.shoppingLists[action.payload.id]) {
+                    state.shoppingLists[action.payload.id] = action.payload;
+                }
+
+                if (state.editShoppingList?.id === action.payload.id) {
+                    state.editShoppingList = action.payload;
                 }
             });
     },

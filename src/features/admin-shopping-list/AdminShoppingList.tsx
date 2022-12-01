@@ -7,7 +7,6 @@ import {
     Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-// import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import {
