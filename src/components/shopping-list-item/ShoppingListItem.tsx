@@ -104,7 +104,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 alignItems="center"
             >
                 {/** First row */}
-                <Grid2 xs={3} md={2}>
+                <Grid2 xs={6} md={2}>
                     <Box>
                         {item.url ? (
                             <a
@@ -117,9 +117,21 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         ) : (
                             <div>{item.name}</div>
                         )}
+                        <Typography
+                            variant="body2"
+                            fontWeight="medium"
+                            display={{ xs: 'block', md: 'none' }}
+                        >
+                            {item.shopName}
+                        </Typography>
                     </Box>
                 </Grid2>
-                <Grid2 xs={3} md={2} className="flex-center">
+                <Grid2
+                    xs={0}
+                    md={2}
+                    className="flex-center"
+                    display={{ xs: 'none', md: 'flex' }}
+                >
                     <Typography variant="body2" fontWeight="medium">
                         {item.shopName}
                     </Typography>
