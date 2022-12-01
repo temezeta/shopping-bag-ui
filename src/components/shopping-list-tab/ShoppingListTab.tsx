@@ -161,7 +161,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
                         <Grid2 container spacing={2} alignItems="center">
-                            <Grid2 xs={7}>
+                            <Grid2 xs={3} md={2}>
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
@@ -169,8 +169,12 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.item')}
                                 ></SortButton>
                             </Grid2>
+                            <Grid2 xs={3} md={2} className="flex-center">
+                                <Typography>{t('list.store')}</Typography>
+                            </Grid2>
                             <Grid2
-                                xs={2}
+                                xs={3}
+                                md={2}
                                 className={'flex-center'}
                                 paddingLeft={4}
                             >
@@ -181,26 +185,15 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     columnName={t('list.likes')}
                                 ></SortButton>
                             </Grid2>
-                            {isAdmin(user) && !list.ordered && (
-                                <>
-                                    <Grid2>
-                                        <Typography
-                                            display="flex"
-                                            justifyContent="center"
-                                        >
-                                            {t('list.quantity')}
-                                        </Typography>
-                                    </Grid2>
-                                    <Grid2>
-                                        <Typography
-                                            display="flex"
-                                            justifyContent="center"
-                                        >
-                                            {t('list.check')}
-                                        </Typography>
-                                    </Grid2>
-                                </>
-                            )}
+                            <Grid2 xs={3} md={2} className="flex-center">
+                                {(isAdmin(user) || list.ordered) && (
+                                    <Typography>
+                                        {t('list.quantity')}
+                                    </Typography>
+                                )}
+                            </Grid2>
+                            <Grid2 xs={0} md={2}></Grid2>
+                            <Grid2 xs={0} md={2}></Grid2>
                         </Grid2>
                     </Box>
                     <List className="full-width">

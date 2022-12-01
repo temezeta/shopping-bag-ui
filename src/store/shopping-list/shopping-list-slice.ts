@@ -357,12 +357,22 @@ export const shoppingListSlice = createSlice({
                 }
             })
             .addCase(setOrderedAmountAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.id]) return;
-                state.shoppingLists[action.payload.id] = action.payload;
+                if (state.shoppingLists[action.payload.id]) {
+                    state.shoppingLists[action.payload.id] = action.payload;
+                }
+
+                if (state.editShoppingList?.id === action.payload.id) {
+                    state.editShoppingList = action.payload;
+                }
             })
             .addCase(setCheckStatusAsync.fulfilled, (state, action) => {
-                if (!state.shoppingLists[action.payload.id]) return;
-                state.shoppingLists[action.payload.id] = action.payload;
+                if (state.shoppingLists[action.payload.id]) {
+                    state.shoppingLists[action.payload.id] = action.payload;
+                }
+
+                if (state.editShoppingList?.id === action.payload.id) {
+                    state.editShoppingList = action.payload;
+                }
             });
     },
 });

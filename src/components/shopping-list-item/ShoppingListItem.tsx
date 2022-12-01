@@ -2,9 +2,8 @@ import { Box, Checkbox, ListItem, TextField, Typography } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import styles from './ShoppingListItem.module.css';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
     setCheckStatusAsync,
@@ -25,8 +24,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
     const { item, pastOrder } = props;
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
-    const quantity = item.amountOrdered;
-    const listID = item.shoppingListId;
+    const [amount, setAmount] = useState<string | number>(item.amountOrdered);
 
     const handleItemLike = async (
         event: ChangeEvent<HTMLInputElement>,
@@ -42,8 +40,19 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
             event.target.disabled = false;
         }
     };
+
+    const handleInputChange = (
+        e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ): void => {
+        if (e.target.value === '') {
+            setAmount('');
+        } else {
+            setAmount(Number(e.target.value));
+        }
+    };
+
     const handleQuantityChange = async (event: any): Promise<void> => {
-        const value = event.target.value;
+        const value = Number(event.target.value);
         if (value >= 0) {
             try {
                 await dispatch(
@@ -52,14 +61,15 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             itemId: item.id,
                             amountOrdered: Math.round(value),
                         },
-                        listId: listID,
+                        listId: item.shoppingListId,
                     })
-                );
-            } finally {
-                console.log(event);
-            }
+                ).unwrap();
+            } catch {}
+        } else {
+            setAmount(0);
         }
     };
+
     const handleItemCheck = async (
         event: ChangeEvent<HTMLInputElement>,
         checked: boolean
@@ -73,13 +83,17 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         itemId: item.id,
                         isChecked: checked,
                     },
-                    listId: listID,
+                    listId: item.shoppingListId,
                 })
-            );
+            ).unwrap();
         } finally {
             event.target.disabled = false;
         }
     };
+
+    useEffect(() => {
+        setAmount(item.amountOrdered);
+    }, [item]);
 
     return (
         <ListItem divider={true}>
@@ -89,7 +103,8 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                 className={'full-width'}
                 alignItems="center"
             >
-                <Grid2 xs={6}>
+                {/** First row */}
+                <Grid2 xs={3} md={2}>
                     <Box>
                         {item.url ? (
                             <a
@@ -102,64 +117,95 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         ) : (
                             <div>{item.name}</div>
                         )}
-                        <Typography variant="body2" fontWeight="medium">
-                            {item.shopName}
-                        </Typography>
-                        <Box display={{ xs: 'none', sm: 'inline' }}>
-                            <Typography variant="body2">
-                                {item.comment}
-                            </Typography>
-                        </Box>
                     </Box>
                 </Grid2>
-                <Grid2 xs={2} className={'flex-center'}>
-                    <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
-                        checked={hasUserLikedItem(item, user)}
-                        color="info"
-                        onChange={handleItemLike}
-                    ></Checkbox>
+                <Grid2 xs={3} md={2} className="flex-center">
+                    <Typography variant="body2" fontWeight="medium">
+                        {item.shopName}
+                    </Typography>
+                </Grid2>
+                <Grid2 xs={3} md={2} className="flex-center">
+                    {!pastOrder && (
+                        <Checkbox
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite />}
+                            checked={hasUserLikedItem(item, user)}
+                            color="info"
+                            onChange={handleItemLike}
+                        ></Checkbox>
+                    )}
                     <Typography variant="body1">
                         {item.usersWhoLiked.length}
                     </Typography>
                 </Grid2>
-                <Grid2 xs={2}>
+                <Grid2 xs={3} md={2} className="flex-center">
                     {isAdmin(user) && (
                         <TextField
                             id="outlined-number"
                             type="number"
-                            defaultValue={quantity}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            onBlur={handleQuantityChange} // not sure
+                            value={amount}
+                            onChange={handleInputChange}
+                            onBlur={handleQuantityChange}
                         />
                     )}
+                    {!isAdmin(user) && pastOrder && (
+                        <Typography variant="body2">
+                            {item.amountOrdered}
+                        </Typography>
+                    )}
                 </Grid2>
-                <Grid2 xs={2}>
+                <Grid2
+                    xs={0}
+                    md={2}
+                    display={{ xs: 'none', md: 'flex' }}
+                    className="flex-center"
+                >
                     {isAdmin(user) && !pastOrder && (
                         <Checkbox
                             icon={<RadioButtonUncheckedOutlinedIcon />}
                             checkedIcon={<CheckCircleOutlineIcon />}
                             checked={item.isChecked}
                             color="info"
-                            onChange={handleItemCheck} // not sure
+                            onChange={handleItemCheck}
                         ></Checkbox>
                     )}
                 </Grid2>
-                <Grid2 xs={2} className={'flex-center'}>
+                <Grid2
+                    xs={0}
+                    md={2}
+                    display={{ xs: 'none', md: 'flex' }}
+                    className={'flex-center'}
+                >
                     <ShoppingListItemActions item={item} />
                 </Grid2>
-                <Box
-                    component={Grid2}
-                    xs={12}
-                    sm={0}
-                    display={{ xs: 'inline', sm: 'none' }}
-                    className={styles.itemCommentPhone}
-                >
+                {/** Second row */}
+                <Grid2 xs={12}>
                     <Typography variant="body2">{item.comment}</Typography>
-                </Box>
+                </Grid2>
+                {/** Third row */}
+                <Grid2 xs></Grid2>
+                <Grid2
+                    xs={2}
+                    display={{ xs: 'flex', md: 'none' }}
+                    className="flex-center"
+                >
+                    {isAdmin(user) && !pastOrder && (
+                        <Checkbox
+                            icon={<RadioButtonUncheckedOutlinedIcon />}
+                            checkedIcon={<CheckCircleOutlineIcon />}
+                            checked={item.isChecked}
+                            color="info"
+                            onChange={handleItemCheck}
+                        ></Checkbox>
+                    )}
+                </Grid2>
+                <Grid2
+                    xs={2}
+                    display={{ xs: 'flex', md: 'none' }}
+                    className="flex-center"
+                >
+                    <ShoppingListItemActions item={item} />
+                </Grid2>
             </Grid2>
         </ListItem>
     );
