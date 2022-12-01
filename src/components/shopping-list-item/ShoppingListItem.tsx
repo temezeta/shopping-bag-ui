@@ -184,7 +184,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         />
                     )}
                     {!isAdmin(user) && pastOrder && (
-                        <Typography variant="body2">
+                        <Typography variant="body1">
                             {item.amountOrdered}
                         </Typography>
                     )}
@@ -193,7 +193,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     xs={0}
                     md={2}
                     display={{ xs: 'none', md: 'flex' }}
-                    className="flex-center"
+                    justifyContent="flex-start"
                 >
                     {isAdmin(user) && !pastOrder && (
                         <Checkbox
