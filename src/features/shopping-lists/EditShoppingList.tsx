@@ -51,7 +51,7 @@ const EditShoppingList = (): JSX.Element => {
                     listId: shoppingList.id,
                 })
             ).unwrap();
-            navigate('/home');
+            handleNavigate();
         }
     };
 
@@ -65,6 +65,14 @@ const EditShoppingList = (): JSX.Element => {
             await dispatch(removeShoppingListAsync(toDelete)).unwrap();
             setToDelete(undefined);
             setDeleteOpen(false);
+            handleNavigate();
+        }
+    };
+
+    const handleNavigate = (): void => {
+        if (shoppingList?.ordered) {
+            navigate('/past-orders');
+        } else {
             navigate('/home');
         }
     };
@@ -74,7 +82,7 @@ const EditShoppingList = (): JSX.Element => {
             <MainLayout width="35em">
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
-                        <IconButton onClick={() => navigate('/home')}>
+                        <IconButton onClick={() => handleNavigate()}>
                             <ArrowBackIos />
                         </IconButton>
                         <Typography
