@@ -162,7 +162,7 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             className="flex-center"
                         >
                             {moment(list.expectedDeliveryDate) > moment() && (
-                                {user?.reminderSettings.allRemindersDisabled ? (
+                                user?.reminderSettings.allRemindersDisabled ? (
                                     <Tooltip
                                         title={t(
                                             'notifications.notifications_off_tooltip'
@@ -177,17 +177,14 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                         )}
                                         onClick={remindersOnClick}
                                     >
-                                        {listReminders &&
-                                        (listReminders.reminderDaysBeforeDueDate
-                                            .length > 0 ||
-                                            listReminders
-                                                .reminderDaysBeforeExpectedDate
-                                                .length > 0) ? (
-                                            <Notifications />
-                                        ) : (
-                                            <NotificationsNone />
-                                        )}
+                                        {listReminders?.dueDateRemindersDisabled &&
+                                    listReminders.expectedRemindersDisabled ? (
+                                        <NotificationsNone />
+                                    ) : (
+                                        <Notifications />
+                                    )}
                                     </IconButton>
+                                )
                             )}
                         </Grid2>
                     </Grid2>
