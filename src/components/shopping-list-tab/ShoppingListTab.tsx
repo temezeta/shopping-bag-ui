@@ -161,8 +161,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             order={{ xs: 3, md: 4 }}
                             className="flex-center"
                         >
-                            {moment(list.expectedDeliveryDate) > moment() && (
-                                user?.reminderSettings.allRemindersDisabled ? (
+                            {moment(list.expectedDeliveryDate) > moment() &&
+                                (user?.reminderSettings.allRemindersDisabled ? (
                                     <Tooltip
                                         title={t(
                                             'notifications.notifications_off_tooltip'
@@ -178,14 +178,13 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                         onClick={remindersOnClick}
                                     >
                                         {listReminders?.dueDateRemindersDisabled &&
-                                    listReminders.expectedRemindersDisabled ? (
-                                        <NotificationsNone />
-                                    ) : (
-                                        <Notifications />
-                                    )}
+                                        listReminders.expectedRemindersDisabled ? (
+                                            <NotificationsNone />
+                                        ) : (
+                                            <Notifications />
+                                        )}
                                     </IconButton>
-                                )
-                            )}
+                                ))}
                         </Grid2>
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
