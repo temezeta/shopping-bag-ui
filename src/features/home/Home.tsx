@@ -78,7 +78,6 @@ const Home = (): JSX.Element => {
                             value={selectedListId}
                             list={list}
                             key={i}
-                            pastOrder={false}
                         />
                     ))}
             </Grid2>
