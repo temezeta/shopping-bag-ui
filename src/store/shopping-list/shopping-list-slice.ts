@@ -322,12 +322,17 @@ export const shoppingListSlice = createSlice({
                 }
             })
             .addCase(orderShoppingListAsync.fulfilled, (state, action) => {
+                const currentDate = new Date().toUTCString();
+
                 if (state.shoppingLists[action.payload]) {
                     state.shoppingLists[action.payload].ordered = true;
+                    state.shoppingLists[action.payload].orderedDate =
+                        currentDate;
                 }
 
                 if (state.editShoppingList?.id === action.payload) {
                     state.editShoppingList.ordered = true;
+                    state.editShoppingList.orderedDate = currentDate;
                 }
             });
     },

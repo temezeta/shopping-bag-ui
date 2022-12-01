@@ -67,18 +67,24 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                                 {list.name}
                             </Typography>
                         </Link>
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                color:
-                                    isDueDatePassed && !list.ordered
+                        {!list.ordered ? (
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    color: isDueDatePassed
                                         ? 'error.main'
                                         : 'inherit',
-                            }}
-                        >
-                            {t('list.due_date') + ': '}
-                            {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
-                        </Typography>
+                                }}
+                            >
+                                {t('list.due_date') + ': '}
+                                {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
+                            </Typography>
+                        ) : (
+                            <Typography variant="body1">
+                                {t('list.ordered_date') + ': '}
+                                {formatDate(list.orderedDate, 'DD.MM.YYYY')}
+                            </Typography>
+                        )}
                         <Typography variant="body1">
                             {t('list.expected_delivery_date') + ': '}
                             {formatDate(list.expectedDeliveryDate)}

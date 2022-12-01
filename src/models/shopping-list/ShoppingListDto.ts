@@ -9,6 +9,7 @@ export interface ShoppingListDto {
     createdDate: string;
     dueDate?: string;
     expectedDeliveryDate?: string;
+    orderedDate?: string;
     listDeliveryOffice: OfficeDto;
     items: ItemDto[];
 }
