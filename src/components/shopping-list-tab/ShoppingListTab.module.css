@@ -17,8 +17,16 @@
     width: 100%;
 }
 
+.deliveryOfficeName {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    font-weight: bold !important;
+    font-size: 17px !important;
+}
+
 @media only screen and (min-width: 600px) {
     .shoppingListHeader {
+        padding-left: 0px;
         padding-right: 24px;
     }
 }
