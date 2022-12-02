@@ -26,7 +26,6 @@
 
 @media only screen and (min-width: 600px) {
     .shoppingListHeader {
-        padding-left: 0px;
         padding-right: 24px;
     }
 }
