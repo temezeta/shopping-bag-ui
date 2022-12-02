@@ -35,10 +35,8 @@ const ReminderSelect = (
             multiple
             size="small"
             renderValue={(selected) =>
-                props.disabled
-                    ? ''
-                    : selected.sort((a, b) => a - b).join(', ') +
-                      getDaySuffix(selected)
+                selected.sort((a, b) => a - b).join(', ') +
+                getDaySuffix(selected)
             }
         >
             {options.map((option) => (

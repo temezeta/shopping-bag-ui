@@ -35,7 +35,8 @@
         "day": "day",
         "days": "days",
         "edit_notifications": "Edit notifications",
-        "notifications_off_tooltip": "Enable notifications in Account Settings to activate list reminders"
+        "notifications_off_tooltip": "Enable notifications in Account Settings to activate list reminders",
+        "notifications_info": "Set default notifications for new lists:"
     },
     "errors": {
         "required": "This value is required!",
