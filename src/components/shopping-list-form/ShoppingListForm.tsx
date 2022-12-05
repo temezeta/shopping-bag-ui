@@ -195,7 +195,11 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                             name="expectedDeliveryDate"
                             control={control}
                             rules={{
-                                validate: dateValidation,
+                                validate: {
+                                    validExpectedDate: () =>
+                                        dateValidation() ||
+                                        t('errors.expected_after_due'),
+                                },
                             }}
                             render={({ field }) => (
                                 <DatePicker
@@ -210,9 +214,10 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                         <TextField
                                             {...props}
                                             sx={{ width: '100%' }}
-                                            helperText={t(
-                                                'errors.expected_after_due'
-                                            )}
+                                            helperText={
+                                                errors.expectedDeliveryDate
+                                                    ?.message
+                                            }
                                         />
                                     )}
                                     disablePast={true}
