@@ -26,10 +26,11 @@ import { useTranslation } from 'react-i18next';
 interface ShoppingListItemProps {
     item: ItemDto;
     pastOrder: boolean;
+    isPastDueDate: boolean;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
-    const { item, pastOrder } = props;
+    const { item, pastOrder, isPastDueDate } = props;
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
@@ -44,7 +45,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
         try {
             await dispatch(
                 setLikeStatusAsync({ data: checked, itemId: item.id })
-            );
+            ).unwrap();
         } finally {
             event.target.disabled = false;
         }
@@ -120,6 +121,8 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
         );
     };
 
+    const hideActions = !isAdmin(user) && (pastOrder || isPastDueDate);
+
     return (
         <ListItem divider={true}>
             <Grid2
@@ -184,7 +187,14 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         />
                     )}
                     {!isAdmin(user) && pastOrder && (
-                        <Typography variant="body1">
+                        <Typography
+                            variant="body1"
+                            color={
+                                item.amountOrdered === 0
+                                    ? 'error.main'
+                                    : 'inherit'
+                            }
+                        >
                             {item.amountOrdered}
                         </Typography>
                     )}
@@ -211,7 +221,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     display={{ xs: 'none', md: 'flex' }}
                     className={'flex-center'}
                 >
-                    <ShoppingListItemActions item={item} />
+                    <ShoppingListItemActions item={item} hidden={hideActions} />
                 </Grid2>
                 {/** Second row */}
                 <Grid2 xs={12}>
@@ -239,7 +249,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     display={{ xs: 'flex', md: 'none' }}
                     className="flex-center"
                 >
-                    <ShoppingListItemActions item={item} />
+                    <ShoppingListItemActions item={item} hidden={hideActions} />
                 </Grid2>
             </Grid2>
         </ListItem>
