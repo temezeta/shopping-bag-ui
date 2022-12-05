@@ -95,6 +95,8 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             sx={{ marginTop: '-12px' }}
                         >
                             <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 'bold' }}
                                 color="info.main"
                                 className={styles.deliveryOfficeName}
                             >

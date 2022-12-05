@@ -19,9 +19,7 @@
 
 .deliveryOfficeName {
     padding-right: 0.5rem;
-    padding-left: 0.5rem;
-    font-weight: bold !important;
-    font-size: 17px !important;
+    padding-left: 1rem;
 }
 
 @media only screen and (min-width: 600px) {
