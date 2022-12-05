@@ -41,6 +41,7 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         control,
         handleSubmit,
         reset,
+        trigger,
         watch,
         formState: { isValid, errors },
     } = useForm<ModifyShoppingListDto>({
@@ -66,17 +67,20 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
         setTabIndex(value);
     };
 
+    const watchDates = watch(['dueDate', 'expectedDeliveryDate']);
+
     const dateValidation = (): boolean => {
-        const dueDate = moment(watch('dueDate'), true);
-        const expectedDeliveryDate = moment(
-            watch('expectedDeliveryDate'),
-            true
-        );
+        const dueDate = moment(watchDates[0], true);
+        const expectedDeliveryDate = moment(watchDates[1], true);
         if (expectedDeliveryDate.isBefore(dueDate)) {
             return false;
         }
         return true;
     };
+
+    useEffect(() => {
+        void trigger(['dueDate', 'expectedDeliveryDate']);
+    }, [watchDates[0], watchDates[1]]);
 
     return (
         <Grid2 container spacing={2}>
@@ -162,9 +166,6 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         <Controller
                             name="dueDate"
                             control={control}
-                            rules={{
-                                validate: dateValidation,
-                            }}
                             render={({ field }) => (
                                 <DateTimePicker
                                     onChange={(date) =>
@@ -214,6 +215,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                         <TextField
                                             {...props}
                                             sx={{ width: '100%' }}
+                                            error={
+                                                !!errors.expectedDeliveryDate
+                                            }
                                             helperText={
                                                 errors.expectedDeliveryDate
                                                     ?.message
