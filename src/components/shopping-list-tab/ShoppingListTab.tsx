@@ -1,4 +1,4 @@
-import { Add, Link } from '@mui/icons-material';
+import { Add, Apartment, Link } from '@mui/icons-material';
 import { Box, Button, IconButton, List, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
@@ -89,10 +89,26 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             </IconButton>
                             <Typography variant="h1">{list.name}</Typography>
                         </Grid2>
-                        <Grid2 xs={12} className="flex-center">
-                            <Typography variant="h2">
+                        <Grid2
+                            xs={12}
+                            className="flex-center"
+                            sx={{ marginTop: '-12px' }}
+                        >
+                            <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 'bold' }}
+                                color="info.main"
+                                className={styles.deliveryOfficeName}
+                            >
                                 {list.listDeliveryOffice.name}
                             </Typography>
+                            <Apartment
+                                fontSize="medium"
+                                sx={{
+                                    color: 'info.main',
+                                    paddingBottom: '4px',
+                                }}
+                            />
                         </Grid2>
                         <Grid2 xs={12}>
                             <Markdown>{list.comment}</Markdown>
