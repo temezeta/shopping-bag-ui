@@ -26,10 +26,11 @@ import { useTranslation } from 'react-i18next';
 interface ShoppingListItemProps {
     item: ItemDto;
     pastOrder: boolean;
+    isPastDueDate: boolean;
 }
 
 const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
-    const { item, pastOrder } = props;
+    const { item, pastOrder, isPastDueDate } = props;
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const user = useAppSelector(selectCurrentUser);
@@ -44,7 +45,7 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
         try {
             await dispatch(
                 setLikeStatusAsync({ data: checked, itemId: item.id })
-            );
+            ).unwrap();
         } finally {
             event.target.disabled = false;
         }
@@ -211,7 +212,10 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     display={{ xs: 'none', md: 'flex' }}
                     className={'flex-center'}
                 >
-                    <ShoppingListItemActions item={item} />
+                    <ShoppingListItemActions
+                        item={item}
+                        hidden={!isAdmin(user) && (pastOrder || isPastDueDate)}
+                    />
                 </Grid2>
                 {/** Second row */}
                 <Grid2 xs={12}>

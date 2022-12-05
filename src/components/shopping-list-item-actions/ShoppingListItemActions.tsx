@@ -18,6 +18,7 @@ import styles from './ShoppingListItemActions.module.css';
 
 interface ShoppingListItemProps {
     item: ItemDto;
+    hidden?: boolean;
 }
 
 const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
@@ -48,9 +49,11 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
 
     return (
         <div>
-            <IconButton aria-label="actions" onClick={handleClick}>
-                <MoreHoriz />
-            </IconButton>
+            {!props.hidden && (
+                <IconButton aria-label="actions" onClick={handleClick}>
+                    <MoreHoriz />
+                </IconButton>
+            )}
             <Menu
                 anchorEl={anchorEl}
                 open={open}

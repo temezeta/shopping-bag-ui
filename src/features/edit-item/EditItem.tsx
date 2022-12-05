@@ -51,7 +51,7 @@ const EditItem = (): JSX.Element => {
                     },
                     itemId: Number(itemId),
                 })
-            );
+            ).unwrap();
             handleNavigate();
         }
     };

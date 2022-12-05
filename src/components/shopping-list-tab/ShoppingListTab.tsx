@@ -208,6 +208,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 item={it}
                                 key={i}
                                 pastOrder={list.ordered}
+                                isPastDueDate={moment(
+                                    list.dueDate,
+                                    true
+                                ).isBefore(new Date())}
                             />
                         ))}
                     </List>
