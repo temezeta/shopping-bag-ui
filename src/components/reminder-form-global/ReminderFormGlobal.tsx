@@ -49,21 +49,35 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
     };
 
     const dueDateSwitchOnChange = (disable: boolean): void => {
-        setValue('reminderDaysBeforeDueDate', disable ? [] : [2]);
+        setValue(
+            'reminderDaysBeforeDueDate',
+            disable
+                ? []
+                : initialValues?.reminderDaysBeforeDueDate.length
+                ? initialValues?.reminderDaysBeforeDueDate
+                : [2]
+        );
     };
 
     const expectedDateSwitchOnChange = (disable: boolean): void => {
-        setValue('reminderDaysBeforeExpectedDate', disable ? [] : [2]);
+        setValue(
+            'reminderDaysBeforeExpectedDate',
+            disable
+                ? []
+                : initialValues?.reminderDaysBeforeExpectedDate.length
+                ? initialValues?.reminderDaysBeforeExpectedDate
+                : [2]
+        );
     };
 
-    const selectDueDateOnClose = (): void => {
+    const selectDueDateOnChange = (): void => {
         setValue(
             'dueDateRemindersDisabled',
             !watch('reminderDaysBeforeDueDate').length
         );
     };
 
-    const selectExpectedDateOnClose = (): void => {
+    const selectExpectedDateOnChange = (): void => {
         setValue(
             'expectedRemindersDisabled',
             !watch('reminderDaysBeforeExpectedDate').length
@@ -104,7 +118,9 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                 <div>
                     <Grid2 container spacing={1}>
                         <Grid2 xs={12}>
-                            <Typography sx={{ padding: '1rem 0' }}>
+                            <Typography
+                                sx={{ padding: '1rem 0', fontWeight: 'bold' }}
+                            >
                                 {t('notifications.notifications_info')}
                             </Typography>
                         </Grid2>
@@ -146,7 +162,10 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                                     <ReminderSelect
                                         {...field}
                                         fullWidth
-                                        onClose={selectDueDateOnClose}
+                                        onChange={(event) => {
+                                            field.onChange(event);
+                                            selectDueDateOnChange();
+                                        }}
                                     />
                                 )}
                             />
@@ -189,7 +208,10 @@ const ReminderFormGlobal = (props: ReminderFormProps): JSX.Element => {
                                     <ReminderSelect
                                         {...field}
                                         fullWidth
-                                        onClose={selectExpectedDateOnClose}
+                                        onChange={(event) => {
+                                            field.onChange(event);
+                                            selectExpectedDateOnChange();
+                                        }}
                                     />
                                 )}
                             />
