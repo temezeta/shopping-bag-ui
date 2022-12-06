@@ -153,6 +153,14 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                         </TabPanel>
                         <Typography variant="body2">
                             {t('general.support_markdown')}
+                            <br />
+                            <a
+                                target="_blank"
+                                href="https://www.markdownguide.org/cheat-sheet"
+                                rel="noreferrer"
+                            >
+                                {t('general.markdown_cheatsheet_link')}
+                            </a>
                         </Typography>
                     </Grid2>
                     <Grid2 xs={12}>

@@ -132,6 +132,7 @@
         "user_management": "User management"
     },
     "general": {
-        "support_markdown": "Styling with Markdown is supported"
+        "support_markdown": "Styling with Markdown is supported",
+        "markdown_cheatsheet_link": "Markdown Cheat Sheet"
     }
 }
