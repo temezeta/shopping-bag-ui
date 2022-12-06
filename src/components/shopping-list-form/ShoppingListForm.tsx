@@ -69,9 +69,9 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
 
     const watchDates = watch(['dueDate', 'expectedDeliveryDate']);
 
-    const dateValidation = (): boolean => {
+    const dateValidation = (value: moment.MomentInput): boolean => {
         const dueDate = moment(watchDates[0], true);
-        const expectedDeliveryDate = moment(watchDates[1], true);
+        const expectedDeliveryDate = moment(value, true);
         if (expectedDeliveryDate.isBefore(dueDate)) {
             return false;
         }
@@ -81,6 +81,10 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
     useEffect(() => {
         void trigger(['dueDate', 'expectedDeliveryDate']);
     }, [watchDates[0], watchDates[1]]);
+
+    useEffect(() => {
+        reset(defaultValues, { keepDirtyValues: true });
+    }, [initialValues]);
 
     return (
         <Grid2 container spacing={2}>
@@ -175,7 +179,11 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                                     }
                                     value={field.value}
                                     renderInput={(props) => (
-                                        <TextField {...props} fullWidth />
+                                        <TextField
+                                            {...props}
+                                            error={!!errors.dueDate}
+                                            fullWidth
+                                        />
                                     )}
                                     disablePast={true}
                                     ampm={false}
@@ -197,8 +205,8 @@ const ShoppingListForm = (props: ShoppingListFormProps): JSX.Element => {
                             control={control}
                             rules={{
                                 validate: {
-                                    validExpectedDate: () =>
-                                        dateValidation() ||
+                                    validExpectedDate: (value) =>
+                                        dateValidation(value) ||
                                         t('errors.expected_after_due'),
                                 },
                             }}
