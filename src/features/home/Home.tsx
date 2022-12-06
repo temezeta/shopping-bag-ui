@@ -1,6 +1,8 @@
-import { Tab, Tabs } from '@mui/material';
+import { Tab, Tabs, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { SyntheticEvent, useEffect } from 'react';
+import React, { SyntheticEvent, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
 import ShoppingListTab from '../../components/shopping-list-tab/ShoppingListTab';
@@ -14,6 +16,7 @@ import { selectCurrentUser } from '../../store/user/user-slice';
 import { isAdmin } from '../../utility/user-helper';
 
 const Home = (): JSX.Element => {
+    const { t } = useTranslation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const user = useAppSelector(selectCurrentUser);
@@ -58,18 +61,24 @@ const Home = (): JSX.Element => {
                     justifyContent="center"
                     alignItems="center"
                 >
-                    <Tabs
-                        variant="scrollable"
-                        scrollButtons="auto"
-                        color="primary"
-                        indicatorColor="primary"
-                        value={selectedListId}
-                        onChange={handleTabChange}
-                    >
-                        {activeShoppingLists.map((list, i) => (
-                            <Tab label={list.name} key={i} value={list.id} />
-                        ))}
-                    </Tabs>
+                    {activeShoppingLists.length > 0 && (
+                        <Tabs
+                            variant="scrollable"
+                            scrollButtons="auto"
+                            color="primary"
+                            indicatorColor="primary"
+                            value={selectedListId}
+                            onChange={handleTabChange}
+                        >
+                            {activeShoppingLists.map((list, i) => (
+                                <Tab
+                                    label={list.name}
+                                    key={i}
+                                    value={list.id}
+                                />
+                            ))}
+                        </Tabs>
+                    )}
                 </Grid2>
 
                 {selectedListId &&
@@ -80,6 +89,25 @@ const Home = (): JSX.Element => {
                             key={i}
                         />
                     ))}
+                {activeShoppingLists.length === 0 && (
+                    <Typography
+                        variant="body1"
+                        align="center"
+                        sx={{
+                            marginTop: '15px',
+                        }}
+                    >
+                        {t('list.no_active_lists')}
+                        <br></br>
+                        <SentimentDissatisfiedIcon
+                            color="action"
+                            fontSize="large"
+                            sx={{
+                                marginTop: '15px',
+                            }}
+                        ></SentimentDissatisfiedIcon>
+                    </Typography>
+                )}
             </Grid2>
         </MainLayout>
     );
