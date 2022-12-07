@@ -38,7 +38,7 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
               reminderDaysBeforeExpectedDate: [],
           };
 
-    const { control, handleSubmit, watch, reset } =
+    const { control, handleSubmit, watch, reset, setValue } =
         useForm<ListReminderSettingsDto>({
             defaultValues,
             mode: 'onChange',
@@ -50,6 +50,42 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
 
     const onSubmit: SubmitHandler<ListReminderSettingsDto> = async (data) => {
         await dispatch(changeListRemindersAsync(data)).unwrap();
+    };
+
+    const dueDateSwitchOnChange = (disable: boolean): void => {
+        setValue(
+            'reminderDaysBeforeDueDate',
+            disable
+                ? []
+                : initialValues?.reminderDaysBeforeDueDate.length
+                ? initialValues?.reminderDaysBeforeDueDate
+                : [2]
+        );
+    };
+
+    const expectedDateSwitchOnChange = (disable: boolean): void => {
+        setValue(
+            'reminderDaysBeforeExpectedDate',
+            disable
+                ? []
+                : initialValues?.reminderDaysBeforeExpectedDate.length
+                ? initialValues?.reminderDaysBeforeExpectedDate
+                : [2]
+        );
+    };
+
+    const selectDueDateOnChange = (): void => {
+        setValue(
+            'dueDateRemindersDisabled',
+            !watch('reminderDaysBeforeDueDate').length
+        );
+    };
+
+    const selectExpectedDateOnChange = (): void => {
+        setValue(
+            'expectedRemindersDisabled',
+            !watch('reminderDaysBeforeExpectedDate').length
+        );
     };
 
     return (
@@ -74,9 +110,10 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
                                 <Switch
                                     {...field}
                                     checked={!field.value}
-                                    onChange={(_, isChecked) =>
-                                        field.onChange(!isChecked)
-                                    }
+                                    onChange={(_, isChecked) => {
+                                        field.onChange(!isChecked);
+                                        dueDateSwitchOnChange(!isChecked);
+                                    }}
                                     inputProps={{
                                         'aria-labelledby': 'due_date_enabled',
                                     }}
@@ -93,7 +130,10 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
                             <ReminderSelect
                                 {...field}
                                 fullWidth
-                                disabled={watch('dueDateRemindersDisabled')}
+                                onChange={(event) => {
+                                    field.onChange(event);
+                                    selectDueDateOnChange();
+                                }}
                             />
                         )}
                     />
@@ -113,9 +153,10 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
                                 <Switch
                                     {...field}
                                     checked={!field.value}
-                                    onChange={(_, isChecked) =>
-                                        field.onChange(!isChecked)
-                                    }
+                                    onChange={(_, isChecked) => {
+                                        field.onChange(!isChecked);
+                                        expectedDateSwitchOnChange(!isChecked);
+                                    }}
                                     inputProps={{
                                         'aria-labelledby':
                                             'expected_date_enabled',
@@ -133,7 +174,10 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
                             <ReminderSelect
                                 {...field}
                                 fullWidth
-                                disabled={watch('expectedRemindersDisabled')}
+                                onChange={(event) => {
+                                    field.onChange(event);
+                                    selectExpectedDateOnChange();
+                                }}
                             />
                         )}
                     />
