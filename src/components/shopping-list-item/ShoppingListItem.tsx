@@ -180,8 +180,13 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                     {isAdmin(user) && (
                         <TextField
                             id="outlined-number"
+                            style={{ width: 75 }}
                             type="number"
                             value={amount}
+                            inputProps={{
+                                min: 0,
+                                style: { textAlign: 'center' },
+                            }}
                             onChange={handleInputChange}
                             onBlur={handleQuantityChange}
                         />
