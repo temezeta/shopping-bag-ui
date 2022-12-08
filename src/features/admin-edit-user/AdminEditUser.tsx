@@ -43,7 +43,7 @@ const AdminEditUser = (): JSX.Element => {
     return (
         <>
             <MainLayout onBackButton={() => navigate('/management/users')}>
-                <Grid2 container spacing={2} sx={{ width: '35rem' }}>
+                <Grid2 container spacing={2}>
                     <Grid2 xs={12} className="flex-center">
                         <Typography
                             variant="h1"
