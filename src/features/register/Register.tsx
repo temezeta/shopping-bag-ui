@@ -41,7 +41,7 @@ const Register = (): JSX.Element => {
 
     return (
         <>
-            <LoginLayout>
+            <LoginLayout onBackButton={() => navigate('/login')}>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
                         <Typography
