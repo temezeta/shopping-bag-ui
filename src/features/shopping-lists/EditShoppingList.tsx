@@ -78,7 +78,7 @@ const EditShoppingList = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout width="35em" onBackButton={() => handleNavigate()}>
+            <MainLayout onBackButton={() => handleNavigate()}>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
                         <Typography
