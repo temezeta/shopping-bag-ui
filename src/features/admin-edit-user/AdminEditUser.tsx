@@ -1,6 +1,5 @@
-import { Link, Typography, DialogContentText, IconButton } from '@mui/material';
+import { Link, Typography, DialogContentText } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
-import { ArrowBackIos } from '@mui/icons-material';
 import React, { useState } from 'react';
 import { SubmitHandler } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -43,16 +42,9 @@ const AdminEditUser = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout>
+            <MainLayout onBackButton={() => navigate('/management/users')}>
                 <Grid2 container spacing={2} sx={{ width: '35rem' }}>
                     <Grid2 xs={12} className="flex-center">
-                        <Grid2>
-                            <IconButton
-                                onClick={() => navigate('/management/users')}
-                            >
-                                <ArrowBackIos />
-                            </IconButton>
-                        </Grid2>
                         <Typography
                             variant="h1"
                             display="flex"

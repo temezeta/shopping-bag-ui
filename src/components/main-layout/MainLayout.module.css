@@ -12,6 +12,7 @@
 }
 
 .formContainer {
+    flex-direction: column;
     box-sizing: content-box;
     display: flex;
     justify-content: center;

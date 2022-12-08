@@ -1,11 +1,4 @@
-import { ArrowBackIos } from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    DialogContentText,
-    IconButton,
-    Typography,
-} from '@mui/material';
+import { Box, Button, DialogContentText, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainLayout from '../../components/main-layout/MainLayout';
@@ -66,14 +59,9 @@ const AdminShoppingList = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout width="65em">
+            <MainLayout width="65em" onBackButton={() => handleNavigate()}>
                 {shoppingList ? (
                     <Grid2 container spacing={2}>
-                        <Grid2>
-                            <IconButton onClick={() => handleNavigate()}>
-                                <ArrowBackIos />
-                            </IconButton>
-                        </Grid2>
                         <Grid2 xs={12}>
                             <ShoppingListTab value={id} list={shoppingList} />
                             {isAdmin(user) && (

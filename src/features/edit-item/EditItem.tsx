@@ -1,5 +1,4 @@
-import { ArrowBackIos } from '@mui/icons-material';
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useEffect } from 'react';
 import { SubmitHandler } from 'react-hook-form';
@@ -66,12 +65,9 @@ const EditItem = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout>
+            <MainLayout onBackButton={() => handleNavigate()}>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
-                        <IconButton onClick={() => handleNavigate()}>
-                            <ArrowBackIos />
-                        </IconButton>
                         <Typography
                             variant="h1"
                             display="flex"
