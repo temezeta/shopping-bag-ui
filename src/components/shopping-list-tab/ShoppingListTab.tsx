@@ -156,7 +156,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             className="flex-center"
                         >
                             {moment(list.expectedDeliveryDate) > moment() && (
-                                <RemindersIconButton listId={props.list.id} />
+                                <RemindersIconButton
+                                    listId={props.list.id}
+                                    pastOrder={props.list.ordered}
+                                />
                             )}
                         </Grid2>
                     </Grid2>
