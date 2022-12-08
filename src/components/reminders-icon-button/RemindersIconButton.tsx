@@ -14,6 +14,7 @@ import ReminderFormList from '../reminder-form-list/ReminderFormList';
 
 interface RemindersIconButtonProps {
     listId: number;
+    pastOrder: boolean;
 }
 
 const RemindersIconButton = (props: RemindersIconButtonProps): JSX.Element => {
@@ -56,6 +57,7 @@ const RemindersIconButton = (props: RemindersIconButtonProps): JSX.Element => {
                 <ReminderFormList
                     listId={props.listId}
                     initialValues={listReminders}
+                    pastOrder={props.pastOrder}
                 />
             </FormDialog>
         </>

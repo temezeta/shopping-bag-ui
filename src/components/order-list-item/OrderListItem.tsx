@@ -35,7 +35,12 @@ const OrderListItem = (props: OrderListItemProps): JSX.Element => {
                 <Grid2 xs={1} className={styles.notifyButton} minWidth={45}>
                     {moment(list.expectedDeliveryDate, true).isAfter(
                         new Date()
-                    ) && <RemindersIconButton listId={props.list.id} />}
+                    ) && (
+                        <RemindersIconButton
+                            listId={props.list.id}
+                            pastOrder={props.list.ordered}
+                        />
+                    )}
                 </Grid2>
                 <Grid2
                     container

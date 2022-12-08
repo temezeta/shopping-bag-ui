@@ -12,6 +12,7 @@ import { changeListRemindersAsync } from '../../store/user/user-slice';
 interface ReminderFormProps {
     initialValues?: ListReminderSettingsDto | undefined;
     listId: number;
+    pastOrder: boolean;
 }
 
 const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
@@ -91,53 +92,60 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
     return (
         <form
             id="List-Reminder-Settings-Form"
-            className={'full-width'}
+            className={styles.remindersForm}
             onSubmit={handleSubmit(onSubmit)}
         >
             <Grid2 container spacing={2} className={styles.formInputs}>
-                <Grid2 xs={8}>
-                    <div className={'flex-space-between'}>
-                        <FormLabel
-                            sx={{ display: 'inline' }}
-                            id="due_date_enabled"
-                        >
-                            {t('list.due_date')}
-                        </FormLabel>
-                        <Controller
-                            name="dueDateRemindersDisabled"
-                            control={control}
-                            render={({ field }) => (
-                                <Switch
-                                    {...field}
-                                    checked={!field.value}
-                                    onChange={(_, isChecked) => {
-                                        field.onChange(!isChecked);
-                                        dueDateSwitchOnChange(!isChecked);
-                                    }}
-                                    inputProps={{
-                                        'aria-labelledby': 'due_date_enabled',
-                                    }}
+                {!props.pastOrder && (
+                    <>
+                        <Grid2 xs={8}>
+                            <div className={'flex-space-between'}>
+                                <FormLabel
+                                    sx={{ display: 'inline' }}
+                                    id="due_date_enabled"
+                                >
+                                    {t('list.due_date')}
+                                </FormLabel>
+                                <Controller
+                                    name="dueDateRemindersDisabled"
+                                    control={control}
+                                    render={({ field }) => (
+                                        <Switch
+                                            {...field}
+                                            checked={!field.value}
+                                            onChange={(_, isChecked) => {
+                                                field.onChange(!isChecked);
+                                                dueDateSwitchOnChange(
+                                                    !isChecked
+                                                );
+                                            }}
+                                            inputProps={{
+                                                'aria-labelledby':
+                                                    'due_date_enabled',
+                                            }}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
-                    </div>
-                </Grid2>
-                <Grid2 xs={4}>
-                    <Controller
-                        name="reminderDaysBeforeDueDate"
-                        control={control}
-                        render={({ field }) => (
-                            <ReminderSelect
-                                {...field}
-                                fullWidth
-                                onChange={(event) => {
-                                    field.onChange(event);
-                                    selectDueDateOnChange();
-                                }}
+                            </div>
+                        </Grid2>
+                        <Grid2 xs={4}>
+                            <Controller
+                                name="reminderDaysBeforeDueDate"
+                                control={control}
+                                render={({ field }) => (
+                                    <ReminderSelect
+                                        {...field}
+                                        fullWidth
+                                        onChange={(event) => {
+                                            field.onChange(event);
+                                            selectDueDateOnChange();
+                                        }}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                </Grid2>
+                        </Grid2>
+                    </>
+                )}
                 <Grid2 xs={8}>
                     <div className={'flex-space-between'}>
                         <FormLabel
