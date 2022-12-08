@@ -100,7 +100,8 @@
         "disable_account_admin": "Are you sure you want to disable selected account?"
     },
     "list": {
-        "no_active_lists": "There is no active shopping lists for the chosen office",
+        "no_active_lists": "There are no active orders for the chosen office",
+        "no_past_lists": "There are no past orders for the chosen office",
         "due_date": "Due date",
         "ordered_date": "Order date",
         "expected_delivery_date": "Expected delivery date",

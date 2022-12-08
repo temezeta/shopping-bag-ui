@@ -4,6 +4,7 @@ import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import MainLayout from '../../components/main-layout/MainLayout';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { selectCurrentOffice } from '../../store/user/user-slice';
 import OrderListItem from '../../components/order-list-item/OrderListItem';
 import { Add } from '@mui/icons-material';
@@ -55,6 +56,27 @@ const AdminOrderList = (): JSX.Element => {
                             <OrderListItem list={list} key={i} />
                         ))}
                     </Grid2>
+                    {activeShoppingLists.length === 0 && (
+                        <Grid2 xs={12} className="flex-center">
+                            <Typography
+                                variant="body1"
+                                align="center"
+                                sx={{
+                                    marginTop: '15px',
+                                }}
+                            >
+                                {t('list.no_active_lists')}
+                                <br></br>
+                                <SentimentDissatisfiedIcon
+                                    color="action"
+                                    fontSize="large"
+                                    sx={{
+                                        marginTop: '15px',
+                                    }}
+                                ></SentimentDissatisfiedIcon>
+                            </Typography>
+                        </Grid2>
+                    )}
                 </Grid2>
             </MainLayout>
         </>
