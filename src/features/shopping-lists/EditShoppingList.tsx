@@ -1,5 +1,4 @@
-import { ArrowBackIos } from '@mui/icons-material';
-import { DialogContentText, IconButton, Typography } from '@mui/material';
+import { DialogContentText, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -79,12 +78,9 @@ const EditShoppingList = (): JSX.Element => {
 
     return (
         <>
-            <MainLayout width="35em">
+            <MainLayout onBackButton={() => handleNavigate()}>
                 <Grid2 container spacing={1}>
                     <Grid2 xs={12} className="flex-center">
-                        <IconButton onClick={() => handleNavigate()}>
-                            <ArrowBackIos />
-                        </IconButton>
                         <Typography
                             variant="h1"
                             display="flex"

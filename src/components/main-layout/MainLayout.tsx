@@ -1,10 +1,13 @@
 import styles from './MainLayout.module.css';
 import Navbar from '../navbar/Navbar';
 import { CSSProperties } from 'react';
+import { IconButton } from '@mui/material';
+import { ArrowBackIosNew } from '@mui/icons-material';
 
 interface MainLayoutProps {
     width?: CSSProperties['width'];
     children?: JSX.Element;
+    onBackButton?: () => void;
 }
 
 const MainLayout = (props: MainLayoutProps): JSX.Element => {
@@ -18,7 +21,17 @@ const MainLayout = (props: MainLayoutProps): JSX.Element => {
                         width: props.width,
                     }}
                 >
-                    {props.children}
+                    {props.onBackButton && (
+                        <div>
+                            <IconButton
+                                onClick={props.onBackButton}
+                                color="secondary"
+                            >
+                                <ArrowBackIosNew />
+                            </IconButton>
+                        </div>
+                    )}
+                    <div>{props.children}</div>
                 </div>
             </div>
         </div>

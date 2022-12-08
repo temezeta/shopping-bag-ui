@@ -1,4 +1,4 @@
-import { IconButton, Tab, Tabs, Typography } from '@mui/material';
+import { Tab, Tabs, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,6 @@ import {
     resetPasswordAsync,
 } from '../../store/auth/auth-slice';
 import { showSuccessSnackBar } from '../../store/ui/ui-slice';
-import { ArrowBackIos } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const RecoverAccount = (): JSX.Element => {
@@ -61,13 +60,8 @@ const RecoverAccount = (): JSX.Element => {
     };
 
     return (
-        <LoginLayout>
+        <LoginLayout onBackButton={() => navigate('/login')}>
             <Grid2 container spacing={1}>
-                <Grid2 xs={12}>
-                    <IconButton onClick={() => navigate('/login')}>
-                        <ArrowBackIos />
-                    </IconButton>
-                </Grid2>
                 <Grid2 xs={12} className="flex-center">
                     <Typography variant="h1">
                         {t('user.account_recovery')}
