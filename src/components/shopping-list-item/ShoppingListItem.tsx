@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { ItemDto } from '../../models/shopping-list/ItemDto';
-import Grid2 from '@mui/material/Unstable_Grid2';
 import ShoppingListItemActions from '../shopping-list-item-actions/ShoppingListItemActions';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -22,6 +21,7 @@ import { hasUserLikedItem, isAdmin } from '../../utility/user-helper';
 import RadioButtonUncheckedOutlinedIcon from '@mui/icons-material/RadioButtonUncheckedOutlined';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useTranslation } from 'react-i18next';
+import styles from './ShoppingListItem.module.css';
 
 interface ShoppingListItemProps {
     item: ItemDto;
@@ -121,50 +121,39 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
         );
     };
 
+    function getListClassNames(itemClass?: string): string {
+        const classNames: string[] = [];
+        classNames.push(styles.listGrid);
+        itemClass && classNames.push(itemClass);
+        pastOrder && classNames.push(styles.pastOrder);
+        isAdmin(user) && classNames.push(styles.adminView);
+        return classNames.join(' ');
+    }
+
     const hideActions = !isAdmin(user) && (pastOrder || isPastDueDate);
 
     return (
         <ListItem divider={true}>
-            <Grid2
-                container
-                spacing={2}
-                className={'full-width'}
-                alignItems="center"
-            >
-                {/** First row */}
-                <Grid2 xs={6} md={2}>
-                    <Box>
-                        {item.url ? (
-                            <a
-                                href={item.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                {item.name ? item.name : item.url}
-                            </a>
-                        ) : (
-                            <div>{item.name}</div>
-                        )}
-                        <Typography
-                            variant="body2"
-                            fontWeight="medium"
-                            display={{ xs: 'block', md: 'none' }}
+            <Box className={getListClassNames(styles.listItem)}>
+                <Box className={styles.itemName}>
+                    {item.url ? (
+                        <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                         >
-                            {item.shopName}
-                        </Typography>
-                    </Box>
-                </Grid2>
-                <Grid2
-                    xs={0}
-                    md={2}
-                    className="flex-center"
-                    display={{ xs: 'none', md: 'flex' }}
-                >
+                            {item.name ? item.name : item.url}
+                        </a>
+                    ) : (
+                        <div>{item.name}</div>
+                    )}
+                </Box>
+                <Box className={styles.itemShop}>
                     <Typography variant="body2" fontWeight="medium">
                         {item.shopName}
                     </Typography>
-                </Grid2>
-                <Grid2 xs={3} md={2} className="flex-center">
+                </Box>
+                <Box className={`flex-center ${styles.itemLikes}`}>
                     {!pastOrder && (
                         <Checkbox
                             icon={<FavoriteBorder />}
@@ -175,14 +164,15 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         ></Checkbox>
                     )}
                     {getLikeAmount()}
-                </Grid2>
-                <Grid2 xs={3} md={2} className="flex-center">
-                    {isAdmin(user) && (
+                </Box>
+                {isAdmin(user) && (
+                    <Box className={`flex-center ${styles.itemQuantity}`}>
                         <TextField
                             id="outlined-number"
                             style={{ width: 75 }}
                             type="number"
                             value={amount}
+                            size="small"
                             inputProps={{
                                 min: 0,
                                 style: { textAlign: 'center' },
@@ -190,8 +180,10 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             onChange={handleInputChange}
                             onBlur={handleQuantityChange}
                         />
-                    )}
-                    {!isAdmin(user) && pastOrder && (
+                    </Box>
+                )}
+                {!isAdmin(user) && pastOrder && (
+                    <Box className={`flex-center ${styles.itemQuantity}`}>
                         <Typography
                             variant="body1"
                             color={
@@ -202,15 +194,10 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                         >
                             {item.amountOrdered}
                         </Typography>
-                    )}
-                </Grid2>
-                <Grid2
-                    xs={0}
-                    md={2}
-                    display={{ xs: 'none', md: 'flex' }}
-                    justifyContent="flex-start"
-                >
-                    {isAdmin(user) && !pastOrder && (
+                    </Box>
+                )}
+                {isAdmin(user) && !pastOrder && (
+                    <Box className={`flex-center ${styles.itemCheck}`}>
                         <Checkbox
                             icon={<RadioButtonUncheckedOutlinedIcon />}
                             checkedIcon={<CheckCircleOutlineIcon />}
@@ -218,45 +205,19 @@ const ShoppingListItem = (props: ShoppingListItemProps): JSX.Element => {
                             color="info"
                             onChange={handleItemCheck}
                         ></Checkbox>
-                    )}
-                </Grid2>
-                <Grid2
-                    xs={0}
-                    md={2}
-                    display={{ xs: 'none', md: 'flex' }}
-                    className={'flex-center'}
-                >
-                    <ShoppingListItemActions item={item} hidden={hideActions} />
-                </Grid2>
-                {/** Second row */}
-                <Grid2 xs={12}>
-                    <Typography variant="body2">{item.comment}</Typography>
-                </Grid2>
-                {/** Third row */}
-                <Grid2 xs></Grid2>
-                <Grid2
-                    xs={2}
-                    display={{ xs: 'flex', md: 'none' }}
-                    className="flex-center"
-                >
-                    {isAdmin(user) && !pastOrder && (
-                        <Checkbox
-                            icon={<RadioButtonUncheckedOutlinedIcon />}
-                            checkedIcon={<CheckCircleOutlineIcon />}
-                            checked={item.isChecked}
-                            color="info"
-                            onChange={handleItemCheck}
-                        ></Checkbox>
-                    )}
-                </Grid2>
-                <Grid2
-                    xs={2}
-                    display={{ xs: 'flex', md: 'none' }}
-                    className="flex-center"
-                >
-                    <ShoppingListItemActions item={item} hidden={hideActions} />
-                </Grid2>
-            </Grid2>
+                    </Box>
+                )}
+                {!hideActions && (
+                    <Box className={`flex-center ${styles.itemActions}`}>
+                        <ShoppingListItemActions item={item} />
+                    </Box>
+                )}
+                {item.comment && (
+                    <Box className={styles.itemComment}>
+                        <Typography variant="body2">{item.comment}</Typography>
+                    </Box>
+                )}
+            </Box>
         </ListItem>
     );
 };

@@ -1,3 +1,131 @@
-.itemCommentPhone {
-    padding-top: 0px !important;
+/* Table columns */
+
+.listGrid {
+    display: grid;
+    grid-column-gap: 1rem;
+    grid-template-columns: 6fr 3fr 2fr 1fr;
+}
+
+.listGrid.pastOrder {
+    grid-template-columns: 5fr 3fr 2fr 2fr;
+}
+
+.listGrid.adminView {
+    grid-template-columns: 4fr 2fr 2fr 2fr 1fr 1fr;
+}
+
+.listGrid.adminView.pastOrder {
+    grid-template-columns: 5fr 2fr 2fr 2fr 1fr;
+}
+
+/* Item grids */
+
+.listItem {
+    grid-template-rows: minmax(1.5rem, 1fr) minmax(0, auto);
+    grid-template-areas: "name shop likes actions"
+                         "comment shop likes actions";
+    width: 100%;
+}
+
+.listItem.pastOrder {
+    grid-template-areas: "name shop likes quantity"
+                         "comment shop likes quantity";
+}
+
+.listItem.adminView {
+    grid-template-areas: "name shop likes quantity check actions"
+                         "comment shop likes quantity check actions";
+}
+
+.listItem.adminView.pastOrder {
+    grid-template-areas: "name shop likes quantity actions"
+                         "comment shop likes quantity actions";
+}
+
+/* Items */
+
+.itemName {
+    align-items: center;
+    display: flex;
+    grid-area: name;
+}
+
+.itemShop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-area: shop;
+}
+
+.itemLikes {
+    grid-area: likes;
+}
+
+.itemQuantity {
+    grid-area: quantity;
+}
+
+.itemCheck {
+    grid-area: check;
+}
+
+.itemActions {
+    grid-area: actions;
+}
+
+.itemComment {
+    grid-area: comment;
+}
+
+@media only screen and (max-width: 599px) {
+    .itemShop {
+        justify-content: flex-start;
+    }
+
+    .adminView .itemQuantity {
+        justify-content: flex-end;
+    }
+
+    .listGrid,
+    .listGrid.pastOrder {
+        grid-column-gap: 0;
+        grid-template-columns: 6fr 2fr 2fr;
+    }
+
+    .listGrid.adminView {
+        grid-column-gap: 0;
+        grid-template-columns: 8fr 2fr 2fr;
+    }
+
+    .listGrid.adminView.pastOrder {
+        grid-template-columns: 5fr 2fr 2fr 2fr;
+    }
+
+    .listItem {
+        grid-template-rows: minmax(1.5rem, 1fr) minmax(0, auto) auto;
+        grid-template-areas: "name likes actions"
+                             "shop likes actions"
+                             "comment comment comment";
+        width: 100%;
+    }
+
+    .listItem.pastOrder {
+        grid-template-rows: minmax(2rem, 1fr) minmax(0, auto) auto;
+        grid-template-areas: "name likes quantity"
+                             "shop likes quantity"
+                             "comment comment comment";
+    }
+
+    .listItem.adminView {
+        grid-template-areas: "name name likes"
+                             "shop shop likes"
+                             "comment comment comment"
+                             "quantity check actions";
+    }
+
+    .listItem.adminView.pastOrder {
+        grid-template-areas: "name likes quantity actions"
+                             "shop likes quantity actions"
+                             "comment comment comment comment";
+    }
 }

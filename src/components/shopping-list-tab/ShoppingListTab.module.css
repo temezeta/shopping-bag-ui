@@ -12,18 +12,12 @@
 }
 
 .shoppingListHeader {
-    padding-left: 12px;
-    padding-right: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
     width: 100%;
 }
 
 .deliveryOfficeName {
     padding-right: 0.5rem;
     padding-left: 1rem;
-}
-
-@media only screen and (min-width: 600px) {
-    .shoppingListHeader {
-        padding-right: 24px;
-    }
 }
