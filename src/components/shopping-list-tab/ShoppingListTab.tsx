@@ -151,8 +151,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                             : 'inherit',
                                 }}
                             >
-                                {t('list.due_date') + ': '}
-                                {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
+                                {list.ordered
+                                    ? t('list.ordered_date') +
+                                      ': ' +
+                                      formatDate(list.orderedDate, 'DD.MM.YYYY')
+                                    : t('list.due_date') +
+                                      ': ' +
+                                      formatDate(
+                                          list.dueDate,
+                                          'DD.MM.YYYY HH:mm'
+                                      )}
                             </Typography>
                             <Typography variant="body2">
                                 {t('list.expected_delivery_date') + ': '}
