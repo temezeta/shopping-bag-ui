@@ -71,10 +71,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
 
     const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
 
-    function getListClassNames(itemClass?: string): string {
+    function getListClassNames(): string {
         const classNames: string[] = [];
         classNames.push(listStyles.listGrid);
-        itemClass && classNames.push(itemClass);
+        classNames.push(listStyles.listHeader);
         list.ordered && classNames.push(listStyles.pastOrder);
         isAdmin(user) && classNames.push(listStyles.adminView);
         return classNames.join(' ');
@@ -186,9 +186,6 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             >
                                 <Typography>{t('list.store')}</Typography>
                             </Box>
-                            {isAdmin(user) && !list.ordered && (
-                                <Box display={{ xs: 'inline', sm: 'none' }} />
-                            )}
                             <Box className={'flex-center'}>
                                 <SortButton
                                     sortOptions={sortOptions}

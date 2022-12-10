@@ -21,7 +21,7 @@
 /* Item grids */
 
 .listItem {
-    grid-template-rows: minmax(1.5rem, 1fr) minmax(0, auto);
+    grid-template-rows: 1fr auto;
     grid-template-areas: "name shop likes actions"
                          "comment shop likes actions";
     width: 100%;
@@ -97,12 +97,17 @@
         grid-template-columns: 8fr 2fr 2fr;
     }
 
+    .listGrid.listHeader.adminView {
+        grid-column-gap: 0;
+        grid-template-columns: 10fr 2fr;
+    }
+
     .listGrid.adminView.pastOrder {
         grid-template-columns: 5fr 2fr 2fr 2fr;
     }
 
     .listItem {
-        grid-template-rows: minmax(1.5rem, 1fr) minmax(0, auto) auto;
+        grid-template-rows: minmax(1.5rem, 1fr) auto auto;
         grid-template-areas: "name likes actions"
                              "shop likes actions"
                              "comment comment comment";
@@ -110,7 +115,6 @@
     }
 
     .listItem.pastOrder {
-        grid-template-rows: minmax(2rem, 1fr) minmax(0, auto) auto;
         grid-template-areas: "name likes quantity"
                              "shop likes quantity"
                              "comment comment comment";
