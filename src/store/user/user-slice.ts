@@ -173,6 +173,21 @@ export const getAllRolesAsync = createAsyncThunk(
     }
 );
 
+export const getUserReminders = createAsyncThunk(
+    'user/get-reminders',
+    async (_, { rejectWithValue }) => {
+        const response = await getCurrentUser();
+        if (!response) {
+            return rejectWithValue('User not found');
+        }
+
+        return {
+            reminderSettings: response.reminderSettings,
+            listReminderSettings: response.listReminderSettings,
+        };
+    }
+);
+
 // Selectors
 export const selectCurrentUser = (state: RootState): UserDto | undefined =>
     state.user.currentUser;
@@ -235,6 +250,13 @@ export const userSlice = createSlice({
             })
             .addCase(getAllRolesAsync.fulfilled, (state, action) => {
                 state.roles = action.payload;
+            })
+            .addCase(getUserReminders.fulfilled, (state, action) => {
+                if (!state.currentUser) return;
+                state.currentUser.reminderSettings =
+                    action.payload.reminderSettings;
+                state.currentUser.listReminderSettings =
+                    action.payload.listReminderSettings;
             });
     },
 });
