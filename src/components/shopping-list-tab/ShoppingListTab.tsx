@@ -197,7 +197,10 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                             >
                                 <Typography>{t('list.store')}</Typography>
                             </Box>
-                            <Box className={'flex-center'}>
+                            <Box
+                                className={'flex-center'}
+                                sx={{ paddingLeft: '1rem' }}
+                            >
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}

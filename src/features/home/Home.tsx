@@ -65,6 +65,7 @@ const Home = (): JSX.Element => {
                         <Tabs
                             variant="scrollable"
                             scrollButtons="auto"
+                            allowScrollButtonsMobile={true}
                             color="primary"
                             indicatorColor="primary"
                             value={selectedListId}
@@ -95,6 +96,7 @@ const Home = (): JSX.Element => {
                         align="center"
                         sx={{
                             marginTop: '15px',
+                            width: '100%',
                         }}
                     >
                         {t('list.no_active_lists')}

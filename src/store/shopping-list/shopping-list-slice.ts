@@ -30,7 +30,7 @@ import { AddShoppingListDto } from '../../models/shopping-list/AddShoppingListDt
 import { ItemDto } from '../../models/shopping-list/ItemDto';
 import { updateOrAdd } from '../../utility/array-helper';
 import { sortByDate } from '../../utility/date-helper';
-import { selectCurrentOffice } from '../user/user-slice';
+import { getUserReminders, selectCurrentOffice } from '../user/user-slice';
 
 const initialState: ShoppingListState = {
     shoppingLists: {},
@@ -50,11 +50,12 @@ export const getShoppingListsByOfficeAsync = createAsyncThunk(
 
 export const addShoppingListAsync = createAsyncThunk(
     'shoppinglist/add',
-    async (shoppingList: AddShoppingListDto, { rejectWithValue }) => {
+    async (shoppingList: AddShoppingListDto, { rejectWithValue, dispatch }) => {
         const response = await addShoppingList(shoppingList);
         if (!response) {
             return rejectWithValue('Error adding shopping list');
         }
+        await dispatch(getUserReminders());
         return response;
     }
 );
