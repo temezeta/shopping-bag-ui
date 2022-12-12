@@ -118,7 +118,8 @@
         "list-copy-successful": "List address copied to clipboard",
         "list-order-successful": "Order marked as completed",
         "quantity": "Quantity",
-        "check": "Check"
+        "check": "Check",
+        "done": "Done"
     },
     "item": {
         "name": "Item name",

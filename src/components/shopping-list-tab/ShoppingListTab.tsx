@@ -4,6 +4,7 @@ import Grid2 from '@mui/material/Unstable_Grid2';
 import { useTranslation } from 'react-i18next';
 import { ShoppingListDto } from '../../models/shopping-list/ShoppingListDto';
 import styles from './ShoppingListTab.module.css';
+import listStyles from '../shopping-list-item/ShoppingListItem.module.css';
 import { formatDate } from '../../utility/date-helper';
 import ShoppingListItem from '../shopping-list-item/ShoppingListItem';
 import { useNavigate } from 'react-router-dom';
@@ -69,6 +70,15 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
     }, [sortOptions, list]);
 
     const isDueDatePassed = moment(list.dueDate, true).isBefore(Date.now());
+
+    function getListClassNames(): string {
+        const classNames: string[] = [];
+        classNames.push(listStyles.listGrid);
+        classNames.push(listStyles.listHeader);
+        list.ordered && classNames.push(listStyles.pastOrder);
+        isAdmin(user) && classNames.push(listStyles.adminView);
+        return classNames.join(' ');
+    }
 
     return (
         <div
@@ -141,8 +151,16 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                             : 'inherit',
                                 }}
                             >
-                                {t('list.due_date') + ': '}
-                                {formatDate(list.dueDate, 'DD.MM.YYYY HH:mm')}
+                                {list.ordered
+                                    ? t('list.ordered_date') +
+                                      ': ' +
+                                      formatDate(list.orderedDate, 'DD.MM.YYYY')
+                                    : t('list.due_date') +
+                                      ': ' +
+                                      formatDate(
+                                          list.dueDate,
+                                          'DD.MM.YYYY HH:mm'
+                                      )}
                             </Typography>
                             <Typography variant="body2">
                                 {t('list.expected_delivery_date') + ': '}
@@ -164,46 +182,52 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                         </Grid2>
                     </Grid2>
                     <Box className={styles.shoppingListHeader}>
-                        <Grid2 container spacing={2} alignItems="center">
-                            <Grid2 xs={6} md={2}>
+                        <Box className={getListClassNames()}>
+                            <Box>
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
                                     columnSortType={SortType.Name}
                                     columnName={t('list.item')}
                                 ></SortButton>
-                            </Grid2>
-                            <Grid2
-                                xs={0}
-                                md={2}
+                            </Box>
+                            <Box
                                 className="flex-center"
-                                display={{ xs: 'none', md: 'flex' }}
+                                display={{ xs: 'none', sm: 'flex' }}
                             >
                                 <Typography>{t('list.store')}</Typography>
-                            </Grid2>
-                            <Grid2
-                                xs={3}
-                                md={2}
-                                className={'flex-center'}
-                                paddingLeft={4}
-                            >
+                            </Box>
+                            <Box className={'flex-center'}>
                                 <SortButton
                                     sortOptions={sortOptions}
                                     setSortOptions={setSortOptions}
                                     columnSortType={SortType.Likes}
                                     columnName={t('list.likes')}
                                 ></SortButton>
-                            </Grid2>
-                            <Grid2 xs={3} md={2} className="flex-center">
-                                {(isAdmin(user) || list.ordered) && (
+                            </Box>
+                            {(isAdmin(user) || list.ordered) && (
+                                <Box
+                                    display={
+                                        isAdmin(user) && !list.ordered
+                                            ? { xs: 'none', sm: 'flex' }
+                                            : { xs: 'flex' }
+                                    }
+                                    className={'flex-center'}
+                                >
                                     <Typography>
                                         {t('list.quantity')}
                                     </Typography>
-                                )}
-                            </Grid2>
-                            <Grid2 xs={0} md={2}></Grid2>
-                            <Grid2 xs={0} md={2}></Grid2>
-                        </Grid2>
+                                </Box>
+                            )}
+                            {isAdmin(user) && !list.ordered && (
+                                <Box
+                                    display={{ xs: 'none', sm: 'flex' }}
+                                    className={'flex-center'}
+                                >
+                                    <Typography>{t('list.done')}</Typography>
+                                </Box>
+                            )}
+                        </Box>
                     </Box>
                     <List className="full-width">
                         {sortedItems.map((it, i) => (

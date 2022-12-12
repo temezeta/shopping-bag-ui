@@ -1,4 +1,8 @@
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import {
+    ArrowRight,
+    KeyboardArrowDown,
+    KeyboardArrowUp,
+} from '@mui/icons-material';
 import { Button, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { SortOptions, SortType } from '../../utility/sort-helper';
@@ -19,6 +23,7 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
                 opacity: 1,
                 fontWeight: 'bold',
                 color: 'text.primary',
+                padding: '6px 0px',
             }}
             onClick={() =>
                 sortOptions.sortType !== columnSortType
@@ -45,7 +50,9 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
                     ) : (
                         <KeyboardArrowUp />
                     )
-                ) : null}
+                ) : (
+                    <ArrowRight color="disabled" />
+                )}
             </Grid2>
         </Button>
     );
