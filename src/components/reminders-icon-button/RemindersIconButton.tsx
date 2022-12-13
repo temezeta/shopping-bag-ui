@@ -41,8 +41,10 @@ const RemindersIconButton = (props: RemindersIconButtonProps): JSX.Element => {
                     aria-label={t('notifications.edit_notifications')}
                     onClick={remindersOnClick}
                 >
-                    {listReminders?.dueDateRemindersDisabled &&
-                    listReminders.expectedRemindersDisabled ? (
+                    {!listReminders ||
+                    (listReminders.expectedRemindersDisabled &&
+                        (props.pastOrder ||
+                            listReminders.dueDateRemindersDisabled)) ? (
                         <NotificationsNone />
                     ) : (
                         <Notifications />
