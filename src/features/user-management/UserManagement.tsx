@@ -73,7 +73,13 @@ const UserManagement = (): JSX.Element => {
                         <Grid2 container>
                             <Grid2 xs={6}></Grid2>
                             <Grid2 xs={5} className="flex-center">
-                                <Typography>{t('user.roles')}</Typography>
+                                <Typography
+                                    variant="body1"
+                                    fontWeight="600"
+                                    color="text.primary"
+                                >
+                                    {t('user.roles')}
+                                </Typography>
                             </Grid2>
                         </Grid2>
                     </Box>

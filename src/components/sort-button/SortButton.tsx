@@ -42,7 +42,9 @@ const SortButton = (props: SortButtonProps): JSX.Element => {
                       })
             }
         >
-            <Typography variant="body1">{columnName}</Typography>
+            <Typography variant="body1" fontWeight="600" color="text.primary">
+                {columnName}
+            </Typography>
             <Grid2 container spacing={0} minWidth={29} padding={0}>
                 {sortOptions.sortType === columnSortType ? (
                     sortOptions.sortDescending ? (

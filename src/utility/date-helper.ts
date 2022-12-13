@@ -19,5 +19,7 @@ export const sortByDate = (
     a?: moment.MomentInput,
     b?: moment.MomentInput
 ): number => {
-    return moment(a).diff(b);
+    if (!a) return 1;
+    if (!b) return -1;
+    return moment(a, true).diff(moment(b, true));
 };
