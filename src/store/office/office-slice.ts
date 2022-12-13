@@ -63,7 +63,7 @@ export const deleteOfficeAsync = createAsyncThunk(
 
 // Selectors
 export const selectOffices = (state: RootState): OfficeDto[] =>
-    state.offices.offices;
+    [...state.offices.offices].sort((a, b) => a.name.localeCompare(b.name));
 
 export const officeSlice = createSlice({
     name: 'offices',
