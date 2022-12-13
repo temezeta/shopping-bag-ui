@@ -195,7 +195,13 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                 className="flex-center"
                                 display={{ xs: 'none', sm: 'flex' }}
                             >
-                                <Typography>{t('list.store')}</Typography>
+                                <Typography
+                                    variant="body1"
+                                    fontWeight="600"
+                                    color="text.primary"
+                                >
+                                    {t('list.store')}
+                                </Typography>
                             </Box>
                             <Box
                                 className={'flex-center'}
@@ -217,7 +223,11 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     }
                                     className={'flex-center'}
                                 >
-                                    <Typography>
+                                    <Typography
+                                        variant="body1"
+                                        fontWeight="600"
+                                        color="text.primary"
+                                    >
                                         {t('list.quantity')}
                                     </Typography>
                                 </Box>
@@ -227,7 +237,13 @@ const ShoppingListTab = (props: ShoppingListTabProps): JSX.Element => {
                                     display={{ xs: 'none', sm: 'flex' }}
                                     className={'flex-center'}
                                 >
-                                    <Typography>{t('list.done')}</Typography>
+                                    <Typography
+                                        variant="body1"
+                                        fontWeight="600"
+                                        color="text.primary"
+                                    >
+                                        {t('list.done')}
+                                    </Typography>
                                 </Box>
                             )}
                         </Box>
