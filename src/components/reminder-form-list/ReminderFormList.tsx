@@ -33,8 +33,8 @@ const ReminderFormList = (props: ReminderFormProps): JSX.Element => {
           }
         : {
               shoppingListId: props.listId,
-              dueDateRemindersDisabled: false,
-              expectedRemindersDisabled: false,
+              dueDateRemindersDisabled: true,
+              expectedRemindersDisabled: true,
               reminderDaysBeforeDueDate: [],
               reminderDaysBeforeExpectedDate: [],
           };
