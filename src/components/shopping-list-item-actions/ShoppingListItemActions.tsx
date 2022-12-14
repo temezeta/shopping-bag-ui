@@ -1,6 +1,5 @@
 import { Delete, Edit, MoreHoriz } from '@mui/icons-material';
 import {
-    Box,
     DialogContentText,
     IconButton,
     Menu,
@@ -60,6 +59,7 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
                 onClose={handleClose}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                className={styles.actionList}
                 PaperProps={{
                     sx: {
                         '& .MuiMenuItem-root.Mui-selected': {
@@ -74,30 +74,25 @@ const ShoppingListItemActions = (props: ShoppingListItemProps): JSX.Element => {
                     },
                 }}
             >
-                <MenuItem>
-                    <Box className={styles.actionList}>
-                        <Tooltip title={t('list.delete-item')} enterDelay={800}>
-                            <IconButton
-                                aria-label="delete"
-                                onClick={handleDelete}
-                            >
-                                <Delete />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title={t('list.edit-item')} enterDelay={800}>
-                            <IconButton
-                                edge="end"
-                                aria-label="edit"
-                                onClick={() =>
-                                    navigate(
-                                        `/order/${props.item.shoppingListId}/edit-item/${props.item.id}`
-                                    )
-                                }
-                            >
-                                <Edit />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
+                <MenuItem onClick={handleDelete}>
+                    <Tooltip title={t('list.delete-item')} enterDelay={600}>
+                        <IconButton aria-label="delete">
+                            <Delete />
+                        </IconButton>
+                    </Tooltip>
+                </MenuItem>
+                <MenuItem
+                    onClick={() =>
+                        navigate(
+                            `/order/${props.item.shoppingListId}/edit-item/${props.item.id}`
+                        )
+                    }
+                >
+                    <Tooltip title={t('list.edit-item')} enterDelay={600}>
+                        <IconButton aria-label="edit">
+                            <Edit />
+                        </IconButton>
+                    </Tooltip>
                 </MenuItem>
             </Menu>
             <ConfirmationDialog

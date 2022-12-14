@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { KeyboardArrowDown } from '@mui/icons-material';
-import { Box, IconButton, MenuItem, MenuList, Tab } from '@mui/material';
+import { Box, IconButton, MenuItem, Tab } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import { useState, MouseEvent } from 'react';
@@ -45,6 +45,8 @@ const StyledMenu = styled((props: MenuProps) => (
             right: '10%',
         },
         overflow: 'unset',
+        maxHeight: '25vh',
+        overflowY: 'auto',
         color: theme.palette.text.secondary,
         backgroundColor: theme.palette.secondary.light,
     },
@@ -77,6 +79,7 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
                     iconPosition="end"
                     onClick={handleClick}
                     label={title}
+                    tabIndex={0}
                     {...rest}
                 />
             );
@@ -121,16 +124,14 @@ const DropdownMenu = (props: DropdownMenuProps): JSX.Element => {
         <div>
             {getButtonComponent()}
             <StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                <MenuList className={styles.menuItems}>
-                    {props.items.map((item, i) => (
-                        <MenuItem
-                            key={i}
-                            onClick={async () => await handleItemClick(item)}
-                        >
-                            {item.title}
-                        </MenuItem>
-                    ))}
-                </MenuList>
+                {props.items.map((item, i) => (
+                    <MenuItem
+                        key={i}
+                        onClick={async () => await handleItemClick(item)}
+                    >
+                        {item.title}
+                    </MenuItem>
+                ))}
             </StyledMenu>
         </div>
     );
