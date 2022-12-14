@@ -9,6 +9,7 @@ import { UserDto, ChangePasswordDto } from '../../models/user/UserDto';
 import { UserRoleDto } from '../../models/user/UserRoleDto';
 import { RESET_ALL, RootState } from '../store';
 import { setSnackbar, showSuccessSnackBar } from '../ui/ui-slice';
+import { editOfficeAsync } from '../office/office-slice';
 import {
     changeGlobalReminders,
     changeListReminders,
@@ -257,6 +258,15 @@ export const userSlice = createSlice({
                     action.payload.reminderSettings;
                 state.currentUser.listReminderSettings =
                     action.payload.listReminderSettings;
+            })
+            .addCase(editOfficeAsync.fulfilled, (state, action) => {
+                if (state.currentUser?.homeOffice.id === action.payload.id) {
+                    state.currentUser.homeOffice = action.payload;
+                }
+
+                if (state.sessionOffice?.id === action.payload.id) {
+                    state.sessionOffice = action.payload;
+                }
             });
     },
 });
